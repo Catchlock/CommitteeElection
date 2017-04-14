@@ -1,8 +1,42 @@
 
+import java.awt.BorderLayout;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
+/*
+ * The MIT License
+ *
+ * Copyright 2017 Nikolas Laskaris.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
+/**
+ *
+ * @author Nikolas Laskaris
+ */
 public class ElectionGUI2 extends javax.swing.JFrame {
 
     private Election election;
@@ -11,8 +45,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
     private int nClusters = 1;
     private int mClusters = 1;
     private int k = 10;
-    private int xRange = 6;
-    private int yRange = 6;
+    private int xLimit = 6;
+    private int yLimit = 6;
     
     /**
      * Creates new form ElectionGUI2
@@ -70,20 +104,20 @@ public class ElectionGUI2 extends javax.swing.JFrame {
     }
     
     public void setXRange(int xRange){
-        this.xRange = xRange;
+        this.xLimit = xRange;
     }
     
     public int getXRange(){
-        return xRange;
+        return xLimit;
     }
     
     
     public void setYRange(int yRange){
-        this.yRange = yRange;
+        this.yLimit = yRange;
     }
     
     public int getYRange(){
-        return yRange;
+        return yLimit;
     }
     
     /**
@@ -118,19 +152,17 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         saveElectionBtn = new javax.swing.JButton();
         loadElectionBtn = new javax.swing.JButton();
         plotResultsBtn = new javax.swing.JButton();
-        xRangeLabel = new javax.swing.JLabel();
-        xRangeTxtField = new javax.swing.JTextField();
-        yRangeLabel = new javax.swing.JLabel();
-        yRangeTxtField = new javax.swing.JTextField();
+        xLimitLabel = new javax.swing.JLabel();
+        xLimitTxtField = new javax.swing.JTextField();
+        yLimitLabel = new javax.swing.JLabel();
+        yLimitTxtField = new javax.swing.JTextField();
         plotAreaSNTV = new javax.swing.JPanel();
         plotAreaBorda = new javax.swing.JPanel();
         plotAreaBloc = new javax.swing.JPanel();
         titlePanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1280, 720));
         setMinimumSize(new java.awt.Dimension(1280, 720));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
         layout.columnWidths = new int[] {300, 300, 300, 300};
@@ -154,7 +186,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(plotAreaSTV, gridBagConstraints);
@@ -176,8 +208,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(plotAreaGCC, gridBagConstraints);
 
@@ -198,8 +230,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(plotAreaGM, gridBagConstraints);
 
@@ -220,8 +252,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(plotAreaKM, gridBagConstraints);
 
@@ -445,6 +477,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         menuPanel.add(loadElectionBtn, gridBagConstraints);
 
         plotResultsBtn.setText("Plot Results");
+        plotResultsBtn.setEnabled(false);
         plotResultsBtn.setMaximumSize(new java.awt.Dimension(110, 23));
         plotResultsBtn.setMinimumSize(new java.awt.Dimension(110, 23));
         plotResultsBtn.setPreferredSize(new java.awt.Dimension(110, 23));
@@ -462,57 +495,57 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         menuPanel.add(plotResultsBtn, gridBagConstraints);
 
-        xRangeLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        xRangeLabel.setText("x-Axis range: ");
+        xLimitLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        xLimitLabel.setText("x-Axis bound: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        menuPanel.add(xRangeLabel, gridBagConstraints);
+        menuPanel.add(xLimitLabel, gridBagConstraints);
 
-        xRangeTxtField.setText("6");
-        xRangeTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
+        xLimitTxtField.setText("6");
+        xLimitTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                xRangeTxtFieldFocusLost(evt);
+                xLimitTxtFieldFocusLost(evt);
             }
         });
-        xRangeTxtField.addActionListener(new java.awt.event.ActionListener() {
+        xLimitTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xRangeTxtFieldActionPerformed(evt);
+                xLimitTxtFieldActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        menuPanel.add(xRangeTxtField, gridBagConstraints);
+        menuPanel.add(xLimitTxtField, gridBagConstraints);
 
-        yRangeLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        yRangeLabel.setText("y-Axis range: ");
+        yLimitLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        yLimitLabel.setText("y-Axis bound: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        menuPanel.add(yRangeLabel, gridBagConstraints);
+        menuPanel.add(yLimitLabel, gridBagConstraints);
 
-        yRangeTxtField.setText("6");
-        yRangeTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
+        yLimitTxtField.setText("6");
+        yLimitTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
-                yRangeTxtFieldFocusLost(evt);
+                yLimitTxtFieldFocusLost(evt);
             }
         });
-        yRangeTxtField.addActionListener(new java.awt.event.ActionListener() {
+        yLimitTxtField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                yRangeTxtFieldActionPerformed(evt);
+                yLimitTxtFieldActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        menuPanel.add(yRangeTxtField, gridBagConstraints);
+        menuPanel.add(yLimitTxtField, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -539,7 +572,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(plotAreaSNTV, gridBagConstraints);
 
@@ -561,7 +594,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(plotAreaBorda, gridBagConstraints);
 
@@ -583,7 +616,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(plotAreaBloc, gridBagConstraints);
 
@@ -610,209 +643,205 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_plotResultsBtnActionPerformed
-
     private void loadElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadElectionBtnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_loadElectionBtnActionPerformed
 
     private void nTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nTxtFieldActionPerformed
         try{
-            n = Integer.parseInt(nTxtField.getText());
-            if (n < 1 || n > 1000){
+            int x = Integer.parseInt(nTxtField.getText());
+            if (x < 1 || x > 1000){
                 throw (new Exception());
             }
+            n = x;
         }
         catch(Exception e){
-            nTxtField.setText("300");
-            n = 300;
+            nTxtField.setText(String.valueOf(n));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 1000)");
         }
     }//GEN-LAST:event_nTxtFieldActionPerformed
 
     private void nTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nTxtFieldFocusLost
         try{
-            n = Integer.parseInt(nTxtField.getText());
-            if (n < 1 || n > 1000){
+            int x = Integer.parseInt(nTxtField.getText());
+            if (x < 1 || x > 1000){
                 throw (new Exception());
             }
+            n = x;
         }
         catch(Exception e){
-            nTxtField.setText("300");
-            n = 300;
+            nTxtField.setText(String.valueOf(n));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 1000)");
         }
     }//GEN-LAST:event_nTxtFieldFocusLost
 
     private void mTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mTxtFieldActionPerformed
         try{
-            m = Integer.parseInt(mTxtField.getText());
-            if (m < 1 || m > 1000){
+            int x = Integer.parseInt(mTxtField.getText());
+            if (x < 1 || x > 1000){
                 throw (new Exception());
             }
+            m = x;
         }
         catch(Exception e){
-            mTxtField.setText("100");
-            m = 100;
+            mTxtField.setText(String.valueOf(m));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 1000)");
         }
     }//GEN-LAST:event_mTxtFieldActionPerformed
 
     private void mTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mTxtFieldFocusLost
         try{
-            m = Integer.parseInt(mTxtField.getText());
-            if (m < 1 || m > 1000){
+            int x = Integer.parseInt(mTxtField.getText());
+            if (x < 1 || x > 1000){
                 throw (new Exception());
             }
+            m = x;
         }
         catch(Exception e){
-            mTxtField.setText("100");
-            m = 100;
+            mTxtField.setText(String.valueOf(m));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 1000)");
         }
     }//GEN-LAST:event_mTxtFieldFocusLost
 
     private void kTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kTxtFieldActionPerformed
         try{
-            k = Integer.parseInt(kTxtField.getText());
-            if (k < 1 || k > 100){
+            int x = Integer.parseInt(kTxtField.getText());
+            if (x < 1 || x > 100){
                 throw (new Exception());
             }
+            k = x;
         }
         catch(Exception e){
-            kTxtField.setText("10");
-            k = 10;
+            kTxtField.setText(String.valueOf(k));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 100)");
         }
     }//GEN-LAST:event_kTxtFieldActionPerformed
 
     private void kTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_kTxtFieldFocusLost
         try{
-            k = Integer.parseInt(kTxtField.getText());
-            if (k < 1 || k > 100){
+            int x = Integer.parseInt(kTxtField.getText());
+            if (x < 1 || x > 100){
                 throw (new Exception());
             }
+            k = x;
         }
         catch(Exception e){
-            kTxtField.setText("10");
-            k = 10;
+            kTxtField.setText(String.valueOf(k));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 100)");
         }
     }//GEN-LAST:event_kTxtFieldFocusLost
 
     private void nClusterTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nClusterTxtFieldActionPerformed
         try{
-            nClusters = Integer.parseInt(nClusterTxtField.getText());
-            if (nClusters < 1 || nClusters > 20){
+            int x = Integer.parseInt(nClusterTxtField.getText());
+            if (x < 1 || x > 20){
                 throw (new Exception());
             }
+            nClusters = x;
         }
         catch(Exception e){
-            nClusterTxtField.setText("1");
-            nClusters = 1;
+            nClusterTxtField.setText(String.valueOf(nClusters));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 20)");
         }
     }//GEN-LAST:event_nClusterTxtFieldActionPerformed
 
     private void nClusterTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nClusterTxtFieldFocusLost
         try{
-            nClusters = Integer.parseInt(nClusterTxtField.getText());
-            if (nClusters < 1 || nClusters > 20){
+            int x = Integer.parseInt(nClusterTxtField.getText());
+            if (x < 1 || x > 20){
                 throw (new Exception());
             }
+            nClusters = x;
         }
         catch(Exception e){
-            nClusterTxtField.setText("1");
-            nClusters = 1;
+            nClusterTxtField.setText(String.valueOf(nClusters));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 20)");
         }
     }//GEN-LAST:event_nClusterTxtFieldFocusLost
 
     private void mClusterTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mClusterTxtFieldActionPerformed
         try{
-            mClusters = Integer.parseInt(mClusterTxtField.getText());
-            if (mClusters < 1 || mClusters > 20){
+            int x = Integer.parseInt(mClusterTxtField.getText());
+            if (x < 1 || x > 20){
                 throw (new Exception());
             }
+            mClusters = x;
         }
         catch(Exception e){
-            mClusterTxtField.setText("1");
-            mClusters = 1;
+            mClusterTxtField.setText(String.valueOf(mClusters));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 20)");
         }
     }//GEN-LAST:event_mClusterTxtFieldActionPerformed
 
     private void mClusterTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mClusterTxtFieldFocusLost
         try{
-            mClusters = Integer.parseInt(mClusterTxtField.getText());
-            if (mClusters < 1 || mClusters > 20){
+            int x = Integer.parseInt(mClusterTxtField.getText());
+            if (x < 1 || x > 20){
                 throw (new Exception());
             }
+            mClusters = x;
         }
         catch(Exception e){
-            mClusterTxtField.setText("1");
-            mClusters = 1;
+            mClusterTxtField.setText(String.valueOf(mClusters));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 20)");
         }
     }//GEN-LAST:event_mClusterTxtFieldFocusLost
 
-    private void xRangeTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xRangeTxtFieldActionPerformed
+    private void xLimitTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xLimitTxtFieldActionPerformed
         try{
-            xRange = Integer.parseInt(xRangeTxtField.getText());
-            if (xRange < 1 || xRange > 30){
+            int x = Integer.parseInt(xLimitTxtField.getText());
+            if (x < 1 || x > 30){
                 throw (new Exception());
             }
+            xLimit = x;
         }
         catch(Exception e){
-            xRangeTxtField.setText("6");
-            xRange = 6;
+            xLimitTxtField.setText(String.valueOf(xLimit));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 30)");
         }
-    }//GEN-LAST:event_xRangeTxtFieldActionPerformed
+    }//GEN-LAST:event_xLimitTxtFieldActionPerformed
 
-    private void xRangeTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_xRangeTxtFieldFocusLost
+    private void xLimitTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_xLimitTxtFieldFocusLost
         try{
-            xRange = Integer.parseInt(xRangeTxtField.getText());
-            if (xRange < 1 || xRange > 30){
+            int x = Integer.parseInt(xLimitTxtField.getText());
+            if (x < 1 || x > 30){
                 throw (new Exception());
             }
+            xLimit = x;
         }
         catch(Exception e){
-            xRangeTxtField.setText("6");
-            xRange = 6;
+            xLimitTxtField.setText(String.valueOf(xLimit));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 30)");
         }
-    }//GEN-LAST:event_xRangeTxtFieldFocusLost
+    }//GEN-LAST:event_xLimitTxtFieldFocusLost
 
-    private void yRangeTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yRangeTxtFieldActionPerformed
+    private void yLimitTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yLimitTxtFieldActionPerformed
         try{
-            yRange = Integer.parseInt(yRangeTxtField.getText());
-            if (yRange < 1 || yRange > 30){
+            int x = Integer.parseInt(yLimitTxtField.getText());
+            if (x < 1 || x > 30){
                 throw (new Exception());
             }
+            yLimit = x;
         }
         catch(Exception e){
-            yRangeTxtField.setText("6");
-            yRange = 6;
+            yLimitTxtField.setText(String.valueOf(yLimit));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 30)");
         }
-    }//GEN-LAST:event_yRangeTxtFieldActionPerformed
+    }//GEN-LAST:event_yLimitTxtFieldActionPerformed
 
-    private void yRangeTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_yRangeTxtFieldFocusLost
+    private void yLimitTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_yLimitTxtFieldFocusLost
         try{
-            yRange = Integer.parseInt(yRangeTxtField.getText());
-            if (yRange < 1 || yRange > 30){
+            int x = Integer.parseInt(yLimitTxtField.getText());
+            if (x < 1 || x > 30){
                 throw (new Exception());
             }
+            yLimit = x;
         }
         catch(Exception e){
-            yRangeTxtField.setText("6");
-            yRange = 6;
+            yLimitTxtField.setText(String.valueOf(yLimit));
             JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 30)");
         }
-    }//GEN-LAST:event_yRangeTxtFieldFocusLost
+    }//GEN-LAST:event_yLimitTxtFieldFocusLost
 
     private void createElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createElectionBtnActionPerformed
         ArrayList<Voter> voters = new ArrayList();
@@ -820,16 +849,193 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         
         int tempN = n;
         int tempM = m;
+        boolean finalCluster = false;
         
         for(int i = 0; i < nClusters; i++){
-            DistributionDialog dd = new DistributionDialog(this, true, tempN, xRange/2, yRange/2, Person.personType.VOTER);
+            String title = "Voter Cluster " + (i+1) + "/" + nClusters;
+            String footnote = "Voters remaining: " + tempN;
+            if (i+1 == nClusters){
+                finalCluster = true;
+            }
+            DistributionDialog dd = new DistributionDialog(this, true, tempN, xLimit, yLimit, Person.personType.VOTER, title, footnote, finalCluster);
             dd.setVisible(true);
-            
             tempN = tempN - dd.getClusterSize();
             voters.addAll((ArrayList<Voter>)(ArrayList<?>)dd.getIndividuals());
-        }    
-            
+        }  
+        
+        finalCluster = false;
+        
+        for(int i = 0; i < mClusters; i++){
+            String title = "Candidate Cluster " + (i+1) + "/" + mClusters;
+            String footnote = "Candidates remaining: " + tempM;
+            if (i+1 == mClusters){
+                finalCluster = true;
+            }
+            DistributionDialog dd = new DistributionDialog(this, true, tempM, xLimit, yLimit, Person.personType.CANDIDATE, title, footnote, finalCluster);
+            dd.setVisible(true);
+            tempM = tempM - dd.getClusterSize();
+            candidates.addAll((ArrayList<Candidate>)(ArrayList<?>)dd.getIndividuals());
+        }  
+        
+        election = new Election(k, voters, candidates);
+        plotResultsBtn.setEnabled(true);
     }//GEN-LAST:event_createElectionBtnActionPerformed
+
+    private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
+        
+        ArrayList<Candidate> committeeSNTV = election.singleNonTrasferableVote();
+        ArrayList<Candidate> committeeBorda = election.kBorda();
+        ArrayList<Candidate> committeeBloc = election.bloc();
+        ArrayList<Candidate> committeeSTV = election.singleTransferableVote();
+        ArrayList<Candidate> committeeGCC = election.greedyCC();
+        ArrayList<Candidate> committeeGM = election.greedyMonroe();
+        ArrayList<Candidate> committeeKM = election.kMeans();
+        
+        XYSeriesCollection datasetSNTV = new XYSeriesCollection();
+        XYSeriesCollection datasetBorda = new XYSeriesCollection();
+        XYSeriesCollection datasetBloc = new XYSeriesCollection();
+        XYSeriesCollection datasetSTV = new XYSeriesCollection();
+        XYSeriesCollection datasetGCC = new XYSeriesCollection();
+        XYSeriesCollection datasetGM = new XYSeriesCollection();
+        XYSeriesCollection datasetKM = new XYSeriesCollection();
+        
+        XYSeries sntvComitteeDataset = new XYSeries("SNTV Committee");
+        for (Candidate c: committeeSNTV) {
+            sntvComitteeDataset.add(c.getX(), c.getY());
+        }
+        datasetSNTV.addSeries(sntvComitteeDataset);
+        
+        
+        XYSeries bordaCommitteeDataset = new XYSeries("k-Borda Committee");
+        for (Candidate c: committeeBorda) {
+            bordaCommitteeDataset.add(c.getX(), c.getY());
+        }
+        datasetBorda.addSeries(bordaCommitteeDataset);
+        
+        
+        XYSeries blocCommitteeDataset = new XYSeries("Bloc Committee");
+        for (Candidate c: committeeBloc) {
+            blocCommitteeDataset.add(c.getX(), c.getY());
+        }
+        datasetBloc.addSeries(blocCommitteeDataset);
+        
+        
+        XYSeries stvCommitteeDataset = new XYSeries("STV Committee");
+        for (Candidate c: committeeSTV) {
+            stvCommitteeDataset.add(c.getX(), c.getY());
+        }
+        datasetSTV.addSeries(stvCommitteeDataset);
+        
+        
+        XYSeries gccCommitteeDataset = new XYSeries("G-CC Committee");
+        for (Candidate c: committeeGCC) {
+            gccCommitteeDataset.add(c.getX(), c.getY());
+        }
+        datasetGCC.addSeries(gccCommitteeDataset);
+        
+        
+        XYSeries gmCommitteeDataset = new XYSeries("G-Monroe Committee");
+        for (Candidate c: committeeGM) {
+            gmCommitteeDataset.add(c.getX(), c.getY());
+        }
+        datasetGM.addSeries(gmCommitteeDataset);
+        
+        
+        XYSeries kMeansCommitteeDataset = new XYSeries("k-Means Committee");
+        for (Candidate c: committeeKM) {
+            kMeansCommitteeDataset.add(c.getX(), c.getY());
+        }
+        datasetKM.addSeries(kMeansCommitteeDataset);
+        
+        int skipN = n/120;
+        if(skipN < 1){
+            skipN = 1;
+        }
+        
+        int skipM = m/120;
+        if(skipM < 1){
+            skipM = 1;
+        }
+        
+        XYSeries voterDataset = new XYSeries("Voters");
+        for (int i = 0; i < election.getVoters().size(); i++) {
+            Voter v = election.getVoters().get(i);
+            if (i%skipN == 0){
+                voterDataset.add(v.getX(), v.getY());
+            }
+        }
+        datasetSNTV.addSeries(voterDataset);
+        datasetBorda.addSeries(voterDataset);
+        datasetBloc.addSeries(voterDataset);
+        datasetSTV.addSeries(voterDataset);
+        datasetGCC.addSeries(voterDataset);
+        datasetGM.addSeries(voterDataset);
+        datasetKM.addSeries(voterDataset);
+        
+        XYSeries candidateDataset = new XYSeries("Candidates");
+        for (int i = 0; i < election.getCandidates().size(); i++) {
+            Candidate c = election.getCandidates().get(i);
+            if (i%skipM == 0){
+                candidateDataset.add(c.getX(), c.getY());
+            }
+        }
+        datasetSNTV.addSeries(candidateDataset);
+        datasetBorda.addSeries(candidateDataset);
+        datasetBloc.addSeries(candidateDataset);
+        datasetSTV.addSeries(candidateDataset);
+        datasetGCC.addSeries(candidateDataset);
+        datasetGM.addSeries(candidateDataset);
+        datasetKM.addSeries(candidateDataset);
+        
+        JFreeChart chartSNTV = ChartFactory.createScatterPlot("SNTV", "x",
+                "y", datasetSNTV, PlotOrientation.VERTICAL, true, true, true);
+        ChartPanel chartPanelSNTV = new ChartPanel(chartSNTV);
+        plotAreaSNTV.setLayout(new java.awt.BorderLayout());
+        plotAreaSNTV.add(chartPanelSNTV,BorderLayout.CENTER);
+        plotAreaSNTV.validate();
+        
+        JFreeChart chartBorda = ChartFactory.createScatterPlot("k-Borda", "x",
+                "y", datasetBorda, PlotOrientation.VERTICAL, true, true, true);
+        ChartPanel chartPanelBorda = new ChartPanel(chartBorda);
+        plotAreaBorda.setLayout(new java.awt.BorderLayout());
+        plotAreaBorda.add(chartPanelBorda,BorderLayout.CENTER);
+        plotAreaBorda.validate();
+        
+        JFreeChart chartBloc = ChartFactory.createScatterPlot("Bloc", "x",
+                "y", datasetBloc, PlotOrientation.VERTICAL, true, true, true);
+        ChartPanel chartPanelBloc = new ChartPanel(chartBloc);
+        plotAreaBloc.setLayout(new java.awt.BorderLayout());
+        plotAreaBloc.add(chartPanelBloc,BorderLayout.CENTER);
+        plotAreaBloc.validate();
+        
+        JFreeChart chartSTV = ChartFactory.createScatterPlot("STV", "x",
+                "y", datasetSTV, PlotOrientation.VERTICAL, true, true, true);
+        ChartPanel chartPanelSTV = new ChartPanel(chartSTV);
+        plotAreaSTV.setLayout(new java.awt.BorderLayout());
+        plotAreaSTV.add(chartPanelSTV,BorderLayout.CENTER);
+        plotAreaSTV.validate();
+        
+        JFreeChart chartGCC = ChartFactory.createScatterPlot("Greedy-CC", "x",
+                "y", datasetGCC, PlotOrientation.VERTICAL, true, true, true);
+        ChartPanel chartPanelGCC = new ChartPanel(chartGCC);
+        plotAreaGCC.setLayout(new java.awt.BorderLayout());
+        plotAreaGCC.add(chartPanelGCC,BorderLayout.CENTER);
+        plotAreaGCC.validate();
+        
+        JFreeChart chartGM = ChartFactory.createScatterPlot("Greedy-Monroe", "x",
+                "y", datasetGM, PlotOrientation.VERTICAL, true, true, true);
+        ChartPanel chartPanelGM = new ChartPanel(chartGM);
+        plotAreaGM.setLayout(new java.awt.BorderLayout());
+        plotAreaGM.add(chartPanelGM,BorderLayout.CENTER);
+        plotAreaGM.validate();
+        
+        JFreeChart chartKM = ChartFactory.createScatterPlot("k-Means", "x",
+                "y", datasetKM, PlotOrientation.VERTICAL, true, true, true);
+        ChartPanel chartPanelKM = new ChartPanel(chartKM);
+        plotAreaKM.setLayout(new java.awt.BorderLayout());
+        plotAreaKM.add(chartPanelKM,BorderLayout.CENTER);
+        plotAreaKM.validate();
+    }//GEN-LAST:event_plotResultsBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -893,9 +1099,9 @@ public class ElectionGUI2 extends javax.swing.JFrame {
     private javax.swing.JButton plotResultsBtn;
     private javax.swing.JButton saveElectionBtn;
     private javax.swing.JPanel titlePanel;
-    private javax.swing.JLabel xRangeLabel;
-    private javax.swing.JTextField xRangeTxtField;
-    private javax.swing.JLabel yRangeLabel;
-    private javax.swing.JTextField yRangeTxtField;
+    private javax.swing.JLabel xLimitLabel;
+    private javax.swing.JTextField xLimitTxtField;
+    private javax.swing.JLabel yLimitLabel;
+    private javax.swing.JTextField yLimitTxtField;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,23 +5,43 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * The MIT License
+ *
+ * Copyright 2017 Nikolas Laskaris.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
  */
 
 /**
  *
- * @author tourist
+ * @author Nikolas Laskaris
  */
 public class DistributionDialog extends javax.swing.JDialog {
     private Frame parentFrame;
     private int total;
     private int xLimit;
     private int yLimit;
-    private String role;
+    Person.personType pt;
+    private String title;
+    private String footnote;
     private ArrayList<Person> individuals;
-    private int clusterSize = 0;
+    private int clusterSize;
 
     /**
      * Creates new form VoterDistDialog
@@ -31,20 +51,25 @@ public class DistributionDialog extends javax.swing.JDialog {
         initComponents();
     }
     
-    public DistributionDialog(java.awt.Frame parent, boolean modal, int total, int xLimit, int yLimit, Person.personType pt) {
+    public DistributionDialog(java.awt.Frame parent, boolean modal, int total, int xLimit, int yLimit, Person.personType pt, String title, String footnote, boolean finalCluster) {
         super(parent, modal);
+        this.title = title;
+        this.footnote = footnote;
         initComponents();
-        parentFrame = parent;
         this.total = total;
+        parentFrame = parent;
         this.xLimit = xLimit;
         this.yLimit = yLimit;
-        if (pt == Person.personType.VOTER){
-            role = "Voters";
-        }
-        else if (pt == Person.personType.CANDIDATE){
-            role = "Candidates";
-        }
+        this.pt = pt;
         individuals = new ArrayList();
+        if (finalCluster){
+            squareClusterSizeTxt.setText(String.valueOf(total));
+            squareClusterSizeTxt.setEnabled(false);
+            clusterSize = total;
+        }
+        else{
+            clusterSize = 0;
+        }
     }
     
     public void setTotal(int total){
@@ -156,6 +181,7 @@ public class DistributionDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setAlwaysOnTop(true);
+        setLocation(new java.awt.Point(360, 20));
         setMaximumSize(new java.awt.Dimension(380, 700));
         setMinimumSize(new java.awt.Dimension(380, 700));
         setModal(true);
@@ -171,7 +197,7 @@ public class DistributionDialog extends javax.swing.JDialog {
 
         clusterTitle.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         clusterTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        clusterTitle.setText("Cluster 3/12");
+        clusterTitle.setText(title);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -212,7 +238,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         headClusterPanel.add(gaussianRadioBtn, gridBagConstraints);
 
-        remainingLabel.setText(role + " remaining: " + total);
+        remainingLabel.setText(footnote);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -340,6 +366,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterCenterXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         squareClusterCenterXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         squareClusterCenterXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        squareClusterCenterXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                squareClusterCenterXTxtFocusLost(evt);
+            }
+        });
         squareClusterCenterXTxt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 squareClusterCenterXTxtActionPerformed(evt);
@@ -363,6 +394,16 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterCenterYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         squareClusterCenterYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         squareClusterCenterYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        squareClusterCenterYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                squareClusterCenterYTxtFocusLost(evt);
+            }
+        });
+        squareClusterCenterYTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                squareClusterCenterYTxtActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -381,6 +422,16 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterWidthTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         squareClusterWidthTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         squareClusterWidthTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        squareClusterWidthTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                squareClusterWidthTxtFocusLost(evt);
+            }
+        });
+        squareClusterWidthTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                squareClusterWidthTxtActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -399,6 +450,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterHeightTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         squareClusterHeightTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         squareClusterHeightTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        squareClusterHeightTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                squareClusterHeightTxtActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -427,6 +483,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareSubmitPanel.add(squareCancelBtn, gridBagConstraints);
 
         squareSubmitBtn.setText("Submit");
+        squareSubmitBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                squareSubmitBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -693,8 +754,105 @@ public class DistributionDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_squareClusterSizeTxtFocusLost
 
     private void squareClusterCenterXTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareClusterCenterXTxtActionPerformed
-        // TODO add your handling code here:
+        try{
+            double x = Double.parseDouble(squareClusterCenterXTxt.getText());
+            if (x < -xLimit || x > xLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            squareClusterCenterXTxt.setText("0");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit +")");
+        }
     }//GEN-LAST:event_squareClusterCenterXTxtActionPerformed
+
+    private void squareClusterCenterXTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_squareClusterCenterXTxtFocusLost
+        try{
+            double x = Double.parseDouble(squareClusterCenterXTxt.getText());
+            if (x < -xLimit || x > xLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            squareClusterCenterXTxt.setText("0");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit +")");
+        }
+    }//GEN-LAST:event_squareClusterCenterXTxtFocusLost
+
+    private void squareClusterCenterYTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareClusterCenterYTxtActionPerformed
+        try{
+            double x = Double.parseDouble(squareClusterCenterYTxt.getText());
+            if (x < -yLimit || x > yLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            squareClusterCenterYTxt.setText("0");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit +")");
+        }
+    }//GEN-LAST:event_squareClusterCenterYTxtActionPerformed
+
+    private void squareClusterCenterYTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_squareClusterCenterYTxtFocusLost
+        try{
+            double x = Double.parseDouble(squareClusterCenterYTxt.getText());
+            if (x < -yLimit || x > yLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            squareClusterCenterYTxt.setText("0");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit +")");
+        }
+    }//GEN-LAST:event_squareClusterCenterYTxtFocusLost
+
+    private void squareClusterWidthTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareClusterWidthTxtActionPerformed
+        try{
+            double x = Double.parseDouble(squareClusterWidthTxt.getText());
+            if (x < 1 || x > 2*xLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            squareClusterWidthTxt.setText("1");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to " + 2*xLimit +")");
+        }
+    }//GEN-LAST:event_squareClusterWidthTxtActionPerformed
+
+    private void squareClusterWidthTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_squareClusterWidthTxtFocusLost
+        try{
+            double x = Double.parseDouble(squareClusterWidthTxt.getText());
+            if (x < 1 || x > 2*xLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            squareClusterWidthTxt.setText("1");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to " + 2*xLimit +")");
+        }
+    }//GEN-LAST:event_squareClusterWidthTxtFocusLost
+
+    private void squareClusterHeightTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareClusterHeightTxtActionPerformed
+        try{
+            double x = Double.parseDouble(squareClusterHeightTxt.getText());
+            if (x < 1 || x > 2*yLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            squareClusterHeightTxt.setText("1");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to " + 2*yLimit +")");
+        }
+    }//GEN-LAST:event_squareClusterHeightTxtActionPerformed
+
+    private void squareSubmitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareSubmitBtnActionPerformed
+        double xCenter = Double.parseDouble(squareClusterCenterXTxt.getText());
+        double yCenter = Double.parseDouble(squareClusterCenterYTxt.getText());
+        double width = Double.parseDouble(squareClusterWidthTxt.getText());
+        double height = Double.parseDouble(squareClusterHeightTxt.getText());
+        
+        individuals = Person.squareUniformDistribution(pt, clusterSize, xCenter, yCenter, width, height, xLimit, yLimit);
+        this.setVisible(false);
+    }//GEN-LAST:event_squareSubmitBtnActionPerformed
 
     /**
      * @param args the command line arguments
