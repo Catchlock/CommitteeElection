@@ -6,6 +6,35 @@ import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 
 
 /*
+ * The MIT License
+ *
+ * Copyright 2017 Nikolas Laskaris.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+/**
+ *
+ * @author Nikolas Laskaris
+ */
+
+/*
 Αφηρημένη υπερκλάση που συναθροίζει τα κοινά στοιχεία ψηφοφόρων και
 υποψήφιων.
 */
@@ -96,6 +125,65 @@ public abstract class Person {
             double x = rand.nextDouble()*width + xCenter - width/2;
             double z = rand.nextDouble();
             double y = z*height + yCenter - height/2;
+            if(x >= -xLimit && x <= xLimit && y >= -yLimit && y <= yLimit){
+                if (pt == personType.VOTER){
+                    people.add(new Voter(("v" + people.size()),x,y));
+                }
+                else if (pt == personType.CANDIDATE){
+                    people.add(new Candidate(("c" + people.size()),x,y));
+                }
+            }
+        }
+        return people;
+    }
+    
+    /*
+    Στατική μέθοδος δημιουργίας n ατόμων, ψηφοφόρων ή υποψήφιων ανάλογα με
+    την τιμή του πρώτου ορίσματος, με ομοιόμορφη κατανομή μέσα σε ένα
+    κυκλικό χώρο με κέντρο το σημείο (xCenter, yCenter), ακτίνα radius
+    και οριακές συντεταγμένες xLimit και yLimit.
+    */
+    public static ArrayList<Person> discUniformDistribution(personType pt,
+            int n, double xCenter, double yCenter, double radius, int xLimit, int yLimit){
+        
+        ArrayList<Person> people =  new ArrayList(n);
+        Random rand = new Random();
+        
+        for (int i = 0; i < n; i++){
+            double angle = rand.nextDouble()*2*Math.PI;
+            double r = rand.nextDouble()*radius;
+            double x = r*Math.cos(angle);
+            double y = r*Math.sin(angle);
+            if(x >= -xLimit && x <= xLimit && y >= -yLimit && y <= yLimit){
+                if (pt == personType.VOTER){
+                    people.add(new Voter(("v" + people.size()),x,y));
+                }
+                else if (pt == personType.CANDIDATE){
+                    people.add(new Candidate(("c" + people.size()),x,y));
+                }
+            }
+        }
+        return people;
+    }
+    
+    /*
+    Στατική μέθοδος δημιουργίας n ατόμων, ψηφοφόρων ή υποψήφιων ανάλογα με
+    την τιμή του πρώτου ορίσματος, με ομοιόμορφη κατανομή μέσα σε ένα
+    κυκλικό χώρο με κέντρο το σημείο (xCenter, yCenter), ακτίνα radius
+    και οριακές συντεταγμένες xLimit και yLimit.
+    */
+    public static ArrayList<Person> ringUniformDistribution(personType pt,
+            int n, double xCenter, double yCenter, double minRadius,
+            double maxRadius, int xLimit, int yLimit){
+        
+        ArrayList<Person> people =  new ArrayList(n);
+        Random rand = new Random();
+        
+        for (int i = 0; i < n; i++){
+            double angle = rand.nextDouble()*2*Math.PI;
+            double r = rand.nextDouble()*(maxRadius - minRadius) + minRadius;
+            double x = r*Math.cos(angle);
+            double y = r*Math.sin(angle);
             if(x >= -xLimit && x <= xLimit && y >= -yLimit && y <= yLimit){
                 if (pt == personType.VOTER){
                     people.add(new Voter(("v" + people.size()),x,y));
