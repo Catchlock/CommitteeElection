@@ -33,7 +33,6 @@ import javax.swing.JOptionPane;
  * @author Nikolas Laskaris
  */
 public class DistributionDialog extends javax.swing.JDialog {
-    private Frame parentFrame;
     private int total;
     private int xLimit;
     private int yLimit;
@@ -42,6 +41,7 @@ public class DistributionDialog extends javax.swing.JDialog {
     private String footnote;
     private ArrayList<Person> individuals;
     private int clusterSize;
+    private boolean cancelled = false;
 
     /**
      * Creates new form VoterDistDialog
@@ -57,7 +57,6 @@ public class DistributionDialog extends javax.swing.JDialog {
         this.footnote = footnote;
         initComponents();
         this.total = total;
-        parentFrame = parent;
         this.xLimit = xLimit;
         this.yLimit = yLimit;
         this.pt = pt;
@@ -65,11 +64,16 @@ public class DistributionDialog extends javax.swing.JDialog {
         if (finalCluster){
             squareClusterSizeTxt.setText(String.valueOf(total));
             squareClusterSizeTxt.setEnabled(false);
+            
+            gaussClusterSizeTxt.setText(String.valueOf(total));
+            gaussClusterSizeTxt.setEnabled(false);
+            
             clusterSize = total;
         }
         else{
             clusterSize = 0;
         }
+        this.getRootPane().setDefaultButton(submitBtn);
     }
     
     public void setTotal(int total){
@@ -110,6 +114,10 @@ public class DistributionDialog extends javax.swing.JDialog {
     
     public int getClusterSize(){
         return clusterSize;
+    }
+    
+    public boolean isCancelled(){
+        return cancelled;
     }
 
     /**
@@ -152,15 +160,34 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterHeightLabel = new javax.swing.JLabel();
         squareClusterHeightTxt = new javax.swing.JTextField();
         squareExampleImg = new javax.swing.JLabel();
-        squareSubmitPanel = new javax.swing.JPanel();
-        squareCancelBtn = new javax.swing.JButton();
-        squareSubmitBtn = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JSeparator();
         jSeparator4 = new javax.swing.JSeparator();
         discPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        discClusterSizeLabel = new javax.swing.JLabel();
+        discClusterSizeTxt = new javax.swing.JTextField();
+        discClusterCenterXLabel = new javax.swing.JLabel();
+        discClusterCenterXTxt = new javax.swing.JTextField();
+        discClusterCenterYLabel = new javax.swing.JLabel();
+        discClusterCenterYTxt = new javax.swing.JTextField();
+        discClusterRadiusLabel = new javax.swing.JLabel();
+        discClusterRadiusTxt = new javax.swing.JTextField();
+        discExampleImg = new javax.swing.JLabel();
+        jSeparator7 = new javax.swing.JSeparator();
+        jSeparator8 = new javax.swing.JSeparator();
         ringPanel = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        ringClusterSizeLabel = new javax.swing.JLabel();
+        ringClusterSizeTxt = new javax.swing.JTextField();
+        ringClusterCenterXLabel = new javax.swing.JLabel();
+        ringClusterCenterXTxt = new javax.swing.JTextField();
+        ringClusterCenterYLabel = new javax.swing.JLabel();
+        ringClusterCenterYTxt = new javax.swing.JTextField();
+        ringClusterMinRadiusLabel = new javax.swing.JLabel();
+        ringClusterMinRadiusTxt = new javax.swing.JTextField();
+        ringClusterMaxRadiusLabel = new javax.swing.JLabel();
+        ringClusterMaxRadiusTxt = new javax.swing.JTextField();
+        ringExampleImg = new javax.swing.JLabel();
+        jSeparator9 = new javax.swing.JSeparator();
+        jSeparator10 = new javax.swing.JSeparator();
         gaussianPanel = new javax.swing.JPanel();
         gaussClusterSizeLabel = new javax.swing.JLabel();
         gaussClusterSizeTxt = new javax.swing.JTextField();
@@ -175,11 +202,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         jSeparator5 = new javax.swing.JSeparator();
         gaussExampleImg = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
-        squareSubmitPanel1 = new javax.swing.JPanel();
-        squareCancelBtn1 = new javax.swing.JButton();
-        squareSubmitBtn1 = new javax.swing.JButton();
+        buttonPanel = new javax.swing.JPanel();
+        submitBtn = new javax.swing.JButton();
+        cancelBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setAlwaysOnTop(true);
         setLocation(new java.awt.Point(360, 20));
         setMaximumSize(new java.awt.Dimension(380, 700));
@@ -187,6 +214,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         setModal(true);
         setPreferredSize(new java.awt.Dimension(380, 700));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.BorderLayout(5, 5));
 
         headClusterPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -323,7 +355,7 @@ public class DistributionDialog extends javax.swing.JDialog {
 
         java.awt.GridBagLayout squarePanelLayout = new java.awt.GridBagLayout();
         squarePanelLayout.columnWidths = new int[] {30, 190, 130, 30};
-        squarePanelLayout.rowHeights = new int[] {5, 30, 30, 30, 30, 30, 10, 195, 5, 60};
+        squarePanelLayout.rowHeights = new int[] {5, 30, 30, 30, 30, 30, 10, 195, 5};
         squarePanel.setLayout(squarePanelLayout);
 
         squareClusterSizeLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -469,37 +501,6 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         squarePanel.add(squareExampleImg, gridBagConstraints);
-
-        java.awt.GridBagLayout squareSubmitPanelLayout = new java.awt.GridBagLayout();
-        squareSubmitPanelLayout.columnWidths = new int[] {120, 100, 100};
-        squareSubmitPanelLayout.rowHeights = new int[] {5, 40};
-        squareSubmitPanel.setLayout(squareSubmitPanelLayout);
-
-        squareCancelBtn.setText("Cancel");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        squareSubmitPanel.add(squareCancelBtn, gridBagConstraints);
-
-        squareSubmitBtn.setText("Submit");
-        squareSubmitBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                squareSubmitBtnActionPerformed(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        squareSubmitPanel.add(squareSubmitBtn, gridBagConstraints);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        squarePanel.add(squareSubmitPanel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 7;
@@ -515,45 +516,305 @@ public class DistributionDialog extends javax.swing.JDialog {
 
         bodyUniformPanel.add(squarePanel, "squarePanel");
 
-        jLabel1.setText("Disc Options Placeholder");
-
-        javax.swing.GroupLayout discPanelLayout = new javax.swing.GroupLayout(discPanel);
+        java.awt.GridBagLayout discPanelLayout = new java.awt.GridBagLayout();
+        discPanelLayout.columnWidths = new int[] {30, 190, 130, 30};
+        discPanelLayout.rowHeights = new int[] {5, 30, 30, 30, 30, 30, 10, 195, 5};
         discPanel.setLayout(discPanelLayout);
-        discPanelLayout.setHorizontalGroup(
-            discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(discPanelLayout.createSequentialGroup()
-                .addGap(144, 144, 144)
-                .addComponent(jLabel1)
-                .addContainerGap(162, Short.MAX_VALUE))
-        );
-        discPanelLayout.setVerticalGroup(
-            discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(discPanelLayout.createSequentialGroup()
-                .addGap(175, 175, 175)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(251, Short.MAX_VALUE))
-        );
+
+        discClusterSizeLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        discClusterSizeLabel.setText("Cluster Size (population): ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        discPanel.add(discClusterSizeLabel, gridBagConstraints);
+
+        discClusterSizeTxt.setText("0");
+        discClusterSizeTxt.setMaximumSize(new java.awt.Dimension(50, 24));
+        discClusterSizeTxt.setMinimumSize(new java.awt.Dimension(50, 24));
+        discClusterSizeTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        discClusterSizeTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                discClusterSizeTxtFocusLost(evt);
+            }
+        });
+        discClusterSizeTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                discClusterSizeTxtActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        discPanel.add(discClusterSizeTxt, gridBagConstraints);
+
+        discClusterCenterXLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        discClusterCenterXLabel.setText("Cluster xCenter: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        discPanel.add(discClusterCenterXLabel, gridBagConstraints);
+
+        discClusterCenterXTxt.setText("0");
+        discClusterCenterXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
+        discClusterCenterXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
+        discClusterCenterXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        discClusterCenterXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                discClusterCenterXTxtFocusLost(evt);
+            }
+        });
+        discClusterCenterXTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                discClusterCenterXTxtActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        discPanel.add(discClusterCenterXTxt, gridBagConstraints);
+
+        discClusterCenterYLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        discClusterCenterYLabel.setText("Cluster yCenter: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        discPanel.add(discClusterCenterYLabel, gridBagConstraints);
+
+        discClusterCenterYTxt.setText("0");
+        discClusterCenterYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
+        discClusterCenterYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
+        discClusterCenterYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        discClusterCenterYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                discClusterCenterYTxtFocusLost(evt);
+            }
+        });
+        discClusterCenterYTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                discClusterCenterYTxtActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        discPanel.add(discClusterCenterYTxt, gridBagConstraints);
+
+        discClusterRadiusLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        discClusterRadiusLabel.setText("Cluster Radius: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        discPanel.add(discClusterRadiusLabel, gridBagConstraints);
+
+        discClusterRadiusTxt.setText("1");
+        discClusterRadiusTxt.setMaximumSize(new java.awt.Dimension(50, 24));
+        discClusterRadiusTxt.setMinimumSize(new java.awt.Dimension(50, 24));
+        discClusterRadiusTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        discClusterRadiusTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                discClusterRadiusTxtFocusLost(evt);
+            }
+        });
+        discClusterRadiusTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                discClusterRadiusTxtActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        discPanel.add(discClusterRadiusTxt, gridBagConstraints);
+
+        discExampleImg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        discPanel.add(discExampleImg, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        discPanel.add(jSeparator7, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        discPanel.add(jSeparator8, gridBagConstraints);
 
         bodyUniformPanel.add(discPanel, "discPanel");
 
-        jLabel2.setText("Ring Options Placeholder");
-
-        javax.swing.GroupLayout ringPanelLayout = new javax.swing.GroupLayout(ringPanel);
+        java.awt.GridBagLayout ringPanelLayout = new java.awt.GridBagLayout();
+        ringPanelLayout.columnWidths = new int[] {30, 190, 130, 30};
+        ringPanelLayout.rowHeights = new int[] {5, 30, 30, 30, 30, 30, 10, 195, 5};
         ringPanel.setLayout(ringPanelLayout);
-        ringPanelLayout.setHorizontalGroup(
-            ringPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ringPanelLayout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(137, Short.MAX_VALUE))
-        );
-        ringPanelLayout.setVerticalGroup(
-            ringPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ringPanelLayout.createSequentialGroup()
-                .addGap(168, 168, 168)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(261, Short.MAX_VALUE))
-        );
+
+        ringClusterSizeLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        ringClusterSizeLabel.setText("Cluster Size (population): ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        ringPanel.add(ringClusterSizeLabel, gridBagConstraints);
+
+        ringClusterSizeTxt.setText("0");
+        ringClusterSizeTxt.setMaximumSize(new java.awt.Dimension(50, 24));
+        ringClusterSizeTxt.setMinimumSize(new java.awt.Dimension(50, 24));
+        ringClusterSizeTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterSizeTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ringClusterSizeTxtFocusLost(evt);
+            }
+        });
+        ringClusterSizeTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ringClusterSizeTxtActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        ringPanel.add(ringClusterSizeTxt, gridBagConstraints);
+
+        ringClusterCenterXLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        ringClusterCenterXLabel.setText("Cluster xCenter: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        ringPanel.add(ringClusterCenterXLabel, gridBagConstraints);
+
+        ringClusterCenterXTxt.setText("0");
+        ringClusterCenterXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
+        ringClusterCenterXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
+        ringClusterCenterXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterCenterXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ringClusterCenterXTxtFocusLost(evt);
+            }
+        });
+        ringClusterCenterXTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ringClusterCenterXTxtActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        ringPanel.add(ringClusterCenterXTxt, gridBagConstraints);
+
+        ringClusterCenterYLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        ringClusterCenterYLabel.setText("Cluster yCenter: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        ringPanel.add(ringClusterCenterYLabel, gridBagConstraints);
+
+        ringClusterCenterYTxt.setText("0");
+        ringClusterCenterYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
+        ringClusterCenterYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
+        ringClusterCenterYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterCenterYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ringClusterCenterYTxtFocusLost(evt);
+            }
+        });
+        ringClusterCenterYTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ringClusterCenterYTxtActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        ringPanel.add(ringClusterCenterYTxt, gridBagConstraints);
+
+        ringClusterMinRadiusLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        ringClusterMinRadiusLabel.setText("Cluster Min Radius: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        ringPanel.add(ringClusterMinRadiusLabel, gridBagConstraints);
+
+        ringClusterMinRadiusTxt.setText("1");
+        ringClusterMinRadiusTxt.setMaximumSize(new java.awt.Dimension(50, 24));
+        ringClusterMinRadiusTxt.setMinimumSize(new java.awt.Dimension(50, 24));
+        ringClusterMinRadiusTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterMinRadiusTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                ringClusterMinRadiusTxtFocusLost(evt);
+            }
+        });
+        ringClusterMinRadiusTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ringClusterMinRadiusTxtActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        ringPanel.add(ringClusterMinRadiusTxt, gridBagConstraints);
+
+        ringClusterMaxRadiusLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        ringClusterMaxRadiusLabel.setText("Cluster Max Radius: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        ringPanel.add(ringClusterMaxRadiusLabel, gridBagConstraints);
+
+        ringClusterMaxRadiusTxt.setText("1");
+        ringClusterMaxRadiusTxt.setMaximumSize(new java.awt.Dimension(50, 24));
+        ringClusterMaxRadiusTxt.setMinimumSize(new java.awt.Dimension(50, 24));
+        ringClusterMaxRadiusTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterMaxRadiusTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ringClusterMaxRadiusTxtActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        ringPanel.add(ringClusterMaxRadiusTxt, gridBagConstraints);
+
+        ringExampleImg.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ringExampleImg.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/uniformSquare.PNG"))); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        ringPanel.add(ringExampleImg, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        ringPanel.add(jSeparator9, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        ringPanel.add(jSeparator10, gridBagConstraints);
 
         bodyUniformPanel.add(ringPanel, "ringPanel");
 
@@ -563,7 +824,7 @@ public class DistributionDialog extends javax.swing.JDialog {
 
         java.awt.GridBagLayout gaussianPanelLayout = new java.awt.GridBagLayout();
         gaussianPanelLayout.columnWidths = new int[] {30, 190, 130, 30};
-        gaussianPanelLayout.rowHeights = new int[] {35, 30, 30, 30, 30, 30, 40, 195, 5, 60};
+        gaussianPanelLayout.rowHeights = new int[] {35, 30, 30, 30, 30, 30, 40, 195, 5, 40};
         gaussianPanel.setLayout(gaussianPanelLayout);
 
         gaussClusterSizeLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -574,9 +835,20 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gaussianPanel.add(gaussClusterSizeLabel, gridBagConstraints);
 
+        gaussClusterSizeTxt.setText("0");
         gaussClusterSizeTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterSizeTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterSizeTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterSizeTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                gaussClusterSizeTxtFocusLost(evt);
+            }
+        });
+        gaussClusterSizeTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gaussClusterSizeTxtActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -591,9 +863,20 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gaussianPanel.add(gaussClusterMeanXLabel, gridBagConstraints);
 
+        gaussClusterMeanXTxt.setText("0");
         gaussClusterMeanXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterMeanXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                gaussClusterMeanXTxtFocusLost(evt);
+            }
+        });
+        gaussClusterMeanXTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gaussClusterMeanXTxtActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -608,9 +891,20 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gaussianPanel.add(gaussClusterMeanYLabel, gridBagConstraints);
 
+        gaussClusterMeanYTxt.setText("0");
         gaussClusterMeanYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterMeanYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                gaussClusterMeanYTxtFocusLost(evt);
+            }
+        });
+        gaussClusterMeanYTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gaussClusterMeanYTxtActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -625,9 +919,20 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gaussianPanel.add(gaussClusterStdDevXLabel, gridBagConstraints);
 
+        gaussClusterStdDevXTxt.setText("1");
         gaussClusterStdDevXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterStdDevXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                gaussClusterStdDevXTxtFocusLost(evt);
+            }
+        });
+        gaussClusterStdDevXTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gaussClusterStdDevXTxtActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -642,9 +947,20 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gaussianPanel.add(gaussClusterStdDevYLabel, gridBagConstraints);
 
+        gaussClusterStdDevYTxt.setText("1");
         gaussClusterStdDevYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterStdDevYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                gaussClusterStdDevYTxtFocusLost(evt);
+            }
+        });
+        gaussClusterStdDevYTxt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gaussClusterStdDevYTxtActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -672,35 +988,41 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gaussianPanel.add(jSeparator6, gridBagConstraints);
 
-        java.awt.GridBagLayout squareSubmitPanel1Layout = new java.awt.GridBagLayout();
-        squareSubmitPanel1Layout.columnWidths = new int[] {120, 100, 100};
-        squareSubmitPanel1Layout.rowHeights = new int[] {5, 40};
-        squareSubmitPanel1.setLayout(squareSubmitPanel1Layout);
+        bodyClusterPanel.add(gaussianPanel, "gaussianCard");
 
-        squareCancelBtn1.setText("Cancel");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        squareSubmitPanel1.add(squareCancelBtn1, gridBagConstraints);
+        getContentPane().add(bodyClusterPanel, java.awt.BorderLayout.CENTER);
 
-        squareSubmitBtn1.setText("Submit");
+        buttonPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        java.awt.GridBagLayout buttonPanelLayout = new java.awt.GridBagLayout();
+        buttonPanelLayout.columnWidths = new int[] {120, 100, 100};
+        buttonPanelLayout.rowHeights = new int[] {20, 40, 15};
+        buttonPanel.setLayout(buttonPanelLayout);
+
+        submitBtn.setText("Submit");
+        submitBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                submitBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        squareSubmitPanel1.add(squareSubmitBtn1, gridBagConstraints);
+        buttonPanel.add(submitBtn, gridBagConstraints);
 
+        cancelBtn.setText("Cancel");
+        cancelBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gaussianPanel.add(squareSubmitPanel1, gridBagConstraints);
+        buttonPanel.add(cancelBtn, gridBagConstraints);
 
-        bodyClusterPanel.add(gaussianPanel, "gaussianCard");
-
-        getContentPane().add(bodyClusterPanel, java.awt.BorderLayout.CENTER);
+        getContentPane().add(buttonPanel, java.awt.BorderLayout.PAGE_END);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -727,29 +1049,29 @@ public class DistributionDialog extends javax.swing.JDialog {
 
     private void squareClusterSizeTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareClusterSizeTxtActionPerformed
         try{
-            clusterSize = Integer.parseInt(squareClusterSizeTxt.getText());
-            if (clusterSize < 0 || clusterSize > total){
+            int x = Integer.parseInt(squareClusterSizeTxt.getText());
+            if (x < 0 || x > total){
                 throw (new Exception());
             }
+            clusterSize = x;
         }
         catch(Exception e){
-            squareClusterSizeTxt.setText("0");
-            clusterSize = 0;
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + total +")");
+            squareClusterSizeTxt.setText(String.valueOf(clusterSize));
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + total + ")");
         }
     }//GEN-LAST:event_squareClusterSizeTxtActionPerformed
 
     private void squareClusterSizeTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_squareClusterSizeTxtFocusLost
         try{
-            clusterSize = Integer.parseInt(squareClusterSizeTxt.getText());
-            if (clusterSize < 0 || clusterSize > total){
+            int x = Integer.parseInt(squareClusterSizeTxt.getText());
+            if (x < 0 || x > total){
                 throw (new Exception());
             }
+            clusterSize = x;
         }
         catch(Exception e){
-            squareClusterSizeTxt.setText("0");
-            clusterSize = 0;
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + total +")");
+            squareClusterSizeTxt.setText(String.valueOf(clusterSize));
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + total + ")");
         }
     }//GEN-LAST:event_squareClusterSizeTxtFocusLost
 
@@ -762,7 +1084,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         }
         catch(Exception e){
             squareClusterCenterXTxt.setText("0");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit +")");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit + ")");
         }
     }//GEN-LAST:event_squareClusterCenterXTxtActionPerformed
 
@@ -775,7 +1097,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         }
         catch(Exception e){
             squareClusterCenterXTxt.setText("0");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit +")");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit + ")");
         }
     }//GEN-LAST:event_squareClusterCenterXTxtFocusLost
 
@@ -788,7 +1110,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         }
         catch(Exception e){
             squareClusterCenterYTxt.setText("0");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit +")");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit + ")");
         }
     }//GEN-LAST:event_squareClusterCenterYTxtActionPerformed
 
@@ -801,7 +1123,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         }
         catch(Exception e){
             squareClusterCenterYTxt.setText("0");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit +")");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit + ")");
         }
     }//GEN-LAST:event_squareClusterCenterYTxtFocusLost
 
@@ -814,7 +1136,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         }
         catch(Exception e){
             squareClusterWidthTxt.setText("1");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to " + 2*xLimit +")");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to " + 2*xLimit + ")");
         }
     }//GEN-LAST:event_squareClusterWidthTxtActionPerformed
 
@@ -827,7 +1149,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         }
         catch(Exception e){
             squareClusterWidthTxt.setText("1");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to " + 2*xLimit +")");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to " + 2*xLimit + ")");
         }
     }//GEN-LAST:event_squareClusterWidthTxtFocusLost
 
@@ -840,19 +1162,249 @@ public class DistributionDialog extends javax.swing.JDialog {
         }
         catch(Exception e){
             squareClusterHeightTxt.setText("1");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to " + 2*yLimit +")");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to " + 2*yLimit + ")");
         }
     }//GEN-LAST:event_squareClusterHeightTxtActionPerformed
 
-    private void squareSubmitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareSubmitBtnActionPerformed
-        double xCenter = Double.parseDouble(squareClusterCenterXTxt.getText());
-        double yCenter = Double.parseDouble(squareClusterCenterYTxt.getText());
-        double width = Double.parseDouble(squareClusterWidthTxt.getText());
-        double height = Double.parseDouble(squareClusterHeightTxt.getText());
-        
-        individuals = Person.squareUniformDistribution(pt, clusterSize, xCenter, yCenter, width, height, xLimit, yLimit);
-        this.setVisible(false);
-    }//GEN-LAST:event_squareSubmitBtnActionPerformed
+    private void gaussClusterSizeTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterSizeTxtActionPerformed
+        try{
+            int x = Integer.parseInt(gaussClusterSizeTxt.getText());
+            if (x < 0 || x > total){
+                throw (new Exception());
+            }
+            clusterSize = x;
+        }
+        catch(Exception e){
+            gaussClusterSizeTxt.setText(String.valueOf(clusterSize));
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + total + ")");
+        }
+    }//GEN-LAST:event_gaussClusterSizeTxtActionPerformed
+
+    private void gaussClusterSizeTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterSizeTxtFocusLost
+        try{
+            int x = Integer.parseInt(gaussClusterSizeTxt.getText());
+            if (x < 0 || x > total){
+                throw (new Exception());
+            }
+            clusterSize = x;
+        }
+        catch(Exception e){
+            gaussClusterSizeTxt.setText(String.valueOf(clusterSize));
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + total + ")");
+        }
+    }//GEN-LAST:event_gaussClusterSizeTxtFocusLost
+
+    private void gaussClusterMeanXTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterMeanXTxtActionPerformed
+        try{
+            double x = Double.parseDouble(gaussClusterMeanXTxt.getText());
+            if (x < -xLimit || x > xLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            gaussClusterMeanXTxt.setText("0");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit + ")");
+        }
+    }//GEN-LAST:event_gaussClusterMeanXTxtActionPerformed
+
+    private void gaussClusterMeanXTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterMeanXTxtFocusLost
+        try{
+            double x = Double.parseDouble(gaussClusterMeanXTxt.getText());
+            if (x < -xLimit || x > xLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            gaussClusterMeanXTxt.setText("0");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit + ")");
+        }
+    }//GEN-LAST:event_gaussClusterMeanXTxtFocusLost
+
+    private void gaussClusterMeanYTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterMeanYTxtActionPerformed
+        try{
+            double x = Double.parseDouble(gaussClusterMeanYTxt.getText());
+            if (x < -yLimit || x > yLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            gaussClusterMeanYTxt.setText("0");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit + ")");
+        }
+    }//GEN-LAST:event_gaussClusterMeanYTxtActionPerformed
+
+    private void gaussClusterMeanYTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterMeanYTxtFocusLost
+        try{
+            double x = Double.parseDouble(gaussClusterMeanYTxt.getText());
+            if (x < -yLimit || x > yLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            gaussClusterMeanYTxt.setText("0");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit + ")");
+        }
+    }//GEN-LAST:event_gaussClusterMeanYTxtFocusLost
+
+    private void gaussClusterStdDevXTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterStdDevXTxtActionPerformed
+        try{
+            double x = Double.parseDouble(gaussClusterStdDevXTxt.getText());
+            if (x <= 0 || x > xLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            gaussClusterStdDevXTxt.setText("1");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + xLimit + ")");
+        }
+    }//GEN-LAST:event_gaussClusterStdDevXTxtActionPerformed
+
+    private void gaussClusterStdDevXTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterStdDevXTxtFocusLost
+        try{
+            double x = Double.parseDouble(gaussClusterStdDevXTxt.getText());
+            if (x <= 0 || x > xLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            gaussClusterStdDevXTxt.setText("1");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + xLimit + ")");
+        }
+    }//GEN-LAST:event_gaussClusterStdDevXTxtFocusLost
+
+    private void gaussClusterStdDevYTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterStdDevYTxtActionPerformed
+        try{
+            double x = Double.parseDouble(gaussClusterStdDevYTxt.getText());
+            if (x <= 0 || x > yLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            gaussClusterStdDevYTxt.setText("1");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + yLimit + ")");
+        }
+    }//GEN-LAST:event_gaussClusterStdDevYTxtActionPerformed
+
+    private void gaussClusterStdDevYTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterStdDevYTxtFocusLost
+        try{
+            double x = Double.parseDouble(gaussClusterStdDevYTxt.getText());
+            if (x <= 0 || x > yLimit){
+                throw (new Exception());
+            }
+        }
+        catch(Exception e){
+            gaussClusterStdDevYTxt.setText("1");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + yLimit + ")");
+        }
+    }//GEN-LAST:event_gaussClusterStdDevYTxtFocusLost
+
+    private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
+        if (uniformRadioBtn.isSelected()){
+            if (squareRadioBtn.isSelected()){
+                double xCenter = Double.parseDouble(squareClusterCenterXTxt.getText());
+                double yCenter = Double.parseDouble(squareClusterCenterYTxt.getText());
+                double width = Double.parseDouble(squareClusterWidthTxt.getText());
+                double height = Double.parseDouble(squareClusterHeightTxt.getText());
+
+                individuals = Person.squareUniformDistribution(pt, clusterSize, xCenter, yCenter, width, height, xLimit, yLimit);
+                this.setVisible(false);
+            }
+            
+        }
+        else if (gaussianRadioBtn.isSelected()){
+            double xMean = Double.parseDouble(gaussClusterMeanXTxt.getText());
+            double yMean = Double.parseDouble(gaussClusterMeanYTxt.getText());
+            double xStdDev = Double.parseDouble(gaussClusterStdDevXTxt.getText());
+            double yStdDev = Double.parseDouble(gaussClusterStdDevYTxt.getText());
+
+            individuals = Person.gaussianDistribution(pt, clusterSize, xMean, yMean, xLimit, yLimit, xStdDev, yStdDev);
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_submitBtnActionPerformed
+
+    private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?\nAll progress towards creating this election will be lost!", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.YES_OPTION) {
+            cancelled = true;
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_cancelBtnActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?\nAll progress towards creating this election will be lost!", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.YES_OPTION) {
+            cancelled = true;
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    private void discClusterSizeTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_discClusterSizeTxtFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discClusterSizeTxtFocusLost
+
+    private void discClusterSizeTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discClusterSizeTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discClusterSizeTxtActionPerformed
+
+    private void discClusterCenterXTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_discClusterCenterXTxtFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discClusterCenterXTxtFocusLost
+
+    private void discClusterCenterXTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discClusterCenterXTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discClusterCenterXTxtActionPerformed
+
+    private void discClusterCenterYTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_discClusterCenterYTxtFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discClusterCenterYTxtFocusLost
+
+    private void discClusterCenterYTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discClusterCenterYTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discClusterCenterYTxtActionPerformed
+
+    private void discClusterRadiusTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_discClusterRadiusTxtFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discClusterRadiusTxtFocusLost
+
+    private void discClusterRadiusTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discClusterRadiusTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_discClusterRadiusTxtActionPerformed
+
+    private void ringClusterSizeTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ringClusterSizeTxtFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ringClusterSizeTxtFocusLost
+
+    private void ringClusterSizeTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ringClusterSizeTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ringClusterSizeTxtActionPerformed
+
+    private void ringClusterCenterXTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ringClusterCenterXTxtFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ringClusterCenterXTxtFocusLost
+
+    private void ringClusterCenterXTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ringClusterCenterXTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ringClusterCenterXTxtActionPerformed
+
+    private void ringClusterCenterYTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ringClusterCenterYTxtFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ringClusterCenterYTxtFocusLost
+
+    private void ringClusterCenterYTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ringClusterCenterYTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ringClusterCenterYTxtActionPerformed
+
+    private void ringClusterMinRadiusTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ringClusterMinRadiusTxtFocusLost
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ringClusterMinRadiusTxtFocusLost
+
+    private void ringClusterMinRadiusTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ringClusterMinRadiusTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ringClusterMinRadiusTxtActionPerformed
+
+    private void ringClusterMaxRadiusTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ringClusterMaxRadiusTxtActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ringClusterMaxRadiusTxtActionPerformed
 
     /**
      * @param args the command line arguments
@@ -901,8 +1453,19 @@ public class DistributionDialog extends javax.swing.JDialog {
     private javax.swing.JRadioButton RingRadioBtn;
     private javax.swing.JPanel bodyClusterPanel;
     private javax.swing.JPanel bodyUniformPanel;
+    private javax.swing.JPanel buttonPanel;
+    private javax.swing.JButton cancelBtn;
     private javax.swing.JLabel clusterTitle;
     private javax.swing.JLabel clusterTypeLabel;
+    private javax.swing.JLabel discClusterCenterXLabel;
+    private javax.swing.JTextField discClusterCenterXTxt;
+    private javax.swing.JLabel discClusterCenterYLabel;
+    private javax.swing.JTextField discClusterCenterYTxt;
+    private javax.swing.JLabel discClusterRadiusLabel;
+    private javax.swing.JTextField discClusterRadiusTxt;
+    private javax.swing.JLabel discClusterSizeLabel;
+    private javax.swing.JTextField discClusterSizeTxt;
+    private javax.swing.JLabel discExampleImg;
     private javax.swing.JPanel discPanel;
     private javax.swing.ButtonGroup distributionType;
     private javax.swing.JLabel gaussClusterMeanXLabel;
@@ -920,18 +1483,29 @@ public class DistributionDialog extends javax.swing.JDialog {
     private javax.swing.JRadioButton gaussianRadioBtn;
     private javax.swing.JPanel headClusterPanel;
     private javax.swing.JPanel headUniformPanel;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JSeparator jSeparator9;
     private javax.swing.JLabel remainingLabel;
+    private javax.swing.JLabel ringClusterCenterXLabel;
+    private javax.swing.JTextField ringClusterCenterXTxt;
+    private javax.swing.JLabel ringClusterCenterYLabel;
+    private javax.swing.JTextField ringClusterCenterYTxt;
+    private javax.swing.JLabel ringClusterMaxRadiusLabel;
+    private javax.swing.JTextField ringClusterMaxRadiusTxt;
+    private javax.swing.JLabel ringClusterMinRadiusLabel;
+    private javax.swing.JTextField ringClusterMinRadiusTxt;
+    private javax.swing.JLabel ringClusterSizeLabel;
+    private javax.swing.JTextField ringClusterSizeTxt;
+    private javax.swing.JLabel ringExampleImg;
     private javax.swing.JPanel ringPanel;
-    private javax.swing.JButton squareCancelBtn;
-    private javax.swing.JButton squareCancelBtn1;
     private javax.swing.JLabel squareClusterCenterXLabel;
     private javax.swing.JTextField squareClusterCenterXTxt;
     private javax.swing.JLabel squareClusterCenterYLabel;
@@ -945,10 +1519,7 @@ public class DistributionDialog extends javax.swing.JDialog {
     private javax.swing.JLabel squareExampleImg;
     private javax.swing.JPanel squarePanel;
     private javax.swing.JRadioButton squareRadioBtn;
-    private javax.swing.JButton squareSubmitBtn;
-    private javax.swing.JButton squareSubmitBtn1;
-    private javax.swing.JPanel squareSubmitPanel;
-    private javax.swing.JPanel squareSubmitPanel1;
+    private javax.swing.JButton submitBtn;
     private javax.swing.JPanel uniformPanel;
     private javax.swing.JRadioButton uniformRadioBtn;
     private javax.swing.ButtonGroup uniformShape;

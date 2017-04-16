@@ -39,7 +39,7 @@ import org.jfree.data.xy.XYSeriesCollection;
  */
 public class ElectionGUI2 extends javax.swing.JFrame {
 
-    private Election election;
+    private Election newElection;
     private int n = 300;
     private int m = 100;
     private int nClusters = 1;
@@ -55,12 +55,12 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void setElection (Election election){
-        this.election = election;
+    public void setNewElection (Election newElection){
+        this.newElection = newElection;
     }
     
-    public Election getElection (){
-        return election;
+    public Election getNewElection (){
+        return newElection;
     }
     
     public void setN(int n){
@@ -682,6 +682,10 @@ public class ElectionGUI2 extends javax.swing.JFrame {
                 throw (new Exception());
             }
             m = x;
+            if (m < k){
+                k = m;
+                kTxtField.setText(String.valueOf(k));
+            }
         }
         catch(Exception e){
             mTxtField.setText(String.valueOf(m));
@@ -696,6 +700,10 @@ public class ElectionGUI2 extends javax.swing.JFrame {
                 throw (new Exception());
             }
             m = x;
+            if (m < k){
+                k = m;
+                kTxtField.setText(String.valueOf(k));
+            }
         }
         catch(Exception e){
             mTxtField.setText(String.valueOf(m));
@@ -706,28 +714,28 @@ public class ElectionGUI2 extends javax.swing.JFrame {
     private void kTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kTxtFieldActionPerformed
         try{
             int x = Integer.parseInt(kTxtField.getText());
-            if (x < 1 || x > 100){
+            if (x < 1 || x > 100 || x > m){
                 throw (new Exception());
             }
             k = x;
         }
         catch(Exception e){
             kTxtField.setText(String.valueOf(k));
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 100)");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to min{|candidates|,100})");
         }
     }//GEN-LAST:event_kTxtFieldActionPerformed
 
     private void kTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_kTxtFieldFocusLost
         try{
             int x = Integer.parseInt(kTxtField.getText());
-            if (x < 1 || x > 100){
+            if (x < 1 || x > 100 || x > m){
                 throw (new Exception());
             }
             k = x;
         }
         catch(Exception e){
             kTxtField.setText(String.valueOf(k));
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 100)");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to min{|candidates|,100})");
         }
     }//GEN-LAST:event_kTxtFieldFocusLost
 
@@ -790,106 +798,130 @@ public class ElectionGUI2 extends javax.swing.JFrame {
     private void xLimitTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xLimitTxtFieldActionPerformed
         try{
             int x = Integer.parseInt(xLimitTxtField.getText());
-            if (x < 1 || x > 30){
+            if (x < 1 || x > 100){
                 throw (new Exception());
             }
             xLimit = x;
         }
         catch(Exception e){
             xLimitTxtField.setText(String.valueOf(xLimit));
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 30)");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 100)");
         }
     }//GEN-LAST:event_xLimitTxtFieldActionPerformed
 
     private void xLimitTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_xLimitTxtFieldFocusLost
         try{
             int x = Integer.parseInt(xLimitTxtField.getText());
-            if (x < 1 || x > 30){
+            if (x < 1 || x > 100){
                 throw (new Exception());
             }
             xLimit = x;
         }
         catch(Exception e){
             xLimitTxtField.setText(String.valueOf(xLimit));
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 30)");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 100)");
         }
     }//GEN-LAST:event_xLimitTxtFieldFocusLost
 
     private void yLimitTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yLimitTxtFieldActionPerformed
         try{
             int x = Integer.parseInt(yLimitTxtField.getText());
-            if (x < 1 || x > 30){
+            if (x < 1 || x > 100){
                 throw (new Exception());
             }
             yLimit = x;
         }
         catch(Exception e){
             yLimitTxtField.setText(String.valueOf(yLimit));
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 30)");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 100)");
         }
     }//GEN-LAST:event_yLimitTxtFieldActionPerformed
 
     private void yLimitTxtFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_yLimitTxtFieldFocusLost
         try{
             int x = Integer.parseInt(yLimitTxtField.getText());
-            if (x < 1 || x > 30){
+            if (x < 1 || x > 100){
                 throw (new Exception());
             }
             yLimit = x;
         }
         catch(Exception e){
             yLimitTxtField.setText(String.valueOf(yLimit));
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 30)");
+            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 1 to 100)");
         }
     }//GEN-LAST:event_yLimitTxtFieldFocusLost
 
     private void createElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createElectionBtnActionPerformed
-        ArrayList<Voter> voters = new ArrayList();
-        ArrayList<Candidate> candidates = new ArrayList();
-        
-        int tempN = n;
-        int tempM = m;
-        boolean finalCluster = false;
-        
-        for(int i = 0; i < nClusters; i++){
-            String title = "Voter Cluster " + (i+1) + "/" + nClusters;
-            String footnote = "Voters remaining: " + tempN;
-            if (i+1 == nClusters){
-                finalCluster = true;
+        boolean discard = true;
+        if(newElection != null){
+            int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to create a new election?\n"
+                    + "Press No to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (response == JOptionPane.NO_OPTION) {
+                discard = false;
             }
-            DistributionDialog dd = new DistributionDialog(this, true, tempN, xLimit, yLimit, Person.personType.VOTER, title, footnote, finalCluster);
-            dd.setVisible(true);
-            tempN = tempN - dd.getClusterSize();
-            voters.addAll((ArrayList<Voter>)(ArrayList<?>)dd.getIndividuals());
-        }  
+        }
         
-        finalCluster = false;
-        
-        for(int i = 0; i < mClusters; i++){
-            String title = "Candidate Cluster " + (i+1) + "/" + mClusters;
-            String footnote = "Candidates remaining: " + tempM;
-            if (i+1 == mClusters){
-                finalCluster = true;
+        if (discard){
+            ArrayList<Voter> voters = new ArrayList();
+            ArrayList<Candidate> candidates = new ArrayList();
+
+            int tempN = n;
+            int tempM = m;
+
+            boolean finalCluster = false;
+            boolean cancelled = false;
+
+            for(int i = 0; i < nClusters; i++){
+                String title = "Voter Cluster " + (i+1) + "/" + nClusters;
+                String footnote = "Voters remaining: " + tempN;
+                if (i+1 == nClusters){
+                    finalCluster = true;
+                }
+                DistributionDialog dd = new DistributionDialog(this, true, tempN, xLimit, yLimit, Person.personType.VOTER, title, footnote, finalCluster);
+                dd.setVisible(true);
+                if (dd.isCancelled()){
+                    cancelled = true;
+                    break;
+                }
+                tempN = tempN - dd.getClusterSize();
+                voters.addAll((ArrayList<Voter>)(ArrayList<?>)dd.getIndividuals());
+            }  
+
+            finalCluster = false;
+            if (!cancelled){
+                for(int i = 0; i < mClusters; i++){
+                    String title = "Candidate Cluster " + (i+1) + "/" + mClusters;
+                    String footnote = "Candidates remaining: " + tempM;
+                    if (i+1 == mClusters){
+                        finalCluster = true;
+                    }
+                    DistributionDialog dd = new DistributionDialog(this, true, tempM, xLimit, yLimit, Person.personType.CANDIDATE, title, footnote, finalCluster);
+                    dd.setVisible(true);
+                    if (dd.isCancelled()){
+                        cancelled = true;
+                        break;
+                    }
+                    tempM = tempM - dd.getClusterSize();
+                    candidates.addAll((ArrayList<Candidate>)(ArrayList<?>)dd.getIndividuals());
+                }  
             }
-            DistributionDialog dd = new DistributionDialog(this, true, tempM, xLimit, yLimit, Person.personType.CANDIDATE, title, footnote, finalCluster);
-            dd.setVisible(true);
-            tempM = tempM - dd.getClusterSize();
-            candidates.addAll((ArrayList<Candidate>)(ArrayList<?>)dd.getIndividuals());
-        }  
-        
-        election = new Election(k, voters, candidates);
-        plotResultsBtn.setEnabled(true);
+
+            if (!cancelled){
+                newElection = new Election(k, voters, candidates);
+                plotResultsBtn.setEnabled(true);
+            }
+        }
     }//GEN-LAST:event_createElectionBtnActionPerformed
 
     private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
         
-        ArrayList<Candidate> committeeSNTV = election.singleNonTrasferableVote();
-        ArrayList<Candidate> committeeBorda = election.kBorda();
-        ArrayList<Candidate> committeeBloc = election.bloc();
-        ArrayList<Candidate> committeeSTV = election.singleTransferableVote();
-        ArrayList<Candidate> committeeGCC = election.greedyCC();
-        ArrayList<Candidate> committeeGM = election.greedyMonroe();
-        ArrayList<Candidate> committeeKM = election.kMeans();
+        ArrayList<Candidate> committeeSNTV = newElection.singleNonTrasferableVote();
+        ArrayList<Candidate> committeeBorda = newElection.kBorda();
+        ArrayList<Candidate> committeeBloc = newElection.bloc();
+        ArrayList<Candidate> committeeSTV = newElection.singleTransferableVote();
+        ArrayList<Candidate> committeeGCC = newElection.greedyCC();
+        ArrayList<Candidate> committeeGM = newElection.greedyMonroe();
+        ArrayList<Candidate> committeeKM = newElection.kMeans();
         
         XYSeriesCollection datasetSNTV = new XYSeriesCollection();
         XYSeriesCollection datasetBorda = new XYSeriesCollection();
@@ -958,8 +990,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         }
         
         XYSeries voterDataset = new XYSeries("Voters");
-        for (int i = 0; i < election.getVoters().size(); i++) {
-            Voter v = election.getVoters().get(i);
+        for (int i = 0; i < newElection.getVoters().size(); i++) {
+            Voter v = newElection.getVoters().get(i);
             if (i%skipN == 0){
                 voterDataset.add(v.getX(), v.getY());
             }
@@ -973,8 +1005,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         datasetKM.addSeries(voterDataset);
         
         XYSeries candidateDataset = new XYSeries("Candidates");
-        for (int i = 0; i < election.getCandidates().size(); i++) {
-            Candidate c = election.getCandidates().get(i);
+        for (int i = 0; i < newElection.getCandidates().size(); i++) {
+            Candidate c = newElection.getCandidates().get(i);
             if (i%skipM == 0){
                 candidateDataset.add(c.getX(), c.getY());
             }

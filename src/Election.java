@@ -756,7 +756,7 @@ public class Election {
         }
         
         //
-        while(iterations < 30){
+        while(iterations < 50){
             boolean stop = true;
             iterations++;
             

@@ -139,6 +139,65 @@ public abstract class Person {
     
     /*
     Στατική μέθοδος δημιουργίας n ατόμων, ψηφοφόρων ή υποψήφιων ανάλογα με
+    την τιμή του πρώτου ορίσματος, με ομοιόμορφη κατανομή μέσα σε ένα
+    κυκλικό χώρο με κέντρο το σημείο (xCenter, yCenter), ακτίνα radius
+    και οριακές συντεταγμένες xLimit και yLimit.
+    */
+    public static ArrayList<Person> discUniformDistribution(personType pt,
+            int n, double xCenter, double yCenter, double radius, int xLimit, int yLimit){
+        
+        ArrayList<Person> people =  new ArrayList(n);
+        Random rand = new Random();
+        
+        for (int i = 0; i < n; i++){
+            double angle = rand.nextDouble()*2*Math.PI;
+            double r = rand.nextDouble()*radius;
+            double x = r*Math.cos(angle);
+            double y = r*Math.sin(angle);
+            if(x >= -xLimit && x <= xLimit && y >= -yLimit && y <= yLimit){
+                if (pt == personType.VOTER){
+                    people.add(new Voter(("v" + people.size()),x,y));
+                }
+                else if (pt == personType.CANDIDATE){
+                    people.add(new Candidate(("c" + people.size()),x,y));
+                }
+            }
+        }
+        return people;
+    }
+    
+    /*
+    Στατική μέθοδος δημιουργίας n ατόμων, ψηφοφόρων ή υποψήφιων ανάλογα με
+    την τιμή του πρώτου ορίσματος, με ομοιόμορφη κατανομή μέσα σε ένα
+    κυκλικό χώρο με κέντρο το σημείο (xCenter, yCenter), ακτίνα radius
+    και οριακές συντεταγμένες xLimit και yLimit.
+    */
+    public static ArrayList<Person> ringUniformDistribution(personType pt,
+            int n, double xCenter, double yCenter, double minRadius,
+            double maxRadius, int xLimit, int yLimit){
+        
+        ArrayList<Person> people =  new ArrayList(n);
+        Random rand = new Random();
+        
+        for (int i = 0; i < n; i++){
+            double angle = rand.nextDouble()*2*Math.PI;
+            double r = rand.nextDouble()*(maxRadius - minRadius) + minRadius;
+            double x = r*Math.cos(angle);
+            double y = r*Math.sin(angle);
+            if(x >= -xLimit && x <= xLimit && y >= -yLimit && y <= yLimit){
+                if (pt == personType.VOTER){
+                    people.add(new Voter(("v" + people.size()),x,y));
+                }
+                else if (pt == personType.CANDIDATE){
+                    people.add(new Candidate(("c" + people.size()),x,y));
+                }
+            }
+        }
+        return people;
+    }
+    
+    /*
+    Στατική μέθοδος δημιουργίας n ατόμων, ψηφοφόρων ή υποψήφιων ανάλογα με
     την τιμή του πρώτου ορίσματος, με κανονική κατανομή (Gauss) μέσα
     σε ένα ορθογώνιο χώρο με οριακές συντεταγμένες xLimit/yLimit, μέση τιμή
     xMean/yMean και τυπική απόκλιση xStdDev/yStdDev.
