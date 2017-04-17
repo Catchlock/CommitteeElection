@@ -44,6 +44,7 @@ public class DistributionDialog extends javax.swing.JDialog {
     private ArrayList<Person> individuals;
     private int clusterSize;
     private boolean cancelled = false;
+    String card;
 
     /**
      * Creates new form VoterDistDialog
@@ -53,7 +54,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         initComponents();
     }
     
-    public DistributionDialog(java.awt.Frame parent, boolean modal, int total, int xLimit, int yLimit, Person.personType pt, String title, String footnote, boolean finalCluster) {
+    public DistributionDialog(java.awt.Frame parent, boolean modal, int total, int xLimit, int yLimit, Person.personType pt, String title, String footnote, boolean finalCluster, String card) {
         super(parent, modal);
         this.title = title;
         this.footnote = footnote;
@@ -77,10 +78,33 @@ public class DistributionDialog extends javax.swing.JDialog {
             gaussClusterSizeTxt.setEnabled(false);
             
             clusterSize = total;
-        }
-        else{
+        } else{
             clusterSize = 0;
         }
+        
+        if (card == "square"){
+            uniformRadioBtn.setSelected(true);
+            ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "uniformCard");
+            squareRadioBtn.setSelected(true);
+            ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "squareCard");
+        }
+        else if (card == "disc"){
+            uniformRadioBtn.setSelected(true);
+            ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "uniformCard");
+            discRadioBtn.setSelected(true);
+            ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "discCard");
+        }
+        else if (card == "ring"){
+            uniformRadioBtn.setSelected(true);
+            ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "uniformCard");
+            ringRadioBtn.setSelected(true);
+            ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "ringCard");
+        }
+        else if (card == "gaussian"){
+            gaussianRadioBtn.setSelected(true);
+            ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "gaussianCard");
+        }
+        
         this.getRootPane().setDefaultButton(submitBtn);
     }
     
@@ -126,6 +150,10 @@ public class DistributionDialog extends javax.swing.JDialog {
     
     public boolean isCancelled(){
         return cancelled;
+    }
+    
+    public String getCard(){
+        return card;
     }
 
     /**
@@ -477,7 +505,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         squarePanel.add(jSeparator4, gridBagConstraints);
 
-        bodyUniformPanel.add(squarePanel, "squarePanel");
+        bodyUniformPanel.add(squarePanel, "squareCard");
 
         java.awt.GridBagLayout discPanelLayout = new java.awt.GridBagLayout();
         discPanelLayout.columnWidths = new int[] {30, 190, 130, 30};
@@ -577,7 +605,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         discPanel.add(jSeparator8, gridBagConstraints);
 
-        bodyUniformPanel.add(discPanel, "discPanel");
+        bodyUniformPanel.add(discPanel, "discCard");
 
         java.awt.GridBagLayout ringPanelLayout = new java.awt.GridBagLayout();
         ringPanelLayout.columnWidths = new int[] {30, 190, 130, 30};
@@ -695,7 +723,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         ringPanel.add(jSeparator10, gridBagConstraints);
 
-        bodyUniformPanel.add(ringPanel, "ringPanel");
+        bodyUniformPanel.add(ringPanel, "ringCard");
 
         uniformPanel.add(bodyUniformPanel, java.awt.BorderLayout.CENTER);
 
@@ -865,15 +893,15 @@ public class DistributionDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_gaussianRadioBtnActionPerformed
 
     private void squareRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareRadioBtnActionPerformed
-        ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "squarePanel");
+        ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "squareCard");
     }//GEN-LAST:event_squareRadioBtnActionPerformed
 
     private void discRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discRadioBtnActionPerformed
-        ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "discPanel");
+        ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "discCard");
     }//GEN-LAST:event_discRadioBtnActionPerformed
 
     private void ringRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ringRadioBtnActionPerformed
-        ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "ringPanel");
+        ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "ringCard");
     }//GEN-LAST:event_ringRadioBtnActionPerformed
 
     private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
@@ -881,6 +909,7 @@ public class DistributionDialog extends javax.swing.JDialog {
         
         if (uniformRadioBtn.isSelected()){
             if (squareRadioBtn.isSelected()){
+                card = "square";
                 
                 //Input validation
                 String err = "";
@@ -959,6 +988,7 @@ public class DistributionDialog extends javax.swing.JDialog {
             }
             
             if (discRadioBtn.isSelected()){
+                card = "disc";
                 
                 //Input validation
                 String err = "";
@@ -1024,6 +1054,7 @@ public class DistributionDialog extends javax.swing.JDialog {
             }
             
             if (ringRadioBtn.isSelected()){
+                card = "ring";
                 
                 //Input validation
                 String err = "";
@@ -1102,81 +1133,82 @@ public class DistributionDialog extends javax.swing.JDialog {
             }
         }
         else if (gaussianRadioBtn.isSelected()){
-            
-                //Input validation
-                String err = "";
-                double xMean = 0;
-                double yMean = 0;
-                double stdDevX = 1;
-                double stdDevY = 1;
+            card = "gaussian";
 
-                try{
-                    int x = Integer.parseInt(gaussClusterSizeTxt.getText());
-                    if (x < 0 || x > total){
-                        throw (new Exception());
-                    }
-                    clusterSize = x;
+            //Input validation
+            String err = "";
+            double xMean = 0;
+            double yMean = 0;
+            double stdDevX = 1;
+            double stdDevY = 1;
+
+            try{
+                int x = Integer.parseInt(gaussClusterSizeTxt.getText());
+                if (x < 0 || x > total){
+                    throw (new Exception());
                 }
-                catch(Exception e){
-                    gaussClusterSizeTxt.setBackground(Color.cyan);
-                    err = err + "Enter a valid cluster population (max " + total + ")." + eol;
+                clusterSize = x;
+            }
+            catch(Exception e){
+                gaussClusterSizeTxt.setBackground(Color.cyan);
+                err = err + "Enter a valid cluster population (max " + total + ")." + eol;
+            }
+
+            try{
+                double x = Double.parseDouble(gaussClusterMeanXTxt.getText());
+                if (x < -xLimit || x > xLimit){
+                    throw (new Exception());
                 }
-                
-                try{
-                    double x = Double.parseDouble(gaussClusterMeanXTxt.getText());
-                    if (x < -xLimit || x > xLimit){
-                        throw (new Exception());
-                    }
-                    xMean = x;
+                xMean = x;
+            }
+            catch(Exception e){
+                gaussClusterMeanXTxt.setBackground(Color.cyan);
+                err = err + "The mean x-value must be within x-Axis bounds (-" + xLimit + ", +" + xLimit + ")" + eol;
+            }
+
+            try{
+                double x = Double.parseDouble(gaussClusterMeanYTxt.getText());
+                if (x < -yLimit || x > yLimit){
+                    throw (new Exception());
                 }
-                catch(Exception e){
-                    gaussClusterMeanXTxt.setBackground(Color.cyan);
-                    err = err + "The mean x-value must be within x-Axis bounds (-" + xLimit + ", +" + xLimit + ")" + eol;
+                yMean = x;
+            }
+            catch(Exception e){
+                gaussClusterMeanYTxt.setBackground(Color.cyan);
+                err = err + "The mean y-value must be within y-Axis bounds (-" + yLimit + ", +" + yLimit + ")" + eol;
+            }
+
+            try{
+                double x = Double.parseDouble(gaussClusterStdDevXTxt.getText());
+                if (x <= 0 || x > xLimit){
+                    throw (new Exception());
                 }
-                
-                try{
-                    double x = Double.parseDouble(gaussClusterMeanYTxt.getText());
-                    if (x < -yLimit || x > yLimit){
-                        throw (new Exception());
-                    }
-                    yMean = x;
+                stdDevX = x;
+            }
+            catch(Exception e){
+                gaussClusterStdDevXTxt.setBackground(Color.cyan);
+                err = err + "X-Axis standard deviation must be less than the x-boundary value. (" + xLimit + ")" + eol;
+            }
+
+            try{
+                double x = Double.parseDouble(gaussClusterStdDevYTxt.getText());
+                if (x <= 0 || x > yLimit){
+                    throw (new Exception());
                 }
-                catch(Exception e){
-                    gaussClusterMeanYTxt.setBackground(Color.cyan);
-                    err = err + "The mean y-value must be within y-Axis bounds (-" + yLimit + ", +" + yLimit + ")" + eol;
-                }
-                
-                try{
-                    double x = Double.parseDouble(gaussClusterStdDevXTxt.getText());
-                    if (x <= 0 || x > xLimit){
-                        throw (new Exception());
-                    }
-                    stdDevX = x;
-                }
-                catch(Exception e){
-                    gaussClusterStdDevXTxt.setBackground(Color.cyan);
-                    err = err + "X-Axis standard deviation must be less than the x-boundary value. (" + xLimit + ")" + eol;
-                }
-                
-                try{
-                    double x = Double.parseDouble(gaussClusterStdDevYTxt.getText());
-                    if (x <= 0 || x > yLimit){
-                        throw (new Exception());
-                    }
-                    stdDevY = x;
-                }
-                catch(Exception e){
-                    gaussClusterStdDevYTxt.setBackground(Color.cyan);
-                    err = err + "Y-Axis standard deviation must be less than the y-boundary value. (" + yLimit + ")" + eol;
-                }
-                
-                if(err != ""){
-                    JOptionPane.showMessageDialog(this, err);
-                }
-                else {
-                    individuals = Person.gaussianDistribution(pt, clusterSize, xMean, yMean, xLimit, yLimit, stdDevX, stdDevY);
-                    this.setVisible(false);
-                }
+                stdDevY = x;
+            }
+            catch(Exception e){
+                gaussClusterStdDevYTxt.setBackground(Color.cyan);
+                err = err + "Y-Axis standard deviation must be less than the y-boundary value. (" + yLimit + ")" + eol;
+            }
+
+            if(err != ""){
+                JOptionPane.showMessageDialog(this, err);
+            }
+            else {
+                individuals = Person.gaussianDistribution(pt, clusterSize, xMean, yMean, xLimit, yLimit, stdDevX, stdDevY);
+                this.setVisible(false);
+            }
         }
     }//GEN-LAST:event_submitBtnActionPerformed
 

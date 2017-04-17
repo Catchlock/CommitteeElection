@@ -1,14 +1,19 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Shape;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.Renderer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.util.ShapeUtilities;
 
 /*
  * The MIT License
@@ -456,11 +461,6 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         menuPanel.add(xLimitLabel, gridBagConstraints);
 
         xLimitTxtField.setText("3");
-        xLimitTxtField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                xLimitTxtFieldActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 5;
@@ -627,14 +627,14 @@ public class ElectionGUI2 extends javax.swing.JFrame {
             
             try{
                 int x = Integer.parseInt(kTxtField.getText());
-                if (x < 1 || x > 100){
+                if (x < 1 || x > 100 || x > m){
                     throw (new Exception());
                 }
                 k = x;
             }
             catch(Exception e){
                 kTxtField.setBackground(Color.cyan);
-                err = err + "Enter a valid committee size (max 100)." + eol;
+                err = err + "Maximum committee size is the smallest number " + eol + "between 100 and the candidates population (" + m + ")" + eol;
             }
             
             try{
@@ -705,14 +705,15 @@ public class ElectionGUI2 extends javax.swing.JFrame {
 
                 boolean finalCluster = false;
                 boolean cancelled = false;
-
+                String card = "square";
+                
                 for(int i = 0; i < nClusters; i++){
                     String title = "Voter Cluster " + (i+1) + "/" + nClusters;
                     String footnote = "Voters remaining: " + tempN;
                     if (i+1 == nClusters){
                         finalCluster = true;
                     }
-                    DistributionDialog dd = new DistributionDialog(this, true, tempN, xLimit, yLimit, Person.personType.VOTER, title, footnote, finalCluster);
+                    DistributionDialog dd = new DistributionDialog(this, true, tempN, xLimit, yLimit, Person.personType.VOTER, title, footnote, finalCluster, card);
                     dd.setVisible(true);
                     if (dd.isCancelled()){
                         cancelled = true;
@@ -720,6 +721,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
                     }
                     tempN = tempN - dd.getClusterSize();
                     voters.addAll((ArrayList<Voter>)(ArrayList<?>)dd.getIndividuals());
+                    card = dd.getCard();
                 }  
 
                 finalCluster = false;
@@ -730,7 +732,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
                         if (i+1 == mClusters){
                             finalCluster = true;
                         }
-                        DistributionDialog dd = new DistributionDialog(this, true, tempM, xLimit, yLimit, Person.personType.CANDIDATE, title, footnote, finalCluster);
+                        DistributionDialog dd = new DistributionDialog(this, true, tempM, xLimit, yLimit, Person.personType.CANDIDATE, title, footnote, finalCluster, card);
                         dd.setVisible(true);
                         if (dd.isCancelled()){
                             cancelled = true;
@@ -738,6 +740,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
                         }
                         tempM = tempM - dd.getClusterSize();
                         candidates.addAll((ArrayList<Candidate>)(ArrayList<?>)dd.getIndividuals());
+                        card = dd.getCard();
                     }  
                 }
 
@@ -855,59 +858,119 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         datasetGM.addSeries(candidateDataset);
         datasetKM.addSeries(candidateDataset);
         
-        JFreeChart chartSNTV = ChartFactory.createScatterPlot("SNTV", "x",
-                "y", datasetSNTV, PlotOrientation.VERTICAL, true, true, true);
+        Shape committeeShape = ShapeUtilities.createDiamond(5);
+        Shape voterShape = ShapeUtilities.createDownTriangle(3);
+        Shape candidateShape = ShapeUtilities.createUpTriangle(3);
+        
+        Color committeeColor = Color.DARK_GRAY;
+        Color voterColor = Color.ORANGE;
+        Color candidateColor = Color.LIGHT_GRAY;
+        
+        JFreeChart chartSNTV = ChartFactory.createScatterPlot("SNTV", "",
+                "", datasetSNTV, PlotOrientation.VERTICAL, true, true, true);
+        XYPlot plotSNTV = chartSNTV.getXYPlot();
+        XYItemRenderer rSNTV = plotSNTV.getRenderer();
+        rSNTV.setSeriesShape(0, committeeShape);
+        rSNTV.setSeriesPaint(0, committeeColor);
+        rSNTV.setSeriesShape(1, voterShape);
+        rSNTV.setSeriesPaint(1, voterColor);
+        rSNTV.setSeriesShape(2, candidateShape);
+        rSNTV.setSeriesPaint(2, candidateColor);
         ChartPanel chartPanelSNTV = new ChartPanel(chartSNTV);
         plotAreaSNTV.setLayout(new java.awt.BorderLayout());
         plotAreaSNTV.add(chartPanelSNTV,BorderLayout.CENTER);
         plotAreaSNTV.validate();
         
-        JFreeChart chartBorda = ChartFactory.createScatterPlot("k-Borda", "x",
-                "y", datasetBorda, PlotOrientation.VERTICAL, true, true, true);
+        JFreeChart chartBorda = ChartFactory.createScatterPlot("k-Borda", "",
+                "", datasetBorda, PlotOrientation.VERTICAL, true, true, true);
+        XYPlot plotBorda = chartBorda.getXYPlot();
+        XYItemRenderer rBorda = plotBorda.getRenderer();
+        rBorda.setSeriesShape(0, committeeShape);
+        rBorda.setSeriesPaint(0, committeeColor);
+        rBorda.setSeriesShape(1, voterShape);
+        rBorda.setSeriesPaint(1, voterColor);
+        rBorda.setSeriesShape(2, candidateShape);
+        rBorda.setSeriesPaint(2, candidateColor);
         ChartPanel chartPanelBorda = new ChartPanel(chartBorda);
         plotAreaBorda.setLayout(new java.awt.BorderLayout());
         plotAreaBorda.add(chartPanelBorda,BorderLayout.CENTER);
         plotAreaBorda.validate();
         
-        JFreeChart chartBloc = ChartFactory.createScatterPlot("Bloc", "x",
-                "y", datasetBloc, PlotOrientation.VERTICAL, true, true, true);
+        JFreeChart chartBloc = ChartFactory.createScatterPlot("Bloc", "",
+                "", datasetBloc, PlotOrientation.VERTICAL, true, true, true);
+        XYPlot plotBloc = chartBloc.getXYPlot();
+        XYItemRenderer rBloc = plotBloc.getRenderer();
+        rBloc.setSeriesShape(0, committeeShape);
+        rBloc.setSeriesPaint(0, committeeColor);
+        rBloc.setSeriesShape(1, voterShape);
+        rBloc.setSeriesPaint(1, voterColor);
+        rBloc.setSeriesShape(2, candidateShape);
+        rBloc.setSeriesPaint(2, candidateColor);
         ChartPanel chartPanelBloc = new ChartPanel(chartBloc);
         plotAreaBloc.setLayout(new java.awt.BorderLayout());
         plotAreaBloc.add(chartPanelBloc,BorderLayout.CENTER);
         plotAreaBloc.validate();
         
-        JFreeChart chartSTV = ChartFactory.createScatterPlot("STV", "x",
-                "y", datasetSTV, PlotOrientation.VERTICAL, true, true, true);
+        JFreeChart chartSTV = ChartFactory.createScatterPlot("STV", "",
+                "", datasetSTV, PlotOrientation.VERTICAL, true, true, true);
+        XYPlot plotSTV = chartSTV.getXYPlot();
+        XYItemRenderer rSTV = plotSTV.getRenderer();
+        rSTV.setSeriesShape(0, committeeShape);
+        rSTV.setSeriesPaint(0, committeeColor);
+        rSTV.setSeriesShape(1, voterShape);
+        rSTV.setSeriesPaint(1, voterColor);
+        rSTV.setSeriesShape(2, candidateShape);
+        rSTV.setSeriesPaint(2, candidateColor);
         ChartPanel chartPanelSTV = new ChartPanel(chartSTV);
         plotAreaSTV.setLayout(new java.awt.BorderLayout());
         plotAreaSTV.add(chartPanelSTV,BorderLayout.CENTER);
         plotAreaSTV.validate();
         
-        JFreeChart chartGCC = ChartFactory.createScatterPlot("Greedy-CC", "x",
-                "y", datasetGCC, PlotOrientation.VERTICAL, true, true, true);
+        JFreeChart chartGCC = ChartFactory.createScatterPlot("Greedy-CC", "",
+                "", datasetGCC, PlotOrientation.VERTICAL, true, true, true);
+        XYPlot plotGCC = chartGCC.getXYPlot();
+        XYItemRenderer rGCC = plotGCC.getRenderer();
+        rGCC.setSeriesShape(0, committeeShape);
+        rGCC.setSeriesPaint(0, committeeColor);
+        rGCC.setSeriesShape(1, voterShape);
+        rGCC.setSeriesPaint(1, voterColor);
+        rGCC.setSeriesShape(2, candidateShape);
+        rGCC.setSeriesPaint(2, candidateColor);
         ChartPanel chartPanelGCC = new ChartPanel(chartGCC);
         plotAreaGCC.setLayout(new java.awt.BorderLayout());
         plotAreaGCC.add(chartPanelGCC,BorderLayout.CENTER);
         plotAreaGCC.validate();
         
-        JFreeChart chartGM = ChartFactory.createScatterPlot("Greedy-Monroe", "x",
-                "y", datasetGM, PlotOrientation.VERTICAL, true, true, true);
+        JFreeChart chartGM = ChartFactory.createScatterPlot("Greedy-Monroe", "",
+                "", datasetGM, PlotOrientation.VERTICAL, true, true, true);
+        XYPlot plotGM = chartGM.getXYPlot();
+        XYItemRenderer rGM = plotGM.getRenderer();
+        rGM.setSeriesShape(0, committeeShape);
+        rGM.setSeriesPaint(0, committeeColor);
+        rGM.setSeriesShape(1, voterShape);
+        rGM.setSeriesPaint(1, voterColor);
+        rGM.setSeriesShape(2, candidateShape);
+        rGM.setSeriesPaint(2, candidateColor);
         ChartPanel chartPanelGM = new ChartPanel(chartGM);
         plotAreaGM.setLayout(new java.awt.BorderLayout());
         plotAreaGM.add(chartPanelGM,BorderLayout.CENTER);
         plotAreaGM.validate();
         
-        JFreeChart chartKM = ChartFactory.createScatterPlot("k-Means", "x",
-                "y", datasetKM, PlotOrientation.VERTICAL, true, true, true);
+        JFreeChart chartKM = ChartFactory.createScatterPlot("k-Means", "",
+                "", datasetKM, PlotOrientation.VERTICAL, true, true, true);
+        XYPlot plotKM = chartKM.getXYPlot();
+        XYItemRenderer rKM = plotKM.getRenderer();
+        rKM.setSeriesShape(0, committeeShape);
+        rKM.setSeriesPaint(0, committeeColor);
+        rKM.setSeriesShape(1, voterShape);
+        rKM.setSeriesPaint(1, voterColor);
+        rKM.setSeriesShape(2, candidateShape);
+        rKM.setSeriesPaint(2, candidateColor);
         ChartPanel chartPanelKM = new ChartPanel(chartKM);
         plotAreaKM.setLayout(new java.awt.BorderLayout());
         plotAreaKM.add(chartPanelKM,BorderLayout.CENTER);
         plotAreaKM.validate();
     }//GEN-LAST:event_plotResultsBtnActionPerformed
-
-    private void xLimitTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xLimitTxtFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_xLimitTxtFieldActionPerformed
 
     /**
      * @param args the command line arguments

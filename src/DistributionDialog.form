@@ -1164,7 +1164,7 @@
                 <Container class="javax.swing.JPanel" name="squarePanel">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
-                      <CardConstraints cardName="squarePanel"/>
+                      <CardConstraints cardName="squareCard"/>
                     </Constraint>
                   </Constraints>
                   <SubComponents>
@@ -2347,7 +2347,7 @@
                 <Container class="javax.swing.JPanel" name="discPanel">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
-                      <CardConstraints cardName="discPanel"/>
+                      <CardConstraints cardName="discCard"/>
                     </Constraint>
                   </Constraints>
                   <SubComponents>
@@ -3362,7 +3362,7 @@
                 <Container class="javax.swing.JPanel" name="ringPanel">
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
-                      <CardConstraints cardName="ringPanel"/>
+                      <CardConstraints cardName="ringCard"/>
                     </Constraint>
                   </Constraints>
                   <SubComponents>
