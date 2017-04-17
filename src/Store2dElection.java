@@ -37,11 +37,11 @@ import java.util.logging.Logger;
  */
 public class Store2dElection {
     private Election election;
-    private String path;
+    private String filename;
     
     public Store2dElection (Election election, String path){
         this.election = election;
-        this.path = path;
+        this.filename = path;
     }
     
     public void setElection(Election election){
@@ -52,18 +52,32 @@ public class Store2dElection {
         return election;
     }
     
-    public void setPath(String path){
-        this.path = path;
+    public void setFilename(String filename){
+        this.filename = filename;
     }
     
-    public String getPath(){
-        return path;
+    public String getFilename(){
+        return filename;
     }
     
-    public void writeToFile(String filename){
+    public void writeToFile(){
         try {
-            FileWriter write = new FileWriter(path);
+            FileWriter write = new FileWriter((filename + ".txt"));
             PrintWriter print_line = new PrintWriter(write);
+
+            print_line.println(String.valueOf(election.getVoters().size()));
+            print_line.println(String.valueOf(election.getCandidates().size()));
+
+            for(Voter v: election.getVoters()){
+                String voterData = v.getName() + " " + v.getX() + " " + v.getY();
+                print_line.println(voterData);
+            }
+            for(Candidate c: election.getCandidates()){
+                String candidateData = c.getName() + " " + c.getX() + " " + c.getY();
+                print_line.println(candidateData);
+            }
+
+            print_line.close();
         } catch (IOException ex) {
             Logger.getLogger(Store2dElection.class.getName()).log(Level.SEVERE, null, ex);
         }

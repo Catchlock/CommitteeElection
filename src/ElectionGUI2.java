@@ -1001,27 +1001,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         }
         
         if (filename != null){
-            try {
-                FileWriter write = new FileWriter((filename + ".txt"));
-                PrintWriter print_line = new PrintWriter(write);
-                
-                print_line.println(String.valueOf(n));
-                print_line.println(String.valueOf(m));
-                
-                for(Voter v: newElection.getVoters()){
-                    String voterData = v.getName() + " " + v.getX() + " " + v.getY();
-                    print_line.println(voterData);
-                }
-                for(Candidate c: newElection.getCandidates()){
-                    String candidateData = c.getName() + " " + c.getX() + " " + c.getY();
-                    print_line.println(candidateData);
-                }
-                
-                print_line.close();
-                
-            } catch (IOException ex) {
-                Logger.getLogger(Store2dElection.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Store2dElection store = new Store2dElection(newElection, filename);
+            store.writeToFile();
         }
         
     }//GEN-LAST:event_saveElectionBtnActionPerformed
