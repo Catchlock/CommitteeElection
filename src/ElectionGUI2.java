@@ -455,7 +455,12 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(xLimitLabel, gridBagConstraints);
 
-        xLimitTxtField.setText("6");
+        xLimitTxtField.setText("3");
+        xLimitTxtField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xLimitTxtFieldActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 5;
@@ -471,7 +476,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(yLimitLabel, gridBagConstraints);
 
-        yLimitTxtField.setText("6");
+        yLimitTxtField.setText("3");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
@@ -899,6 +904,10 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         plotAreaKM.add(chartPanelKM,BorderLayout.CENTER);
         plotAreaKM.validate();
     }//GEN-LAST:event_plotResultsBtnActionPerformed
+
+    private void xLimitTxtFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xLimitTxtFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_xLimitTxtFieldActionPerformed
 
     /**
      * @param args the command line arguments
