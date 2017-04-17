@@ -718,16 +718,6 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterSizeTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterSizeTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterSizeTxt.setPreferredSize(new java.awt.Dimension(50, 24));
-        gaussClusterSizeTxt.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                gaussClusterSizeTxtFocusLost(evt);
-            }
-        });
-        gaussClusterSizeTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gaussClusterSizeTxtActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -746,16 +736,6 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterMeanXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
-        gaussClusterMeanXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                gaussClusterMeanXTxtFocusLost(evt);
-            }
-        });
-        gaussClusterMeanXTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gaussClusterMeanXTxtActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -774,16 +754,6 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterMeanYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
-        gaussClusterMeanYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                gaussClusterMeanYTxtFocusLost(evt);
-            }
-        });
-        gaussClusterMeanYTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gaussClusterMeanYTxtActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -802,16 +772,6 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterStdDevXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
-        gaussClusterStdDevXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                gaussClusterStdDevXTxtFocusLost(evt);
-            }
-        });
-        gaussClusterStdDevXTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gaussClusterStdDevXTxtActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -830,16 +790,6 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterStdDevYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
-        gaussClusterStdDevYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                gaussClusterStdDevYTxtFocusLost(evt);
-            }
-        });
-        gaussClusterStdDevYTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gaussClusterStdDevYTxtActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -925,138 +875,6 @@ public class DistributionDialog extends javax.swing.JDialog {
     private void ringRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ringRadioBtnActionPerformed
         ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "ringPanel");
     }//GEN-LAST:event_ringRadioBtnActionPerformed
-
-    private void gaussClusterSizeTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterSizeTxtActionPerformed
-        try{
-            int x = Integer.parseInt(gaussClusterSizeTxt.getText());
-            if (x < 0 || x > total){
-                throw (new Exception());
-            }
-            clusterSize = x;
-        }
-        catch(Exception e){
-            gaussClusterSizeTxt.setText(String.valueOf(clusterSize));
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + total + ")");
-        }
-    }//GEN-LAST:event_gaussClusterSizeTxtActionPerformed
-
-    private void gaussClusterSizeTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterSizeTxtFocusLost
-        try{
-            int x = Integer.parseInt(gaussClusterSizeTxt.getText());
-            if (x < 0 || x > total){
-                throw (new Exception());
-            }
-            clusterSize = x;
-        }
-        catch(Exception e){
-            gaussClusterSizeTxt.setText(String.valueOf(clusterSize));
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + total + ")");
-        }
-    }//GEN-LAST:event_gaussClusterSizeTxtFocusLost
-
-    private void gaussClusterMeanXTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterMeanXTxtActionPerformed
-        try{
-            double x = Double.parseDouble(gaussClusterMeanXTxt.getText());
-            if (x < -xLimit || x > xLimit){
-                throw (new Exception());
-            }
-        }
-        catch(Exception e){
-            gaussClusterMeanXTxt.setText("0");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit + ")");
-        }
-    }//GEN-LAST:event_gaussClusterMeanXTxtActionPerformed
-
-    private void gaussClusterMeanXTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterMeanXTxtFocusLost
-        try{
-            double x = Double.parseDouble(gaussClusterMeanXTxt.getText());
-            if (x < -xLimit || x > xLimit){
-                throw (new Exception());
-            }
-        }
-        catch(Exception e){
-            gaussClusterMeanXTxt.setText("0");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + xLimit + " to +" + xLimit + ")");
-        }
-    }//GEN-LAST:event_gaussClusterMeanXTxtFocusLost
-
-    private void gaussClusterMeanYTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterMeanYTxtActionPerformed
-        try{
-            double x = Double.parseDouble(gaussClusterMeanYTxt.getText());
-            if (x < -yLimit || x > yLimit){
-                throw (new Exception());
-            }
-        }
-        catch(Exception e){
-            gaussClusterMeanYTxt.setText("0");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit + ")");
-        }
-    }//GEN-LAST:event_gaussClusterMeanYTxtActionPerformed
-
-    private void gaussClusterMeanYTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterMeanYTxtFocusLost
-        try{
-            double x = Double.parseDouble(gaussClusterMeanYTxt.getText());
-            if (x < -yLimit || x > yLimit){
-                throw (new Exception());
-            }
-        }
-        catch(Exception e){
-            gaussClusterMeanYTxt.setText("0");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from -" + yLimit + " to +" + yLimit + ")");
-        }
-    }//GEN-LAST:event_gaussClusterMeanYTxtFocusLost
-
-    private void gaussClusterStdDevXTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterStdDevXTxtActionPerformed
-        try{
-            double x = Double.parseDouble(gaussClusterStdDevXTxt.getText());
-            if (x <= 0 || x > xLimit){
-                throw (new Exception());
-            }
-        }
-        catch(Exception e){
-            gaussClusterStdDevXTxt.setText("1");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + xLimit + ")");
-        }
-    }//GEN-LAST:event_gaussClusterStdDevXTxtActionPerformed
-
-    private void gaussClusterStdDevXTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterStdDevXTxtFocusLost
-        try{
-            double x = Double.parseDouble(gaussClusterStdDevXTxt.getText());
-            if (x <= 0 || x > xLimit){
-                throw (new Exception());
-            }
-        }
-        catch(Exception e){
-            gaussClusterStdDevXTxt.setText("1");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + xLimit + ")");
-        }
-    }//GEN-LAST:event_gaussClusterStdDevXTxtFocusLost
-
-    private void gaussClusterStdDevYTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussClusterStdDevYTxtActionPerformed
-        try{
-            double x = Double.parseDouble(gaussClusterStdDevYTxt.getText());
-            if (x <= 0 || x > yLimit){
-                throw (new Exception());
-            }
-        }
-        catch(Exception e){
-            gaussClusterStdDevYTxt.setText("1");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + yLimit + ")");
-        }
-    }//GEN-LAST:event_gaussClusterStdDevYTxtActionPerformed
-
-    private void gaussClusterStdDevYTxtFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterStdDevYTxtFocusLost
-        try{
-            double x = Double.parseDouble(gaussClusterStdDevYTxt.getText());
-            if (x <= 0 || x > yLimit){
-                throw (new Exception());
-            }
-        }
-        catch(Exception e){
-            gaussClusterStdDevYTxt.setText("1");
-            JOptionPane.showMessageDialog(this, "Enter a valid integer (from 0 to " + yLimit + ")");
-        }
-    }//GEN-LAST:event_gaussClusterStdDevYTxtFocusLost
 
     private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
         String eol = System.getProperty("line.separator");
@@ -1284,13 +1102,81 @@ public class DistributionDialog extends javax.swing.JDialog {
             }
         }
         else if (gaussianRadioBtn.isSelected()){
-            double xMean = Double.parseDouble(gaussClusterMeanXTxt.getText());
-            double yMean = Double.parseDouble(gaussClusterMeanYTxt.getText());
-            double xStdDev = Double.parseDouble(gaussClusterStdDevXTxt.getText());
-            double yStdDev = Double.parseDouble(gaussClusterStdDevYTxt.getText());
+            
+                //Input validation
+                String err = "";
+                double xMean = 0;
+                double yMean = 0;
+                double stdDevX = 1;
+                double stdDevY = 1;
 
-            individuals = Person.gaussianDistribution(pt, clusterSize, xMean, yMean, xLimit, yLimit, xStdDev, yStdDev);
-            this.setVisible(false);
+                try{
+                    int x = Integer.parseInt(gaussClusterSizeTxt.getText());
+                    if (x < 0 || x > total){
+                        throw (new Exception());
+                    }
+                    clusterSize = x;
+                }
+                catch(Exception e){
+                    gaussClusterSizeTxt.setBackground(Color.cyan);
+                    err = err + "Enter a valid cluster population (max " + total + ")." + eol;
+                }
+                
+                try{
+                    double x = Double.parseDouble(gaussClusterMeanXTxt.getText());
+                    if (x < -xLimit || x > xLimit){
+                        throw (new Exception());
+                    }
+                    xMean = x;
+                }
+                catch(Exception e){
+                    gaussClusterMeanXTxt.setBackground(Color.cyan);
+                    err = err + "The mean x-value must be within x-Axis bounds (-" + xLimit + ", +" + xLimit + ")" + eol;
+                }
+                
+                try{
+                    double x = Double.parseDouble(gaussClusterMeanYTxt.getText());
+                    if (x < -yLimit || x > yLimit){
+                        throw (new Exception());
+                    }
+                    yMean = x;
+                }
+                catch(Exception e){
+                    gaussClusterMeanYTxt.setBackground(Color.cyan);
+                    err = err + "The mean y-value must be within y-Axis bounds (-" + yLimit + ", +" + yLimit + ")" + eol;
+                }
+                
+                try{
+                    double x = Double.parseDouble(gaussClusterStdDevXTxt.getText());
+                    if (x <= 0 || x > xLimit){
+                        throw (new Exception());
+                    }
+                    stdDevX = x;
+                }
+                catch(Exception e){
+                    gaussClusterStdDevXTxt.setBackground(Color.cyan);
+                    err = err + "X-Axis standard deviation must be less than the x-boundary value. (" + xLimit + ")" + eol;
+                }
+                
+                try{
+                    double x = Double.parseDouble(gaussClusterStdDevYTxt.getText());
+                    if (x <= 0 || x > yLimit){
+                        throw (new Exception());
+                    }
+                    stdDevY = x;
+                }
+                catch(Exception e){
+                    gaussClusterStdDevYTxt.setBackground(Color.cyan);
+                    err = err + "Y-Axis standard deviation must be less than the y-boundary value. (" + yLimit + ")" + eol;
+                }
+                
+                if(err != ""){
+                    JOptionPane.showMessageDialog(this, err);
+                }
+                else {
+                    individuals = Person.gaussianDistribution(pt, clusterSize, xMean, yMean, xLimit, yLimit, stdDevX, stdDevY);
+                    this.setVisible(false);
+                }
         }
     }//GEN-LAST:event_submitBtnActionPerformed
 
