@@ -2,7 +2,12 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Shape;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.Renderer;
 import org.jfree.chart.ChartFactory;
@@ -53,6 +58,13 @@ public class ElectionGUI2 extends javax.swing.JFrame {
     private int k = 10;
     private int xLimit = 6;
     private int yLimit = 6;
+    ArrayList<Candidate> committeeSNTV;
+    ArrayList<Candidate> committeeBorda;
+    ArrayList<Candidate> committeeBloc;
+    ArrayList<Candidate> committeeSTV;
+    ArrayList<Candidate> committeeGCC;
+    ArrayList<Candidate> committeeGM;
+    ArrayList<Candidate> committeeKM;
     
     /**
      * Creates new form ElectionGUI2
@@ -403,9 +415,15 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         menuPanel.add(createElectionBtn, gridBagConstraints);
 
         saveElectionBtn.setText("Save Election");
+        saveElectionBtn.setEnabled(false);
         saveElectionBtn.setMaximumSize(new java.awt.Dimension(110, 23));
         saveElectionBtn.setMinimumSize(new java.awt.Dimension(110, 23));
         saveElectionBtn.setPreferredSize(new java.awt.Dimension(110, 23));
+        saveElectionBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveElectionBtnActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 12;
@@ -747,6 +765,7 @@ public class ElectionGUI2 extends javax.swing.JFrame {
                 if (!cancelled){
                     newElection = new Election(k, voters, candidates);
                     plotResultsBtn.setEnabled(true);
+                    saveElectionBtn.setEnabled(true);
                 }
             } 
         }
@@ -754,13 +773,13 @@ public class ElectionGUI2 extends javax.swing.JFrame {
 
     private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
         
-        ArrayList<Candidate> committeeSNTV = newElection.singleNonTrasferableVote();
-        ArrayList<Candidate> committeeBorda = newElection.kBorda();
-        ArrayList<Candidate> committeeBloc = newElection.bloc();
-        ArrayList<Candidate> committeeSTV = newElection.singleTransferableVote();
-        ArrayList<Candidate> committeeGCC = newElection.greedyCC();
-        ArrayList<Candidate> committeeGM = newElection.greedyMonroe();
-        ArrayList<Candidate> committeeKM = newElection.kMeans();
+        committeeSNTV = newElection.singleNonTrasferableVote();
+        committeeBorda = newElection.kBorda();
+        committeeBloc = newElection.bloc();
+        committeeSTV = newElection.singleTransferableVote();
+        committeeGCC = newElection.greedyCC();
+        committeeGM = newElection.greedyMonroe();
+        committeeKM = newElection.kMeans();
         
         XYSeriesCollection datasetSNTV = new XYSeriesCollection();
         XYSeriesCollection datasetBorda = new XYSeriesCollection();
@@ -971,6 +990,41 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         plotAreaKM.add(chartPanelKM,BorderLayout.CENTER);
         plotAreaKM.validate();
     }//GEN-LAST:event_plotResultsBtnActionPerformed
+
+    private void saveElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveElectionBtnActionPerformed
+        String eol = System.getProperty("line.separator");
+        String msg = "Enter file name:" + eol + "(Warning: Any existing file will be overwritten!)";
+        String filename = JOptionPane.showInputDialog(this, msg);
+        
+        while(filename != null && filename.equals("")){
+            filename = JOptionPane.showInputDialog(this, msg);
+        }
+        
+        if (filename != null){
+            try {
+                FileWriter write = new FileWriter((filename + ".txt"));
+                PrintWriter print_line = new PrintWriter(write);
+                
+                print_line.println(String.valueOf(n));
+                print_line.println(String.valueOf(m));
+                
+                for(Voter v: newElection.getVoters()){
+                    String voterData = v.getName() + " " + v.getX() + " " + v.getY();
+                    print_line.println(voterData);
+                }
+                for(Candidate c: newElection.getCandidates()){
+                    String candidateData = c.getName() + " " + c.getX() + " " + c.getY();
+                    print_line.println(candidateData);
+                }
+                
+                print_line.close();
+                
+            } catch (IOException ex) {
+                Logger.getLogger(Store2dElection.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+    }//GEN-LAST:event_saveElectionBtnActionPerformed
 
     /**
      * @param args the command line arguments
