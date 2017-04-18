@@ -1,4 +1,5 @@
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -37,15 +38,15 @@ import java.util.logging.Logger;
  */
 public class Store2dElection {
     private Election election;
-    private String filename;
+    private File file;
     private int xLimit;
     private int yLimit;
     private int nClusters;
     private int mClusters;
     
-    public Store2dElection (Election election, String filename, int xLimit, int yLimit, int nClusters, int mClusters){
+    public Store2dElection (Election election, File file, int xLimit, int yLimit, int nClusters, int mClusters){
         this.election = election;
-        this.filename = filename;
+        this.file = file;
         this.xLimit = xLimit;
         this.yLimit = yLimit;
         this.nClusters = nClusters;
@@ -60,17 +61,17 @@ public class Store2dElection {
         return election;
     }
     
-    public void setFilename(String filename){
-        this.filename = filename;
+    public void setFile(File file){
+        this.file = file;
     }
     
-    public String getFilename(){
-        return filename;
+    public File getFile(){
+        return file;
     }
     
     public void writeToFile(){
         try {
-            FileWriter write = new FileWriter((filename + ".txt"));
+            FileWriter write = new FileWriter(file);
             PrintWriter print_line = new PrintWriter(write);
 
             print_line.println(String.valueOf(election.getNumberOfVoters()));

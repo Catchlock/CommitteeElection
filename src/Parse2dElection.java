@@ -90,11 +90,9 @@ public class Parse2dElection {
         this.err = err;
     }
     
-    public void parseFromFile(String filename){
+    public void parseFromFile(File file){
         try {
-            File electionFile = new File(filename);
-            
-            Scanner fileScanner = new Scanner(electionFile);
+            Scanner fileScanner = new Scanner(file);
             int n = fileScanner.nextInt();
             int m = fileScanner.nextInt();
             int k = fileScanner.nextInt();

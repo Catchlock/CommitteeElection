@@ -2,7 +2,9 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Shape;
+import java.io.File;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -999,20 +1001,20 @@ public class ElectionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_plotResultsBtnActionPerformed
 
     private void saveElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveElectionBtnActionPerformed
-        String msg = "Enter file name:" + eol + "(Warning: Any existing file will be overwritten!)";
-        String filename = JOptionPane.showInputDialog(this, msg);
-        
-        while(filename != null && filename.equals("")){
-            filename = JOptionPane.showInputDialog(this, msg);
-        }
-        
-        if (filename != null){
-            Store2dElection store = new Store2dElection(election, filename, xLimit, yLimit, nClusters, mClusters);
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setApproveButtonText("Save");
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            Store2dElection store = new Store2dElection(election, selectedFile, xLimit, yLimit, nClusters, mClusters);
             store.writeToFile();
-            systemTxt.append("Election saved successfully in file \"" + filename + ".txt\"" + eol);
+            systemTxt.append("Election saved successfully." + eol);
             saved = true;
+        } else if (result == JFileChooser.CANCEL_OPTION){
+            systemTxt.append("Saving cancelled" + eol);
         }
-        
     }//GEN-LAST:event_saveElectionBtnActionPerformed
 
     private void loadElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadElectionBtnActionPerformed
@@ -1027,17 +1029,14 @@ public class ElectionGUI extends javax.swing.JFrame {
         }
         
         if (discard){
-            String msg = "Enter file name to be opened:";
-            String filename = JOptionPane.showInputDialog(this, msg);
-
-            while(filename != null && filename.equals("")){
-                filename = JOptionPane.showInputDialog(this, msg);
-            }
-
-            if (filename != null){
-                String file = filename + ".txt";
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            int result = fileChooser.showOpenDialog(this);
+            
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
                 Parse2dElection parser = new Parse2dElection();
-                parser.parseFromFile(file);
+                parser.parseFromFile(selectedFile);
                 if(parser.getErr() == null){
                     election = parser.getElection();
                     nTxtField.setText(String.valueOf(election.getNumberOfVoters()));
@@ -1051,13 +1050,15 @@ public class ElectionGUI extends javax.swing.JFrame {
                     nClusterTxtField.setText(String.valueOf(nClusters));
                     mClusters = parser.getmClusters();
                     mClusterTxtField.setText(String.valueOf(mClusters));
-                    
-                    systemTxt.append("Election " + filename + " loaded.");
+
+                    systemTxt.append("Election loaded." + eol);
                     plotResultsBtn.setEnabled(true);
                     saved = true;
                 } else {
                     systemTxt.append(parser.getErr() + eol);
                 }
+            } else if (result == JFileChooser.CANCEL_OPTION){
+                systemTxt.append("Loading cancelled." + eol);
             }
         }
     }//GEN-LAST:event_loadElectionBtnActionPerformed
