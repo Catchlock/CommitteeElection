@@ -1,9 +1,7 @@
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Frame;
 import java.util.ArrayList;
-import javax.swing.InputVerifier;
 import javax.swing.JOptionPane;
 
 /*

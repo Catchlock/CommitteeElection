@@ -38,10 +38,18 @@ import java.util.logging.Logger;
 public class Store2dElection {
     private Election election;
     private String filename;
+    private int xLimit;
+    private int yLimit;
+    private int nClusters;
+    private int mClusters;
     
-    public Store2dElection (Election election, String path){
+    public Store2dElection (Election election, String filename, int xLimit, int yLimit, int nClusters, int mClusters){
         this.election = election;
-        this.filename = path;
+        this.filename = filename;
+        this.xLimit = xLimit;
+        this.yLimit = yLimit;
+        this.nClusters = nClusters;
+        this.mClusters = mClusters;
     }
     
     public void setElection(Election election){
@@ -65,8 +73,13 @@ public class Store2dElection {
             FileWriter write = new FileWriter((filename + ".txt"));
             PrintWriter print_line = new PrintWriter(write);
 
-            print_line.println(String.valueOf(election.getVoters().size()));
-            print_line.println(String.valueOf(election.getCandidates().size()));
+            print_line.println(String.valueOf(election.getNumberOfVoters()));
+            print_line.println(String.valueOf(election.getNumberOfCandidates()));
+            print_line.println(String.valueOf(election.getCommitteeSize()));
+            print_line.println(String.valueOf(xLimit));
+            print_line.println(String.valueOf(yLimit));
+            print_line.println(String.valueOf(nClusters));
+            print_line.println(String.valueOf(mClusters));
 
             for(Voter v: election.getVoters()){
                 String voterData = v.getName() + " " + v.getX() + " " + v.getY();
