@@ -42,9 +42,10 @@ import org.jfree.util.ShapeUtilities;
  *
  * @author Nikolas Laskaris
  */
-public class ElectionGUI2 extends javax.swing.JFrame {
+public class ElectionGUI extends javax.swing.JFrame {
 
-    private Election newElection;
+    private final String eol = System.getProperty("line.separator");
+    private Election election;
     private int n = 300;
     private int m = 100;
     private int nClusters = 1;
@@ -52,27 +53,28 @@ public class ElectionGUI2 extends javax.swing.JFrame {
     private int k = 10;
     private int xLimit = 6;
     private int yLimit = 6;
-    ArrayList<Candidate> committeeSNTV;
-    ArrayList<Candidate> committeeBorda;
-    ArrayList<Candidate> committeeBloc;
-    ArrayList<Candidate> committeeSTV;
-    ArrayList<Candidate> committeeGCC;
-    ArrayList<Candidate> committeeGM;
-    ArrayList<Candidate> committeeKM;
+    private ArrayList<Candidate> committeeSNTV;
+    private ArrayList<Candidate> committeeBorda;
+    private ArrayList<Candidate> committeeBloc;
+    private ArrayList<Candidate> committeeSTV;
+    private ArrayList<Candidate> committeeGCC;
+    private ArrayList<Candidate> committeeGM;
+    private ArrayList<Candidate> committeeKM;
+    private boolean saved = false;
     
     /**
      * Creates new form ElectionGUI2
      */
-    public ElectionGUI2() {
+    public ElectionGUI() {
         initComponents();
     }
     
-    public void setNewElection (Election newElection){
-        this.newElection = newElection;
+    public void setElection (Election election){
+        this.election = election;
     }
     
-    public Election getNewElection (){
-        return newElection;
+    public Election getElection (){
+        return election;
     }
     
     public void setN(int n){
@@ -172,8 +174,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         plotAreaBorda = new javax.swing.JPanel();
         plotAreaBloc = new javax.swing.JPanel();
         titlePanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        systemPane = new javax.swing.JScrollPane();
+        systemTxt = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1280, 720));
@@ -572,9 +574,11 @@ public class ElectionGUI2 extends javax.swing.JFrame {
 
         titlePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        systemTxt.setEditable(false);
+        systemTxt.setColumns(20);
+        systemTxt.setFont(new java.awt.Font("Lucida Console", 0, 12)); // NOI18N
+        systemTxt.setRows(5);
+        systemPane.setViewportView(systemTxt);
 
         javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
         titlePanel.setLayout(titlePanelLayout);
@@ -582,14 +586,14 @@ public class ElectionGUI2 extends javax.swing.JFrame {
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
+                .addComponent(systemPane, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
                 .addContainerGap())
         );
         titlePanelLayout.setVerticalGroup(
             titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(titlePanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
+                .addComponent(systemPane, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -603,14 +607,10 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadElectionBtnActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_loadElectionBtnActionPerformed
-
     private void createElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createElectionBtnActionPerformed
         //Confirmation of discarding an election that is not saved
         boolean discard = true;
-        if(newElection != null){
+        if(election != null && !saved){
             int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to create a new election?\n"
                     + "Press No to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.NO_OPTION) {
@@ -623,7 +623,6 @@ public class ElectionGUI2 extends javax.swing.JFrame {
             
             //Input validation
             String err = "";
-            String eol = System.getProperty("line.separator");
             
             try{
                 int x = Integer.parseInt(nTxtField.getText());
@@ -769,9 +768,11 @@ public class ElectionGUI2 extends javax.swing.JFrame {
                 }
 
                 if (!cancelled){
-                    newElection = new Election(k, voters, candidates);
+                    election = new Election(k, voters, candidates);
                     plotResultsBtn.setEnabled(true);
                     saveElectionBtn.setEnabled(true);
+                    systemTxt.append("New election created." + eol);
+                    saved = false;
                 }
             } 
         }
@@ -779,13 +780,13 @@ public class ElectionGUI2 extends javax.swing.JFrame {
 
     private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
         
-        committeeSNTV = newElection.singleNonTrasferableVote();
-        committeeBorda = newElection.kBorda();
-        committeeBloc = newElection.bloc();
-        committeeSTV = newElection.singleTransferableVote();
-        committeeGCC = newElection.greedyCC();
-        committeeGM = newElection.greedyMonroe();
-        committeeKM = newElection.kMeans();
+        committeeSNTV = election.singleNonTrasferableVote();
+        committeeBorda = election.kBorda();
+        committeeBloc = election.bloc();
+        committeeSTV = election.singleTransferableVote();
+        committeeGCC = election.greedyCC();
+        committeeGM = election.greedyMonroe();
+        committeeKM = election.kMeans();
         
         XYSeriesCollection datasetSNTV = new XYSeriesCollection();
         XYSeriesCollection datasetBorda = new XYSeriesCollection();
@@ -854,8 +855,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         }
         
         XYSeries voterDataset = new XYSeries("Voters");
-        for (int i = 0; i < newElection.getVoters().size(); i++) {
-            Voter v = newElection.getVoters().get(i);
+        for (int i = 0; i < election.getVoters().size(); i++) {
+            Voter v = election.getVoters().get(i);
             if (i%skipN == 0){
                 voterDataset.add(v.getX(), v.getY());
             }
@@ -869,8 +870,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         datasetKM.addSeries(voterDataset);
         
         XYSeries candidateDataset = new XYSeries("Candidates");
-        for (int i = 0; i < newElection.getCandidates().size(); i++) {
-            Candidate c = newElection.getCandidates().get(i);
+        for (int i = 0; i < election.getCandidates().size(); i++) {
+            Candidate c = election.getCandidates().get(i);
             if (i%skipM == 0){
                 candidateDataset.add(c.getX(), c.getY());
             }
@@ -998,7 +999,6 @@ public class ElectionGUI2 extends javax.swing.JFrame {
     }//GEN-LAST:event_plotResultsBtnActionPerformed
 
     private void saveElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveElectionBtnActionPerformed
-        String eol = System.getProperty("line.separator");
         String msg = "Enter file name:" + eol + "(Warning: Any existing file will be overwritten!)";
         String filename = JOptionPane.showInputDialog(this, msg);
         
@@ -1007,11 +1007,60 @@ public class ElectionGUI2 extends javax.swing.JFrame {
         }
         
         if (filename != null){
-            Store2dElection store = new Store2dElection(newElection, filename, xLimit, yLimit, nClusters, mClusters);
+            Store2dElection store = new Store2dElection(election, filename, xLimit, yLimit, nClusters, mClusters);
             store.writeToFile();
+            systemTxt.append("Election saved successfully in file \"" + filename + ".txt\"" + eol);
+            saved = true;
         }
         
     }//GEN-LAST:event_saveElectionBtnActionPerformed
+
+    private void loadElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadElectionBtnActionPerformed
+        //Confirmation of discarding an election that is not saved
+        boolean discard = true;
+        if(election != null && !saved){
+            int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to load an election?\n"
+                    + "Press No to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (response == JOptionPane.NO_OPTION) {
+                discard = false;
+            }
+        }
+        
+        if (discard){
+            String msg = "Enter file name to be opened:";
+            String filename = JOptionPane.showInputDialog(this, msg);
+
+            while(filename != null && filename.equals("")){
+                filename = JOptionPane.showInputDialog(this, msg);
+            }
+
+            if (filename != null){
+                String file = filename + ".txt";
+                Parse2dElection parser = new Parse2dElection();
+                parser.parseFromFile(file);
+                if(parser.getErr() == null){
+                    election = parser.getElection();
+                    nTxtField.setText(String.valueOf(election.getNumberOfVoters()));
+                    mTxtField.setText(String.valueOf(election.getNumberOfCandidates()));
+                    kTxtField.setText(String.valueOf(election.getCommitteeSize()));
+                    xLimit = parser.getxLimit();
+                    xLimitTxtField.setText(String.valueOf(xLimit));
+                    yLimit = parser.getyLimit();
+                    yLimitTxtField.setText(String.valueOf(yLimit));
+                    nClusters = parser.getnClusters();
+                    nClusterTxtField.setText(String.valueOf(nClusters));
+                    mClusters = parser.getmClusters();
+                    mClusterTxtField.setText(String.valueOf(mClusters));
+                    
+                    systemTxt.append("Election " + filename + " loaded.");
+                    plotResultsBtn.setEnabled(true);
+                    saved = true;
+                } else {
+                    systemTxt.append(parser.getErr() + eol);
+                }
+            }
+        }
+    }//GEN-LAST:event_loadElectionBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1030,28 +1079,27 @@ public class ElectionGUI2 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ElectionGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ElectionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ElectionGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ElectionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ElectionGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ElectionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ElectionGUI2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ElectionGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ElectionGUI2().setVisible(true);
+                new ElectionGUI().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createElectionBtn;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel kLabel;
     private javax.swing.JTextField kTxtField;
     private javax.swing.JButton loadElectionBtn;
@@ -1076,6 +1124,8 @@ public class ElectionGUI2 extends javax.swing.JFrame {
     private javax.swing.JPanel plotAreaSTV;
     private javax.swing.JButton plotResultsBtn;
     private javax.swing.JButton saveElectionBtn;
+    private javax.swing.JScrollPane systemPane;
+    private javax.swing.JTextArea systemTxt;
     private javax.swing.JPanel titlePanel;
     private javax.swing.JLabel xLimitLabel;
     private javax.swing.JTextField xLimitTxtField;

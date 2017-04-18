@@ -82,11 +82,11 @@ public class Store2dElection {
             print_line.println(String.valueOf(mClusters));
 
             for(Voter v: election.getVoters()){
-                String voterData = v.getName() + " " + v.getX() + " " + v.getY();
+                String voterData = v.getName() + "," + v.getX() + "," + v.getY();
                 print_line.println(voterData);
             }
             for(Candidate c: election.getCandidates()){
-                String candidateData = c.getName() + " " + c.getX() + " " + c.getY();
+                String candidateData = c.getName() + "," + c.getX() + "," + c.getY();
                 print_line.println(candidateData);
             }
 
