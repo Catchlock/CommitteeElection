@@ -613,10 +613,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         //Confirmation of discarding an election that is not saved
         boolean discard = true;
         if(election != null && !saved){
-            int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to create a new election?\n"
-                    + "Press No to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to create a new election?"
+                    + eol + "Press No to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.NO_OPTION) {
                 discard = false;
+                systemTxt.append("Election creation cancelled." + eol);
             }
         }
         
@@ -775,6 +776,8 @@ public class ElectionGUI extends javax.swing.JFrame {
                     saveElectionBtn.setEnabled(true);
                     systemTxt.append("New election created." + eol);
                     saved = false;
+                } else {
+                    systemTxt.append("Election creation cancelled." + eol);
                 }
             } 
         }
