@@ -404,6 +404,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterSizeTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         squareClusterSizeTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         squareClusterSizeTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        squareClusterSizeTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                squareClusterSizeTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -422,6 +427,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterCenterXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         squareClusterCenterXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         squareClusterCenterXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        squareClusterCenterXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                squareClusterCenterXTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -440,6 +450,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterCenterYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         squareClusterCenterYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         squareClusterCenterYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        squareClusterCenterYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                squareClusterCenterYTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -458,6 +473,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterWidthTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         squareClusterWidthTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         squareClusterWidthTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        squareClusterWidthTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                squareClusterWidthTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -476,6 +496,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         squareClusterHeightTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         squareClusterHeightTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         squareClusterHeightTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        squareClusterHeightTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                squareClusterHeightTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -522,6 +547,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         discClusterSizeTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         discClusterSizeTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         discClusterSizeTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        discClusterSizeTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                discClusterSizeTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -540,6 +570,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         discClusterCenterXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         discClusterCenterXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         discClusterCenterXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        discClusterCenterXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                discClusterCenterXTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -558,6 +593,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         discClusterCenterYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         discClusterCenterYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         discClusterCenterYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        discClusterCenterYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                discClusterCenterYTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -576,6 +616,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         discClusterRadiusTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         discClusterRadiusTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         discClusterRadiusTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        discClusterRadiusTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                discClusterRadiusTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -622,6 +667,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         ringClusterSizeTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         ringClusterSizeTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         ringClusterSizeTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterSizeTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ringClusterSizeTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -640,6 +690,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         ringClusterCenterXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         ringClusterCenterXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         ringClusterCenterXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterCenterXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ringClusterCenterXTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -658,6 +713,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         ringClusterCenterYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         ringClusterCenterYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         ringClusterCenterYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterCenterYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ringClusterCenterYTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -676,6 +736,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         ringClusterMinRadiusTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         ringClusterMinRadiusTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         ringClusterMinRadiusTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterMinRadiusTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ringClusterMinRadiusTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -694,6 +759,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         ringClusterMaxRadiusTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         ringClusterMaxRadiusTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         ringClusterMaxRadiusTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        ringClusterMaxRadiusTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                ringClusterMaxRadiusTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -744,6 +814,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterSizeTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterSizeTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterSizeTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterSizeTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                gaussClusterSizeTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
@@ -762,6 +837,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterMeanXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterMeanXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                gaussClusterMeanXTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 2;
@@ -780,6 +860,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterMeanYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterMeanYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterMeanYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                gaussClusterMeanYTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 3;
@@ -798,6 +883,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterStdDevXTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevXTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevXTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterStdDevXTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                gaussClusterStdDevXTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 4;
@@ -816,6 +906,11 @@ public class DistributionDialog extends javax.swing.JDialog {
         gaussClusterStdDevYTxt.setMaximumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevYTxt.setMinimumSize(new java.awt.Dimension(50, 24));
         gaussClusterStdDevYTxt.setPreferredSize(new java.awt.Dimension(50, 24));
+        gaussClusterStdDevYTxt.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                gaussClusterStdDevYTxtFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 5;
@@ -1225,6 +1320,82 @@ public class DistributionDialog extends javax.swing.JDialog {
             this.setVisible(false);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void squareClusterSizeTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_squareClusterSizeTxtFocusGained
+        squareClusterSizeTxt.selectAll();
+    }//GEN-LAST:event_squareClusterSizeTxtFocusGained
+
+    private void squareClusterCenterXTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_squareClusterCenterXTxtFocusGained
+        squareClusterCenterXTxt.selectAll();
+    }//GEN-LAST:event_squareClusterCenterXTxtFocusGained
+
+    private void squareClusterCenterYTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_squareClusterCenterYTxtFocusGained
+        squareClusterCenterYTxt.selectAll();
+    }//GEN-LAST:event_squareClusterCenterYTxtFocusGained
+
+    private void squareClusterWidthTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_squareClusterWidthTxtFocusGained
+        squareClusterWidthTxt.selectAll();
+    }//GEN-LAST:event_squareClusterWidthTxtFocusGained
+
+    private void squareClusterHeightTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_squareClusterHeightTxtFocusGained
+        squareClusterHeightTxt.selectAll();
+    }//GEN-LAST:event_squareClusterHeightTxtFocusGained
+
+    private void discClusterSizeTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_discClusterSizeTxtFocusGained
+        discClusterSizeTxt.selectAll();
+    }//GEN-LAST:event_discClusterSizeTxtFocusGained
+
+    private void discClusterCenterXTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_discClusterCenterXTxtFocusGained
+        discClusterCenterXTxt.selectAll();
+    }//GEN-LAST:event_discClusterCenterXTxtFocusGained
+
+    private void discClusterCenterYTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_discClusterCenterYTxtFocusGained
+        discClusterCenterYTxt.selectAll();
+    }//GEN-LAST:event_discClusterCenterYTxtFocusGained
+
+    private void discClusterRadiusTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_discClusterRadiusTxtFocusGained
+        discClusterRadiusTxt.selectAll();
+    }//GEN-LAST:event_discClusterRadiusTxtFocusGained
+
+    private void ringClusterSizeTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ringClusterSizeTxtFocusGained
+        ringClusterSizeTxt.selectAll();
+    }//GEN-LAST:event_ringClusterSizeTxtFocusGained
+
+    private void ringClusterCenterXTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ringClusterCenterXTxtFocusGained
+        ringClusterCenterXTxt.selectAll();
+    }//GEN-LAST:event_ringClusterCenterXTxtFocusGained
+
+    private void ringClusterCenterYTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ringClusterCenterYTxtFocusGained
+        ringClusterCenterYTxt.selectAll();
+    }//GEN-LAST:event_ringClusterCenterYTxtFocusGained
+
+    private void ringClusterMinRadiusTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ringClusterMinRadiusTxtFocusGained
+        ringClusterMinRadiusTxt.selectAll();
+    }//GEN-LAST:event_ringClusterMinRadiusTxtFocusGained
+
+    private void ringClusterMaxRadiusTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ringClusterMaxRadiusTxtFocusGained
+        ringClusterMaxRadiusTxt.selectAll();
+    }//GEN-LAST:event_ringClusterMaxRadiusTxtFocusGained
+
+    private void gaussClusterSizeTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterSizeTxtFocusGained
+        gaussClusterSizeTxt.selectAll();
+    }//GEN-LAST:event_gaussClusterSizeTxtFocusGained
+
+    private void gaussClusterMeanXTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterMeanXTxtFocusGained
+        gaussClusterMeanXTxt.selectAll();
+    }//GEN-LAST:event_gaussClusterMeanXTxtFocusGained
+
+    private void gaussClusterMeanYTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterMeanYTxtFocusGained
+        gaussClusterMeanYTxt.selectAll();
+    }//GEN-LAST:event_gaussClusterMeanYTxtFocusGained
+
+    private void gaussClusterStdDevXTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterStdDevXTxtFocusGained
+        gaussClusterStdDevXTxt.selectAll();
+    }//GEN-LAST:event_gaussClusterStdDevXTxtFocusGained
+
+    private void gaussClusterStdDevYTxtFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_gaussClusterStdDevYTxtFocusGained
+        gaussClusterStdDevYTxt.selectAll();
+    }//GEN-LAST:event_gaussClusterStdDevYTxtFocusGained
 
     /**
      * @param args the command line arguments

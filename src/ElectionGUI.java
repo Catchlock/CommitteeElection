@@ -322,6 +322,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         menuPanel.add(kLabel, gridBagConstraints);
 
         nTxtField.setText("300");
+        nTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                nTxtFieldFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
@@ -329,6 +334,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         menuPanel.add(nTxtField, gridBagConstraints);
 
         mTxtField.setText("100");
+        mTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                mTxtFieldFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 2;
@@ -336,6 +346,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         menuPanel.add(mTxtField, gridBagConstraints);
 
         kTxtField.setText("10");
+        kTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                kTxtFieldFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 3;
@@ -362,6 +377,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         menuPanel.add(nClusterLabel, gridBagConstraints);
 
         nClusterTxtField.setText("1");
+        nClusterTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                nClusterTxtFieldFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 8;
@@ -391,6 +411,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         mClusterTxtField.setMaximumSize(new java.awt.Dimension(50, 20));
         mClusterTxtField.setMinimumSize(new java.awt.Dimension(50, 20));
         mClusterTxtField.setPreferredSize(new java.awt.Dimension(50, 20));
+        mClusterTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                mClusterTxtFieldFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 10;
@@ -479,6 +504,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         menuPanel.add(xLimitLabel, gridBagConstraints);
 
         xLimitTxtField.setText("3");
+        xLimitTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                xLimitTxtFieldFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 5;
@@ -495,6 +525,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         menuPanel.add(yLimitLabel, gridBagConstraints);
 
         yLimitTxtField.setText("3");
+        yLimitTxtField.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                yLimitTxtFieldFocusGained(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 6;
@@ -1065,6 +1100,34 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_loadElectionBtnActionPerformed
+
+    private void nTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nTxtFieldFocusGained
+        nTxtField.selectAll();
+    }//GEN-LAST:event_nTxtFieldFocusGained
+
+    private void mTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mTxtFieldFocusGained
+        mTxtField.selectAll();
+    }//GEN-LAST:event_mTxtFieldFocusGained
+
+    private void kTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_kTxtFieldFocusGained
+        kTxtField.selectAll();
+    }//GEN-LAST:event_kTxtFieldFocusGained
+
+    private void xLimitTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_xLimitTxtFieldFocusGained
+        xLimitTxtField.selectAll();
+    }//GEN-LAST:event_xLimitTxtFieldFocusGained
+
+    private void yLimitTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_yLimitTxtFieldFocusGained
+        yLimitTxtField.selectAll();
+    }//GEN-LAST:event_yLimitTxtFieldFocusGained
+
+    private void nClusterTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nClusterTxtFieldFocusGained
+        nClusterTxtField.selectAll();
+    }//GEN-LAST:event_nClusterTxtFieldFocusGained
+
+    private void mClusterTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mClusterTxtFieldFocusGained
+        nClusterTxtField.selectAll();
+    }//GEN-LAST:event_mClusterTxtFieldFocusGained
 
     /**
      * @param args the command line arguments
