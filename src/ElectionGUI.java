@@ -1,20 +1,11 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Shape;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.util.ShapeUtilities;
 
 /*
  * The MIT License
@@ -649,13 +640,12 @@ public class ElectionGUI extends javax.swing.JFrame {
         boolean discard = true;
         if(election != null && !saved){
             int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to create a new election?"
-                    + eol + "Press No to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    + eol + "Press \"No\" to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.NO_OPTION) {
                 discard = false;
                 systemTxt.append("Election creation cancelled." + eol);
             }
         }
-        
         
         if (discard){
             
@@ -827,214 +817,42 @@ public class ElectionGUI extends javax.swing.JFrame {
         committeeGCC = election.greedyCC();
         committeeGM = election.greedyMonroe();
         committeeKM = election.kMeans();
+
+        ChartPanelMaker cpm = new ChartPanelMaker();
         
-        XYSeriesCollection datasetSNTV = new XYSeriesCollection();
-        XYSeriesCollection datasetBorda = new XYSeriesCollection();
-        XYSeriesCollection datasetBloc = new XYSeriesCollection();
-        XYSeriesCollection datasetSTV = new XYSeriesCollection();
-        XYSeriesCollection datasetGCC = new XYSeriesCollection();
-        XYSeriesCollection datasetGM = new XYSeriesCollection();
-        XYSeriesCollection datasetKM = new XYSeriesCollection();
-        
-        XYSeries sntvComitteeDataset = new XYSeries("SNTV Committee");
-        for (Candidate c: committeeSNTV) {
-            sntvComitteeDataset.add(c.getX(), c.getY());
-        }
-        datasetSNTV.addSeries(sntvComitteeDataset);
-        
-        
-        XYSeries bordaCommitteeDataset = new XYSeries("k-Borda Committee");
-        for (Candidate c: committeeBorda) {
-            bordaCommitteeDataset.add(c.getX(), c.getY());
-        }
-        datasetBorda.addSeries(bordaCommitteeDataset);
-        
-        
-        XYSeries blocCommitteeDataset = new XYSeries("Bloc Committee");
-        for (Candidate c: committeeBloc) {
-            blocCommitteeDataset.add(c.getX(), c.getY());
-        }
-        datasetBloc.addSeries(blocCommitteeDataset);
-        
-        
-        XYSeries stvCommitteeDataset = new XYSeries("STV Committee");
-        for (Candidate c: committeeSTV) {
-            stvCommitteeDataset.add(c.getX(), c.getY());
-        }
-        datasetSTV.addSeries(stvCommitteeDataset);
-        
-        
-        XYSeries gccCommitteeDataset = new XYSeries("G-CC Committee");
-        for (Candidate c: committeeGCC) {
-            gccCommitteeDataset.add(c.getX(), c.getY());
-        }
-        datasetGCC.addSeries(gccCommitteeDataset);
-        
-        
-        XYSeries gmCommitteeDataset = new XYSeries("G-Monroe Committee");
-        for (Candidate c: committeeGM) {
-            gmCommitteeDataset.add(c.getX(), c.getY());
-        }
-        datasetGM.addSeries(gmCommitteeDataset);
-        
-        
-        XYSeries kMeansCommitteeDataset = new XYSeries("k-Means Committee");
-        for (Candidate c: committeeKM) {
-            kMeansCommitteeDataset.add(c.getX(), c.getY());
-        }
-        datasetKM.addSeries(kMeansCommitteeDataset);
-        
-        int skipN = n/120;
-        if(skipN < 1){
-            skipN = 1;
-        }
-        
-        int skipM = m/120;
-        if(skipM < 1){
-            skipM = 1;
-        }
-        
-        XYSeries voterDataset = new XYSeries("Voters");
-        for (int i = 0; i < election.getVoters().size(); i++) {
-            Voter v = election.getVoters().get(i);
-            if (i%skipN == 0){
-                voterDataset.add(v.getX(), v.getY());
-            }
-        }
-        datasetSNTV.addSeries(voterDataset);
-        datasetBorda.addSeries(voterDataset);
-        datasetBloc.addSeries(voterDataset);
-        datasetSTV.addSeries(voterDataset);
-        datasetGCC.addSeries(voterDataset);
-        datasetGM.addSeries(voterDataset);
-        datasetKM.addSeries(voterDataset);
-        
-        XYSeries candidateDataset = new XYSeries("Candidates");
-        for (int i = 0; i < election.getCandidates().size(); i++) {
-            Candidate c = election.getCandidates().get(i);
-            if (i%skipM == 0){
-                candidateDataset.add(c.getX(), c.getY());
-            }
-        }
-        datasetSNTV.addSeries(candidateDataset);
-        datasetBorda.addSeries(candidateDataset);
-        datasetBloc.addSeries(candidateDataset);
-        datasetSTV.addSeries(candidateDataset);
-        datasetGCC.addSeries(candidateDataset);
-        datasetGM.addSeries(candidateDataset);
-        datasetKM.addSeries(candidateDataset);
-        
-        Shape committeeShape = ShapeUtilities.createDiamond(5);
-        Shape voterShape = ShapeUtilities.createDownTriangle(3);
-        Shape candidateShape = ShapeUtilities.createUpTriangle(3);
-        
-        Color committeeColor = Color.DARK_GRAY;
-        Color voterColor = Color.ORANGE;
-        Color candidateColor = Color.LIGHT_GRAY;
-        
-        JFreeChart chartSNTV = ChartFactory.createScatterPlot("SNTV", "",
-                "", datasetSNTV, PlotOrientation.VERTICAL, true, true, true);
-        XYPlot plotSNTV = chartSNTV.getXYPlot();
-        XYItemRenderer rSNTV = plotSNTV.getRenderer();
-        rSNTV.setSeriesShape(0, committeeShape);
-        rSNTV.setSeriesPaint(0, committeeColor);
-        rSNTV.setSeriesShape(1, voterShape);
-        rSNTV.setSeriesPaint(1, voterColor);
-        rSNTV.setSeriesShape(2, candidateShape);
-        rSNTV.setSeriesPaint(2, candidateColor);
-        ChartPanel chartPanelSNTV = new ChartPanel(chartSNTV);
+        ChartPanel chartSNTV = cpm.createChart(election.getVoters(), election.getCandidates(), committeeSNTV, "SNTV");
         plotAreaSNTV.setLayout(new java.awt.BorderLayout());
-        plotAreaSNTV.add(chartPanelSNTV,BorderLayout.CENTER);
+        plotAreaSNTV.add(chartSNTV,BorderLayout.CENTER);
         plotAreaSNTV.validate();
         
-        JFreeChart chartBorda = ChartFactory.createScatterPlot("k-Borda", "",
-                "", datasetBorda, PlotOrientation.VERTICAL, true, true, true);
-        XYPlot plotBorda = chartBorda.getXYPlot();
-        XYItemRenderer rBorda = plotBorda.getRenderer();
-        rBorda.setSeriesShape(0, committeeShape);
-        rBorda.setSeriesPaint(0, committeeColor);
-        rBorda.setSeriesShape(1, voterShape);
-        rBorda.setSeriesPaint(1, voterColor);
-        rBorda.setSeriesShape(2, candidateShape);
-        rBorda.setSeriesPaint(2, candidateColor);
-        ChartPanel chartPanelBorda = new ChartPanel(chartBorda);
+        ChartPanel chartBorda = cpm.createChart(election.getVoters(), election.getCandidates(), committeeBorda, "k-Borda");
         plotAreaBorda.setLayout(new java.awt.BorderLayout());
-        plotAreaBorda.add(chartPanelBorda,BorderLayout.CENTER);
+        plotAreaBorda.add(chartBorda,BorderLayout.CENTER);
         plotAreaBorda.validate();
         
-        JFreeChart chartBloc = ChartFactory.createScatterPlot("Bloc", "",
-                "", datasetBloc, PlotOrientation.VERTICAL, true, true, true);
-        XYPlot plotBloc = chartBloc.getXYPlot();
-        XYItemRenderer rBloc = plotBloc.getRenderer();
-        rBloc.setSeriesShape(0, committeeShape);
-        rBloc.setSeriesPaint(0, committeeColor);
-        rBloc.setSeriesShape(1, voterShape);
-        rBloc.setSeriesPaint(1, voterColor);
-        rBloc.setSeriesShape(2, candidateShape);
-        rBloc.setSeriesPaint(2, candidateColor);
-        ChartPanel chartPanelBloc = new ChartPanel(chartBloc);
+        ChartPanel chartBloc = cpm.createChart(election.getVoters(), election.getCandidates(), committeeBloc, "Bloc");
         plotAreaBloc.setLayout(new java.awt.BorderLayout());
-        plotAreaBloc.add(chartPanelBloc,BorderLayout.CENTER);
+        plotAreaBloc.add(chartBloc,BorderLayout.CENTER);
         plotAreaBloc.validate();
         
-        JFreeChart chartSTV = ChartFactory.createScatterPlot("STV", "",
-                "", datasetSTV, PlotOrientation.VERTICAL, true, true, true);
-        XYPlot plotSTV = chartSTV.getXYPlot();
-        XYItemRenderer rSTV = plotSTV.getRenderer();
-        rSTV.setSeriesShape(0, committeeShape);
-        rSTV.setSeriesPaint(0, committeeColor);
-        rSTV.setSeriesShape(1, voterShape);
-        rSTV.setSeriesPaint(1, voterColor);
-        rSTV.setSeriesShape(2, candidateShape);
-        rSTV.setSeriesPaint(2, candidateColor);
-        ChartPanel chartPanelSTV = new ChartPanel(chartSTV);
+        ChartPanel chartSTV = cpm.createChart(election.getVoters(), election.getCandidates(), committeeSTV, "STV");
         plotAreaSTV.setLayout(new java.awt.BorderLayout());
-        plotAreaSTV.add(chartPanelSTV,BorderLayout.CENTER);
+        plotAreaSTV.add(chartSTV,BorderLayout.CENTER);
         plotAreaSTV.validate();
         
-        JFreeChart chartGCC = ChartFactory.createScatterPlot("Greedy-CC", "",
-                "", datasetGCC, PlotOrientation.VERTICAL, true, true, true);
-        XYPlot plotGCC = chartGCC.getXYPlot();
-        XYItemRenderer rGCC = plotGCC.getRenderer();
-        rGCC.setSeriesShape(0, committeeShape);
-        rGCC.setSeriesPaint(0, committeeColor);
-        rGCC.setSeriesShape(1, voterShape);
-        rGCC.setSeriesPaint(1, voterColor);
-        rGCC.setSeriesShape(2, candidateShape);
-        rGCC.setSeriesPaint(2, candidateColor);
-        ChartPanel chartPanelGCC = new ChartPanel(chartGCC);
+        ChartPanel chartGCC = cpm.createChart(election.getVoters(), election.getCandidates(), committeeGCC, "Greedy-CC");
         plotAreaGCC.setLayout(new java.awt.BorderLayout());
-        plotAreaGCC.add(chartPanelGCC,BorderLayout.CENTER);
+        plotAreaGCC.add(chartGCC,BorderLayout.CENTER);
         plotAreaGCC.validate();
         
-        JFreeChart chartGM = ChartFactory.createScatterPlot("Greedy-Monroe", "",
-                "", datasetGM, PlotOrientation.VERTICAL, true, true, true);
-        XYPlot plotGM = chartGM.getXYPlot();
-        XYItemRenderer rGM = plotGM.getRenderer();
-        rGM.setSeriesShape(0, committeeShape);
-        rGM.setSeriesPaint(0, committeeColor);
-        rGM.setSeriesShape(1, voterShape);
-        rGM.setSeriesPaint(1, voterColor);
-        rGM.setSeriesShape(2, candidateShape);
-        rGM.setSeriesPaint(2, candidateColor);
-        ChartPanel chartPanelGM = new ChartPanel(chartGM);
+        ChartPanel chartGM = cpm.createChart(election.getVoters(), election.getCandidates(), committeeGM, "Greedy-Monroe");
         plotAreaGM.setLayout(new java.awt.BorderLayout());
-        plotAreaGM.add(chartPanelGM,BorderLayout.CENTER);
+        plotAreaGM.add(chartGM,BorderLayout.CENTER);
         plotAreaGM.validate();
         
-        JFreeChart chartKM = ChartFactory.createScatterPlot("k-Means", "",
-                "", datasetKM, PlotOrientation.VERTICAL, true, true, true);
-        XYPlot plotKM = chartKM.getXYPlot();
-        XYItemRenderer rKM = plotKM.getRenderer();
-        rKM.setSeriesShape(0, committeeShape);
-        rKM.setSeriesPaint(0, committeeColor);
-        rKM.setSeriesShape(1, voterShape);
-        rKM.setSeriesPaint(1, voterColor);
-        rKM.setSeriesShape(2, candidateShape);
-        rKM.setSeriesPaint(2, candidateColor);
-        ChartPanel chartPanelKM = new ChartPanel(chartKM);
+        ChartPanel chartKM = cpm.createChart(election.getVoters(), election.getCandidates(), committeeKM, "k-Means");
         plotAreaKM.setLayout(new java.awt.BorderLayout());
-        plotAreaKM.add(chartPanelKM,BorderLayout.CENTER);
+        plotAreaKM.add(chartKM,BorderLayout.CENTER);
         plotAreaKM.validate();
     }//GEN-LAST:event_plotResultsBtnActionPerformed
 
@@ -1059,8 +877,8 @@ public class ElectionGUI extends javax.swing.JFrame {
         //Confirmation of discarding an election that is not saved
         boolean discard = true;
         if(election != null && !saved){
-            int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to load an election?\n"
-                    + "Press No to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to load an election?"
+                    + eol + "Press \"No\" to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.NO_OPTION) {
                 discard = false;
             }
