@@ -152,8 +152,8 @@ public abstract class Person {
         for (int i = 0; i < n; i++){
             double angle = rand.nextDouble()*2*Math.PI;
             double r = rand.nextDouble()*radius;
-            double x = r*Math.cos(angle);
-            double y = r*Math.sin(angle);
+            double x = xCenter + r*Math.cos(angle);
+            double y = yCenter + r*Math.sin(angle);
             if(x >= -xLimit && x <= xLimit && y >= -yLimit && y <= yLimit){
                 if (pt == personType.VOTER){
                     people.add(new Voter(("v" + people.size()),x,y));
@@ -182,8 +182,8 @@ public abstract class Person {
         for (int i = 0; i < n; i++){
             double angle = rand.nextDouble()*2*Math.PI;
             double r = rand.nextDouble()*(maxRadius - minRadius) + minRadius;
-            double x = r*Math.cos(angle);
-            double y = r*Math.sin(angle);
+            double x = xCenter + r*Math.cos(angle);
+            double y = yCenter + r*Math.sin(angle);
             if(x >= -xLimit && x <= xLimit && y >= -yLimit && y <= yLimit){
                 if (pt == personType.VOTER){
                     people.add(new Voter(("v" + people.size()),x,y));
