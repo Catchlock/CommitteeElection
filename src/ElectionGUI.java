@@ -950,7 +950,7 @@ public class ElectionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_nClusterTxtFieldFocusGained
 
     private void mClusterTxtFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mClusterTxtFieldFocusGained
-        nClusterTxtField.selectAll();
+        mClusterTxtField.selectAll();
     }//GEN-LAST:event_mClusterTxtFieldFocusGained
 
     /**
