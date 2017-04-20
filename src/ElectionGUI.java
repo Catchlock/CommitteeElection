@@ -3,7 +3,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartPanel;
@@ -805,85 +804,62 @@ public class ElectionGUI extends javax.swing.JFrame {
         committeeGM = election.greedyMonroe();
         committeeKM = election.kMeans();
 
-        ChartPanelMaker cpm = new ChartPanelMaker();
-        
-        ChartPanel chartSNTV = cpm.createChart(election.getVoters(), election.getCandidates(), committeeSNTV, "SNTV");
+        ChartPanel chartSNTV = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeSNTV, "SNTV");
         plotAreaSNTV.setLayout(new java.awt.BorderLayout());
         plotAreaSNTV.add(chartSNTV,BorderLayout.CENTER);
         plotAreaSNTV.validate();
         
-        ChartPanel chartBorda = cpm.createChart(election.getVoters(), election.getCandidates(), committeeBorda, "k-Borda");
+        ChartPanel chartBorda = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeBorda, "k-Borda");
         plotAreaBorda.setLayout(new java.awt.BorderLayout());
         plotAreaBorda.add(chartBorda,BorderLayout.CENTER);
         plotAreaBorda.validate();
         
-        ChartPanel chartBloc = cpm.createChart(election.getVoters(), election.getCandidates(), committeeBloc, "Bloc");
+        ChartPanel chartBloc = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeBloc, "Bloc");
         plotAreaBloc.setLayout(new java.awt.BorderLayout());
         plotAreaBloc.add(chartBloc,BorderLayout.CENTER);
         plotAreaBloc.validate();
         
-        ChartPanel chartSTV = cpm.createChart(election.getVoters(), election.getCandidates(), committeeSTV, "STV");
+        ChartPanel chartSTV = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeSTV, "STV");
         plotAreaSTV.setLayout(new java.awt.BorderLayout());
         plotAreaSTV.add(chartSTV,BorderLayout.CENTER);
         plotAreaSTV.validate();
         
-        ChartPanel chartGCC = cpm.createChart(election.getVoters(), election.getCandidates(), committeeGCC, "Greedy-CC");
+        ChartPanel chartGCC = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeGCC, "Greedy-CC");
         plotAreaGCC.setLayout(new java.awt.BorderLayout());
         plotAreaGCC.add(chartGCC,BorderLayout.CENTER);
         plotAreaGCC.validate();
         
-        ChartPanel chartGM = cpm.createChart(election.getVoters(), election.getCandidates(), committeeGM, "Greedy-Monroe");
+        ChartPanel chartGM = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeGM, "Greedy-Monroe");
         plotAreaGM.setLayout(new java.awt.BorderLayout());
         plotAreaGM.add(chartGM,BorderLayout.CENTER);
         plotAreaGM.validate();
         
-        ChartPanel chartKM = cpm.createChart(election.getVoters(), election.getCandidates(), committeeKM, "k-Means");
+        ChartPanel chartKM = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeKM, "k-Means");
         plotAreaKM.setLayout(new java.awt.BorderLayout());
         plotAreaKM.add(chartKM,BorderLayout.CENTER);
         plotAreaKM.validate();
         
         //ProportionalityTest, calculating norms
         double[] vectorSNTV = election.getDistanceVector(committeeSNTV);
-        double norm1 = NormCalculator.calcNormOne(vectorSNTV);
-        double norm2 = NormCalculator.calcNormTwo(vectorSNTV);
-        double norm10 = NormCalculator.calcNormInf(vectorSNTV);
-        systemTxt.append("SNTV minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        systemTxt.append(NormCalculator.getNormText(vectorSNTV, "SNTV"));
         
         double[] vectorBorda = election.getDistanceVector(committeeBorda);
-        norm1 = NormCalculator.calcNormOne(vectorBorda);
-        norm2 = NormCalculator.calcNormTwo(vectorBorda);
-        norm10 = NormCalculator.calcNormInf(vectorBorda);
-        systemTxt.append("k-Borda minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        systemTxt.append(NormCalculator.getNormText(vectorBorda, "k-Borda"));
         
         double[] vectorBloc = election.getDistanceVector(committeeBloc);
-        norm1 = NormCalculator.calcNormOne(vectorBloc);
-        norm2 = NormCalculator.calcNormTwo(vectorBloc);
-        norm10 = NormCalculator.calcNormInf(vectorBloc);
-        systemTxt.append("Bloc minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        systemTxt.append(NormCalculator.getNormText(vectorBloc, "Bloc"));
         
         double[] vectorSTV = election.getDistanceVector(committeeSTV);
-        norm1 = NormCalculator.calcNormOne(vectorSTV);
-        norm2 = NormCalculator.calcNormTwo(vectorSTV);
-        norm10 = NormCalculator.calcNormInf(vectorSTV);
-        systemTxt.append("STV minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        systemTxt.append(NormCalculator.getNormText(vectorSTV, "STV"));
         
         double[] vectorGCC = election.getDistanceVector(committeeGCC);
-        norm1 = NormCalculator.calcNormOne(vectorGCC);
-        norm2 = NormCalculator.calcNormTwo(vectorGCC);
-        norm10 = NormCalculator.calcNormInf(vectorGCC);
-        systemTxt.append("Greedy-CC minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        systemTxt.append(NormCalculator.getNormText(vectorGCC, "Greedy-CC"));
         
         double[] vectorGM = election.getDistanceVector(committeeGM);
-        norm1 = NormCalculator.calcNormOne(vectorGM);
-        norm2 = NormCalculator.calcNormTwo(vectorGM);
-        norm10 = NormCalculator.calcNormInf(vectorGM);
-        systemTxt.append("Greedy-Monroe minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        systemTxt.append(NormCalculator.getNormText(vectorGM, "Greedy-Monroe"));
         
         double[] vectorKM = election.getDistanceVector(committeeKM);
-        norm1 = NormCalculator.calcNormOne(vectorKM);
-        norm2 = NormCalculator.calcNormTwo(vectorKM);
-        norm10 = NormCalculator.calcNormInf(vectorKM);
-        systemTxt.append("k-Means minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        systemTxt.append(NormCalculator.getNormText(vectorKM, "k-Means") + eol);
     }//GEN-LAST:event_plotResultsBtnActionPerformed
 
     private void saveElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveElectionBtnActionPerformed

@@ -1,3 +1,7 @@
+
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 /*
  * The MIT License
  *
@@ -52,5 +56,21 @@ public class NormCalculator {
         }
         magnitude = Math.pow(magnitude, 0.1);
         return magnitude;
+    }
+    
+    public static String getNormText(double[] distanceVector, String ruleTxt){
+        String eol = System.getProperty("line.separator");
+        NumberFormat formatter = new DecimalFormat("#0.000");  
+        
+        double norm1 = NormCalculator.calcNormOne(distanceVector);
+        double norm2 = NormCalculator.calcNormTwo(distanceVector);
+        double norm10 = NormCalculator.calcNormInf(distanceVector);
+        
+        String normText = String.format("%42.42s", ruleTxt + " minimum distances vector:  ") 
+                + "1-norm: " + String.format("%-10.10s", formatter.format(norm1)) 
+                + "2-norm: " + String.format("%-10.10s", formatter.format(norm2)) 
+                + "Infinity-norm: " + String.format("%-10.10s", formatter.format(norm10)) + eol;
+        
+        return normText;
     }
 }

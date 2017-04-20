@@ -40,9 +40,9 @@ import org.jfree.util.ShapeUtilities;
  *
  * @author Nikolas Laskaris
  */
-public class ChartPanelMaker {
+public abstract class ChartPanelMaker {
     
-    public ChartPanel createChart(ArrayList<Voter> voters,ArrayList<Candidate> candidates,ArrayList<Candidate> committee, String title){
+    public static ChartPanel createChart(ArrayList<Voter> voters,ArrayList<Candidate> candidates,ArrayList<Candidate> committee, String title){
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries comitteeDataset = new XYSeries("Committee");
         for (Candidate c: committee) {
