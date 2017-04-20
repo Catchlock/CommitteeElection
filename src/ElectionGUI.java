@@ -3,6 +3,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartPanel;
@@ -171,13 +172,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         systemTxt = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1280, 720));
         setMinimumSize(new java.awt.Dimension(1280, 720));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
-        layout.columnWidths = new int[] {300, 300, 300, 300};
-        layout.rowHeights = new int[] {300, 300, 80};
+        layout.columnWidths = new int[] {270, 270, 270, 270};
+        layout.rowHeights = new int[] {270, 270, 140};
         getContentPane().setLayout(layout);
 
         plotAreaSTV.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -269,11 +268,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         getContentPane().add(plotAreaKM, gridBagConstraints);
 
         menuPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        menuPanel.setMaximumSize(new java.awt.Dimension(300, 380));
-        menuPanel.setMinimumSize(new java.awt.Dimension(300, 380));
-        menuPanel.setPreferredSize(new java.awt.Dimension(300, 380));
+        menuPanel.setMaximumSize(new java.awt.Dimension(270, 410));
+        menuPanel.setMinimumSize(new java.awt.Dimension(270, 410));
+        menuPanel.setPreferredSize(new java.awt.Dimension(270, 410));
         java.awt.GridBagLayout menuPanelLayout = new java.awt.GridBagLayout();
-        menuPanelLayout.columnWidths = new int[] {50, 50, 50, 50, 50, 50};
+        menuPanelLayout.columnWidths = new int[] {45, 45, 45, 45, 45, 45};
         menuPanelLayout.rowHeights = new int[] {40, 20, 20, 20, 5, 20, 20, 30, 20, 30, 20, 20, 40, 40};
         menuPanel.setLayout(menuPanelLayout);
 
@@ -603,6 +602,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         getContentPane().add(plotAreaBloc, gridBagConstraints);
 
         titlePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        titlePanel.setLayout(new java.awt.BorderLayout());
 
         systemTxt.setEditable(false);
         systemTxt.setColumns(20);
@@ -610,22 +610,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         systemTxt.setRows(5);
         systemPane.setViewportView(systemTxt);
 
-        javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
-        titlePanel.setLayout(titlePanelLayout);
-        titlePanelLayout.setHorizontalGroup(
-            titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(titlePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(systemPane, javax.swing.GroupLayout.DEFAULT_SIZE, 876, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        titlePanelLayout.setVerticalGroup(
-            titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(titlePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(systemPane, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        titlePanel.add(systemPane, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -856,6 +841,49 @@ public class ElectionGUI extends javax.swing.JFrame {
         plotAreaKM.setLayout(new java.awt.BorderLayout());
         plotAreaKM.add(chartKM,BorderLayout.CENTER);
         plotAreaKM.validate();
+        
+        //ProportionalityTest, calculating norms
+        double[] vectorSNTV = election.getDistanceVector(committeeSNTV);
+        double norm1 = NormCalculator.calcNormOne(vectorSNTV);
+        double norm2 = NormCalculator.calcNormTwo(vectorSNTV);
+        double norm10 = NormCalculator.calcNormInf(vectorSNTV);
+        systemTxt.append("SNTV minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        
+        double[] vectorBorda = election.getDistanceVector(committeeBorda);
+        norm1 = NormCalculator.calcNormOne(vectorBorda);
+        norm2 = NormCalculator.calcNormTwo(vectorBorda);
+        norm10 = NormCalculator.calcNormInf(vectorBorda);
+        systemTxt.append("k-Borda minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        
+        double[] vectorBloc = election.getDistanceVector(committeeBloc);
+        norm1 = NormCalculator.calcNormOne(vectorBloc);
+        norm2 = NormCalculator.calcNormTwo(vectorBloc);
+        norm10 = NormCalculator.calcNormInf(vectorBloc);
+        systemTxt.append("Bloc minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        
+        double[] vectorSTV = election.getDistanceVector(committeeSTV);
+        norm1 = NormCalculator.calcNormOne(vectorSTV);
+        norm2 = NormCalculator.calcNormTwo(vectorSTV);
+        norm10 = NormCalculator.calcNormInf(vectorSTV);
+        systemTxt.append("STV minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        
+        double[] vectorGCC = election.getDistanceVector(committeeGCC);
+        norm1 = NormCalculator.calcNormOne(vectorGCC);
+        norm2 = NormCalculator.calcNormTwo(vectorGCC);
+        norm10 = NormCalculator.calcNormInf(vectorGCC);
+        systemTxt.append("Greedy-CC minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        
+        double[] vectorGM = election.getDistanceVector(committeeGM);
+        norm1 = NormCalculator.calcNormOne(vectorGM);
+        norm2 = NormCalculator.calcNormTwo(vectorGM);
+        norm10 = NormCalculator.calcNormInf(vectorGM);
+        systemTxt.append("Greedy-Monroe minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
+        
+        double[] vectorKM = election.getDistanceVector(committeeKM);
+        norm1 = NormCalculator.calcNormOne(vectorKM);
+        norm2 = NormCalculator.calcNormTwo(vectorKM);
+        norm10 = NormCalculator.calcNormInf(vectorKM);
+        systemTxt.append("k-Means minimum distances vector: 1-norm: " + norm1 + "  2-norm: " + norm2 + "  Infinity-norm: " + norm10 + eol);
     }//GEN-LAST:event_plotResultsBtnActionPerformed
 
     private void saveElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveElectionBtnActionPerformed

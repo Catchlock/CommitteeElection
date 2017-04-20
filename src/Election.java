@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 
 /*
  * The MIT License
@@ -461,7 +462,17 @@ public class Election {
             }
         }
         return preferredCandidate;
-    }  
+    }
+    
+    public double[] getDistanceVector(ArrayList<Candidate> committee){
+        double[] distanceVector = new double[n];
+        for(int i = 0; i < n; i++){
+            Candidate c = findPreferredCandidate(voters.get(i),committee);
+            distanceVector[i] = voters.get(i).distance(c);
+        }
+        
+        return distanceVector;
+    }
     
     /*
     Μέθοδος που υπολογίζει τη συνολική ικανοποίηση ενός συνόλου ψηφοφόρων
