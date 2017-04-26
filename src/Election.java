@@ -55,7 +55,7 @@ public class Election {
     ψηφοφόρων.
     */
     public Election(int k, ArrayList<Voter> voters,
-            ArrayList<Candidate> candidates){
+            ArrayList<Candidate> candidates, boolean election2D){
         this.candidates = candidates;
         this.voters = voters;
         m = candidates.size();
@@ -66,12 +66,18 @@ public class Election {
         else {
             this.k = m;
         }
-        profile = new PreferenceProfile(voters, candidates);
+        if(election2D){
+            profile = new PreferenceProfile(voters, candidates);
+        }
     }
     
     //Getters & Setters των διαφόρων πεδίων της κλάσης.
-    public PreferenceProfile getPreferenceProfile(){
+    public PreferenceProfile getProfile() {
         return profile;
+    }
+
+    public void setProfile(PreferenceProfile profile) {
+        this.profile = profile;
     }
     
     public int getCommitteeSize(){

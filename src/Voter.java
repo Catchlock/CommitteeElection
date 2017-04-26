@@ -50,6 +50,11 @@ public class Voter extends Person implements Comparator<Candidate>{
         super(name, x, y);
     }
     
+    //Μέθοδος κατασκευής ψηφοφόρου που ορίζει όνομα
+    public Voter(String name){
+        super(name);
+    }
+    
     //Copy constructor
     public Voter(Voter v){
         super(v);

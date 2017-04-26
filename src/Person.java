@@ -51,6 +51,11 @@ public abstract class Person {
         this.y = y;
     }
     
+    //Μέθοδος κατασκευής που καθορίζει μόνο το όνομα
+    public Person(String name){
+        this.name = name;
+    }
+    
     //Copy constructor
     public Person(Person p){
         name = p.getName();

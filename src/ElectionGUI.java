@@ -793,7 +793,7 @@ public class ElectionGUI extends javax.swing.JFrame {
                 }
 
                 if (!cancelled){
-                    election = new Election(k, voters, candidates);
+                    election = new Election(k, voters, candidates, true);
                     plotResultsBtn.setEnabled(true);
                     saveElectionBtn.setEnabled(true);
                     systemTxt.append("-New election created." + eol);
@@ -806,72 +806,77 @@ public class ElectionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_createElectionBtnActionPerformed
 
     private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
-        systemTxt.append("-Generating results and graphing scatter plots." + eol);
-        
-        committeeSNTV = election.singleNonTrasferableVote();
-        committeeBorda = election.kBorda();
-        committeeBloc = election.bloc();
-        committeeSTV = election.singleTransferableVote();
-        committeeGCC = election.greedyCC();
-        committeeGM = election.greedyMonroe();
-        committeeKM = election.kMeans();
+        if(!generalPreferencesCheckBox.isSelected()){
+            systemTxt.append("-Generating results and graphing scatter plots." + eol);
 
-        ChartPanel chartSNTV = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeSNTV, "SNTV");
-        plotAreaSNTV.setLayout(new java.awt.BorderLayout());
-        plotAreaSNTV.add(chartSNTV,BorderLayout.CENTER);
-        plotAreaSNTV.validate();
-        
-        ChartPanel chartBorda = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeBorda, "k-Borda");
-        plotAreaBorda.setLayout(new java.awt.BorderLayout());
-        plotAreaBorda.add(chartBorda,BorderLayout.CENTER);
-        plotAreaBorda.validate();
-        
-        ChartPanel chartBloc = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeBloc, "Bloc");
-        plotAreaBloc.setLayout(new java.awt.BorderLayout());
-        plotAreaBloc.add(chartBloc,BorderLayout.CENTER);
-        plotAreaBloc.validate();
-        
-        ChartPanel chartSTV = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeSTV, "STV");
-        plotAreaSTV.setLayout(new java.awt.BorderLayout());
-        plotAreaSTV.add(chartSTV,BorderLayout.CENTER);
-        plotAreaSTV.validate();
-        
-        ChartPanel chartGCC = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeGCC, "Greedy-CC");
-        plotAreaGCC.setLayout(new java.awt.BorderLayout());
-        plotAreaGCC.add(chartGCC,BorderLayout.CENTER);
-        plotAreaGCC.validate();
-        
-        ChartPanel chartGM = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeGM, "Greedy-Monroe");
-        plotAreaGM.setLayout(new java.awt.BorderLayout());
-        plotAreaGM.add(chartGM,BorderLayout.CENTER);
-        plotAreaGM.validate();
-        
-        ChartPanel chartKM = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeKM, "k-Means");
-        plotAreaKM.setLayout(new java.awt.BorderLayout());
-        plotAreaKM.add(chartKM,BorderLayout.CENTER);
-        plotAreaKM.validate();
-        
-        //ProportionalityTest, calculating norms
-        double[] vectorSNTV = election.getDistanceVector(committeeSNTV);
-        systemTxt.append(NormCalculator.getNormText(vectorSNTV, "SNTV"));
-        
-        double[] vectorBorda = election.getDistanceVector(committeeBorda);
-        systemTxt.append(NormCalculator.getNormText(vectorBorda, "k-Borda"));
-        
-        double[] vectorBloc = election.getDistanceVector(committeeBloc);
-        systemTxt.append(NormCalculator.getNormText(vectorBloc, "Bloc"));
-        
-        double[] vectorSTV = election.getDistanceVector(committeeSTV);
-        systemTxt.append(NormCalculator.getNormText(vectorSTV, "STV"));
-        
-        double[] vectorGCC = election.getDistanceVector(committeeGCC);
-        systemTxt.append(NormCalculator.getNormText(vectorGCC, "Greedy-CC"));
-        
-        double[] vectorGM = election.getDistanceVector(committeeGM);
-        systemTxt.append(NormCalculator.getNormText(vectorGM, "Greedy-Monroe"));
-        
-        double[] vectorKM = election.getDistanceVector(committeeKM);
-        systemTxt.append(NormCalculator.getNormText(vectorKM, "k-Means") + eol);
+            committeeSNTV = election.singleNonTrasferableVote();
+            committeeBorda = election.kBorda();
+            committeeBloc = election.bloc();
+            committeeSTV = election.singleTransferableVote();
+            committeeGCC = election.greedyCC();
+            committeeGM = election.greedyMonroe();
+            committeeKM = election.kMeans();
+
+            ChartPanel chartSNTV = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeSNTV, "SNTV");
+            plotAreaSNTV.setLayout(new java.awt.BorderLayout());
+            plotAreaSNTV.add(chartSNTV,BorderLayout.CENTER);
+            plotAreaSNTV.validate();
+
+            ChartPanel chartBorda = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeBorda, "k-Borda");
+            plotAreaBorda.setLayout(new java.awt.BorderLayout());
+            plotAreaBorda.add(chartBorda,BorderLayout.CENTER);
+            plotAreaBorda.validate();
+
+            ChartPanel chartBloc = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeBloc, "Bloc");
+            plotAreaBloc.setLayout(new java.awt.BorderLayout());
+            plotAreaBloc.add(chartBloc,BorderLayout.CENTER);
+            plotAreaBloc.validate();
+
+            ChartPanel chartSTV = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeSTV, "STV");
+            plotAreaSTV.setLayout(new java.awt.BorderLayout());
+            plotAreaSTV.add(chartSTV,BorderLayout.CENTER);
+            plotAreaSTV.validate();
+
+            ChartPanel chartGCC = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeGCC, "Greedy-CC");
+            plotAreaGCC.setLayout(new java.awt.BorderLayout());
+            plotAreaGCC.add(chartGCC,BorderLayout.CENTER);
+            plotAreaGCC.validate();
+
+            ChartPanel chartGM = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeGM, "Greedy-Monroe");
+            plotAreaGM.setLayout(new java.awt.BorderLayout());
+            plotAreaGM.add(chartGM,BorderLayout.CENTER);
+            plotAreaGM.validate();
+
+            ChartPanel chartKM = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeKM, "k-Means");
+            plotAreaKM.setLayout(new java.awt.BorderLayout());
+            plotAreaKM.add(chartKM,BorderLayout.CENTER);
+            plotAreaKM.validate();
+
+            //ProportionalityTest, calculating norms
+            double[] vectorSNTV = election.getDistanceVector(committeeSNTV);
+            systemTxt.append(NormCalculator.getNormText(vectorSNTV, "SNTV"));
+
+            double[] vectorBorda = election.getDistanceVector(committeeBorda);
+            systemTxt.append(NormCalculator.getNormText(vectorBorda, "k-Borda"));
+
+            double[] vectorBloc = election.getDistanceVector(committeeBloc);
+            systemTxt.append(NormCalculator.getNormText(vectorBloc, "Bloc"));
+
+            double[] vectorSTV = election.getDistanceVector(committeeSTV);
+            systemTxt.append(NormCalculator.getNormText(vectorSTV, "STV"));
+
+            double[] vectorGCC = election.getDistanceVector(committeeGCC);
+            systemTxt.append(NormCalculator.getNormText(vectorGCC, "Greedy-CC"));
+
+            double[] vectorGM = election.getDistanceVector(committeeGM);
+            systemTxt.append(NormCalculator.getNormText(vectorGM, "Greedy-Monroe"));
+
+            double[] vectorKM = election.getDistanceVector(committeeKM);
+            systemTxt.append(NormCalculator.getNormText(vectorKM, "k-Means") + eol);
+        }
+        else {
+            //calculate general preferences winning committees
+        }
     }//GEN-LAST:event_plotResultsBtnActionPerformed
 
     private void saveElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveElectionBtnActionPerformed
@@ -892,47 +897,87 @@ public class ElectionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_saveElectionBtnActionPerformed
 
     private void loadElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadElectionBtnActionPerformed
-        //Confirmation of discarding an election that is not saved
-        boolean discard = true;
-        if(election != null && !saved){
-            int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to load an election?"
-                    + eol + "Press \"No\" to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (response == JOptionPane.NO_OPTION) {
-                discard = false;
+        if(!generalPreferencesCheckBox.isSelected()){
+            //Confirmation of discarding an election that is not saved
+            boolean discard = true;
+            if(election != null && !saved){
+                int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to load an election?"
+                        + eol + "Press \"No\" to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (response == JOptionPane.NO_OPTION) {
+                    discard = false;
+                }
+            }
+
+            if (discard){
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                int result = fileChooser.showOpenDialog(this);
+
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    Parse2dElection parser = new Parse2dElection();
+                    parser.parseFromFile(selectedFile);
+                    if(parser.getErr() == null){
+                        election = parser.getElection();
+                        nTxtField.setText(String.valueOf(election.getNumberOfVoters()));
+                        mTxtField.setText(String.valueOf(election.getNumberOfCandidates()));
+                        kTxtField.setText(String.valueOf(election.getCommitteeSize()));
+                        xLimit = parser.getxLimit();
+                        xLimitTxtField.setText(String.valueOf(xLimit));
+                        yLimit = parser.getyLimit();
+                        yLimitTxtField.setText(String.valueOf(yLimit));
+                        nClusters = parser.getnClusters();
+                        nClusterTxtField.setText(String.valueOf(nClusters));
+                        mClusters = parser.getmClusters();
+                        mClusterTxtField.setText(String.valueOf(mClusters));
+
+                        systemTxt.append("-Election loaded." + eol);
+                        plotResultsBtn.setEnabled(true);
+                        saved = true;
+                    } else {
+                        systemTxt.append(parser.getErr() + eol);
+                    }
+                } else if (result == JFileChooser.CANCEL_OPTION){
+                    systemTxt.append("-Loading cancelled." + eol);
+                }
             }
         }
-        
-        if (discard){
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-            int result = fileChooser.showOpenDialog(this);
-            
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File selectedFile = fileChooser.getSelectedFile();
-                Parse2dElection parser = new Parse2dElection();
-                parser.parseFromFile(selectedFile);
-                if(parser.getErr() == null){
-                    election = parser.getElection();
-                    nTxtField.setText(String.valueOf(election.getNumberOfVoters()));
-                    mTxtField.setText(String.valueOf(election.getNumberOfCandidates()));
-                    kTxtField.setText(String.valueOf(election.getCommitteeSize()));
-                    xLimit = parser.getxLimit();
-                    xLimitTxtField.setText(String.valueOf(xLimit));
-                    yLimit = parser.getyLimit();
-                    yLimitTxtField.setText(String.valueOf(yLimit));
-                    nClusters = parser.getnClusters();
-                    nClusterTxtField.setText(String.valueOf(nClusters));
-                    mClusters = parser.getmClusters();
-                    mClusterTxtField.setText(String.valueOf(mClusters));
-
-                    systemTxt.append("-Election loaded." + eol);
-                    plotResultsBtn.setEnabled(true);
-                    saved = true;
-                } else {
-                    systemTxt.append(parser.getErr() + eol);
+        else {
+            //Confirmation of discarding an election that is not saved
+            boolean discard = true;
+            if(election != null && !saved){
+                int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to load an election?"
+                        + eol + "Press \"No\" to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (response == JOptionPane.NO_OPTION) {
+                    discard = false;
                 }
-            } else if (result == JFileChooser.CANCEL_OPTION){
-                systemTxt.append("-Loading cancelled." + eol);
+            }
+
+            if (discard){
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                int result = fileChooser.showOpenDialog(this);
+
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = fileChooser.getSelectedFile();
+                    ParseGeneralElection parser = new ParseGeneralElection();
+                    parser.parseFromFile(selectedFile);
+                    
+                    if(parser.getErr() == null){
+                        ArrayList<Voter> voters = parser.getVoters();
+                        ArrayList<Candidate> candidates = parser.getCandidates();
+                        PreferenceProfile profile = new PreferenceProfile(voters.size(), candidates.size());
+                        k = Integer.parseInt(kTxtField.getText());
+                        election = new Election(k,voters,candidates,false);
+                        election.setProfile(profile);
+                        plotResultsBtn.setEnabled(true);
+                    }
+                    else {
+                        systemTxt.append(parser.getErr() + eol);
+                    }
+                } else if (result == JFileChooser.CANCEL_OPTION){
+                    systemTxt.append("-Loading cancelled." + eol);
+                }
             }
         }
     }//GEN-LAST:event_loadElectionBtnActionPerformed
@@ -969,7 +1014,6 @@ public class ElectionGUI extends javax.swing.JFrame {
         if(generalPreferencesCheckBox.isSelected()){
             nTxtField.setEnabled(false);
             mTxtField.setEnabled(false);
-            kTxtField.setEnabled(false);
             xLimitTxtField.setEnabled(false);
             yLimitTxtField.setEnabled(false);
             nClusterTxtField.setEnabled(false);
@@ -982,7 +1026,6 @@ public class ElectionGUI extends javax.swing.JFrame {
             
             nTxtField.setEnabled(true);
             mTxtField.setEnabled(true);
-            kTxtField.setEnabled(true);
             xLimitTxtField.setEnabled(true);
             yLimitTxtField.setEnabled(true);
             nClusterTxtField.setEnabled(true);

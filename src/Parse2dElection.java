@@ -123,7 +123,7 @@ public class Parse2dElection {
             
             fileScanner.close();
             
-            election = new Election(k,voters,candidates);
+            election = new Election(k,voters,candidates,true);
             
         } catch (FileNotFoundException ex) {
             err = "File Not Found!";

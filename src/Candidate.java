@@ -41,13 +41,27 @@ public class Candidate extends Person {
     private int pluralityScore;
     private int bordaScore;
     private int blocScore;
-    
+    private int generalParserIndex;
+
     /*
-    Μέθοδος κατασκευής νέων υποψήφιων. Μηδενικές αρχικές βαθμολογίες και
-    το boolean πεδίο selected αρχικοποιείται με τιμή false.
+    Μέθοδος κατασκευής νέων υποψήφιων με συντεταγμένες στο επίπεδο.
+    Μηδενικές αρχικές βαθμολογίες και το boolean πεδίο selected
+    αρχικοποιείται με τιμή false.
     */
     public Candidate(String name, double x, double y){
         super(name,x,y);
+        selected = false;
+        pluralityScore = 0;
+        bordaScore = 0;
+        blocScore = 0;
+    }
+    
+    /*
+    Μέθοδος κατασκευής νέων υποψήφιων χωρίς συντεταγμένες. Μηδενικές αρχικές
+    βαθμολογίες και το boolean πεδίο selected αρχικοποιείται με τιμή false.
+    */
+    public Candidate(String name){
+        super(name);
         selected = false;
         pluralityScore = 0;
         bordaScore = 0;
@@ -103,6 +117,14 @@ public class Candidate extends Person {
     
     public void setBlocScore(int bs){
         blocScore = bs;
+    }
+    
+    public int getGeneralParserIndex() {
+        return generalParserIndex;
+    }
+
+    public void setGeneralParserIndex(int generalParserIndex) {
+        this.generalParserIndex = generalParserIndex;
     }
     
     /*
