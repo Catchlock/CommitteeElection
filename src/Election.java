@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 import java.util.Vector;
 
 /*
@@ -742,6 +743,56 @@ public class Election {
         return committee;
     }
     
+    public ArrayList<Candidate> initializekMeansCommittee(){
+        ArrayList<Candidate> committee = new ArrayList(k);
+        ArrayList<Voter> voterCommittee = new ArrayList(k);
+        
+        ArrayList<Voter> kmVoters = new ArrayList(n);
+        for (Voter v: voters){
+            kmVoters.add(new Voter(v));
+        }
+        
+        Random r = new Random();
+        int firstMemberIndex = r.nextInt(n);
+        voterCommittee.add(kmVoters.get(firstMemberIndex));
+        kmVoters.remove(firstMemberIndex);
+        
+        while(voterCommittee.size() < k){
+            double total = 0;
+            for(Voter v1: kmVoters){
+                for(Voter v2: voterCommittee){
+                    v1.setKmDistance(v1.getKmDistance()+v1.distance(v2));
+                    total += v1.distance(v2);
+                }
+            }
+            
+            double bridge = 0;
+            for(Voter v: kmVoters){
+                double chance = v.getKmDistance()/total;
+                v.setKmMin(bridge);
+                v.setKmMax(bridge+chance);
+                bridge = v.getKmMax();
+            }
+            
+            double winner = r.nextDouble();
+            
+            ListIterator<Voter> it = kmVoters.listIterator();
+            while(it.hasNext()){
+                Voter v = it.next();
+                if(winner >= v.getKmMin() && winner < v.getKmMax()){
+                    voterCommittee.add(v);
+                    it.remove();
+                }
+            }
+        }
+        
+        for(Voter v: voterCommittee){
+            committee.add(v.getFirstPreference().getCandidate());
+        }
+        
+        return committee;
+    }
+    
     /*
     Μέθοδος που υλοποιεί τον αλγόριθμο ομαδοποίησης (clustering) ή k-means.
     Επιλέγονται τυχαία k υποψήφιοι, και ομαδοποιούνται οι ψηφοφόροι σε k
@@ -754,53 +805,45 @@ public class Election {
     public ArrayList<Candidate> kMeans(){
         int iterations = 0;
         ArrayList<Candidate> committee = new ArrayList(k);
-        ArrayList<ArrayList<Voter>> clusters = new ArrayList(k);
-        for (int i = 0; i < k; i++){
-            ArrayList<Voter> voterSubset = new ArrayList();
-            clusters.add(voterSubset);
-        }
+        ArrayList<ArrayList<Voter>> voterClusters = new ArrayList(k);
         
-        Collections.shuffle(candidates);
+        committee = initializekMeansCommittee();
+        
         for(int i = 0; i < k; i++){
-            committee.add(candidates.get(i));
             committee.get(i).setkMeansIndex(i);
         }
         
-        //
         while(iterations < 50){
-            boolean stop = true;
             iterations++;
+            
+            for (int i = 0; i < k; i++){
+                ArrayList<Voter> voterSubset = new ArrayList();
+                voterClusters.add(voterSubset);
+            }
             
             for (Voter v: voters){
                 Candidate c = findPreferredCandidate(v, committee);
-                clusters.get(c.getkMeansIndex()).add(v);
+                voterClusters.get(c.getkMeansIndex()).add(v);
             }
 
+            for(Candidate c: candidates){
+                c.setSelected(false);
+            }
+            
             for (int i = 0; i < k; i++){
                 int bestScore = -1;
                 Candidate representative = null;
                 for (Candidate c: candidates){
-                    calcBordaScore(clusters.get(i), c);
+                    calcBordaScore(voterClusters.get(i), c);
                     if (c.getBordaScore() > bestScore &&
                             c.getSelected() == false){
                         representative = c;
                         bestScore = c.getBordaScore();
                     }
                 }
-                if (!representative.equals(committee.get(i))){
-                    stop = false;
-                }
                 representative.setkMeansIndex(i);
                 representative.setSelected(true);
                 committee.set(i, representative);
-            }
-            
-            if(stop){
-                break;
-            }
-            
-            for (Candidate c: committee){
-                c.setSelected(false);
             }
         }
         return committee;
