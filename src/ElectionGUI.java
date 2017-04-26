@@ -629,7 +629,7 @@ public class ElectionGUI extends javax.swing.JFrame {
                     + eol + "Press \"No\" to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.NO_OPTION) {
                 discard = false;
-                systemTxt.append("Election creation cancelled." + eol);
+                systemTxt.append("-Election creation cancelled." + eol);
             }
         }
         
@@ -785,16 +785,17 @@ public class ElectionGUI extends javax.swing.JFrame {
                     election = new Election(k, voters, candidates);
                     plotResultsBtn.setEnabled(true);
                     saveElectionBtn.setEnabled(true);
-                    systemTxt.append("New election created." + eol);
+                    systemTxt.append("-New election created." + eol);
                     saved = false;
                 } else {
-                    systemTxt.append("Election creation cancelled." + eol);
+                    systemTxt.append("-Election creation cancelled." + eol);
                 }
             } 
         }
     }//GEN-LAST:event_createElectionBtnActionPerformed
 
     private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
+        systemTxt.append("-Generating results and graphing scatter plots." + eol);
         
         committeeSNTV = election.singleNonTrasferableVote();
         committeeBorda = election.kBorda();
@@ -872,10 +873,10 @@ public class ElectionGUI extends javax.swing.JFrame {
             File selectedFile = fileChooser.getSelectedFile();
             Store2dElection store = new Store2dElection(election, selectedFile, xLimit, yLimit, nClusters, mClusters);
             store.writeToFile();
-            systemTxt.append("Election saved successfully." + eol);
+            systemTxt.append("-Election saved successfully." + eol);
             saved = true;
         } else if (result == JFileChooser.CANCEL_OPTION){
-            systemTxt.append("Saving cancelled" + eol);
+            systemTxt.append("-Saving cancelled" + eol);
         }
     }//GEN-LAST:event_saveElectionBtnActionPerformed
 
@@ -913,14 +914,14 @@ public class ElectionGUI extends javax.swing.JFrame {
                     mClusters = parser.getmClusters();
                     mClusterTxtField.setText(String.valueOf(mClusters));
 
-                    systemTxt.append("Election loaded." + eol);
+                    systemTxt.append("-Election loaded." + eol);
                     plotResultsBtn.setEnabled(true);
                     saved = true;
                 } else {
                     systemTxt.append(parser.getErr() + eol);
                 }
             } else if (result == JFileChooser.CANCEL_OPTION){
-                systemTxt.append("Loading cancelled." + eol);
+                systemTxt.append("-Loading cancelled." + eol);
             }
         }
     }//GEN-LAST:event_loadElectionBtnActionPerformed

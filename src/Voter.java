@@ -41,7 +41,10 @@ import java.util.Comparator;
 */
 public class Voter extends Person implements Comparator<Candidate>{
     private PreferenceItem firstPreference;
-    
+    private double kmDistance;
+    private double kmMin;
+    private double kmMax;
+
     //Μέθοδος κατασκευής ψηφοφόρου που ορίζει όνομα και συντεταγμένες
     public Voter(String name, double x, double y){
         super(name, x, y);
@@ -51,6 +54,9 @@ public class Voter extends Person implements Comparator<Candidate>{
     public Voter(Voter v){
         super(v);
         firstPreference = v.getFirstPreference();
+        kmDistance = v.getKmDistance();
+        kmMin = v.getKmMin();
+        kmMax = v.getKmMax();
     }
     
     //Getters & Setters
@@ -62,6 +68,30 @@ public class Voter extends Person implements Comparator<Candidate>{
         this.firstPreference = firstPreference;
     }
 
+    public double getKmDistance() {
+        return kmDistance;
+    }
+
+    public void setKmDistance(double kmDistance) {
+        this.kmDistance = kmDistance;
+    }
+
+    public double getKmMin() {
+        return kmMin;
+    }
+
+    public void setKmMin(double kmMin) {
+        this.kmMin = kmMin;
+    }
+
+    public double getKmMax() {
+        return kmMax;
+    }
+
+    public void setKmMax(double kmMax) {
+        this.kmMax = kmMax;
+    }
+    
     /*
     Υλοποίηση της abstract μεθόδου compare του interface Comparator,
     για τη σύγκριση δύο υποψήφιων. Φτιαγμένη έτσι ώστε να παράγεται το
