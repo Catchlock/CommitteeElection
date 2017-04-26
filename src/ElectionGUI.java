@@ -163,6 +163,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         xLimitTxtField = new javax.swing.JTextField();
         yLimitLabel = new javax.swing.JLabel();
         yLimitTxtField = new javax.swing.JTextField();
+        generalPreferencesCheckBox = new javax.swing.JCheckBox();
         plotAreaSNTV = new javax.swing.JPanel();
         plotAreaBorda = new javax.swing.JPanel();
         plotAreaBloc = new javax.swing.JPanel();
@@ -271,8 +272,8 @@ public class ElectionGUI extends javax.swing.JFrame {
         menuPanel.setMinimumSize(new java.awt.Dimension(270, 410));
         menuPanel.setPreferredSize(new java.awt.Dimension(270, 410));
         java.awt.GridBagLayout menuPanelLayout = new java.awt.GridBagLayout();
-        menuPanelLayout.columnWidths = new int[] {45, 45, 45, 45, 45, 45};
-        menuPanelLayout.rowHeights = new int[] {40, 20, 20, 20, 5, 20, 20, 30, 20, 30, 20, 20, 40, 40};
+        menuPanelLayout.columnWidths = new int[] {10, 35, 45, 45, 45, 45, 35, 10};
+        menuPanelLayout.rowHeights = new int[] {40, 20, 20, 20, 5, 20, 20, 30, 20, 30, 20, 20, 40, 40, 10, 30};
         menuPanel.setLayout(menuPanelLayout);
 
         mainTitle.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -281,7 +282,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.gridwidth = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(mainTitle, gridBagConstraints);
 
@@ -290,7 +291,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(nLabel, gridBagConstraints);
 
@@ -299,7 +300,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(mLabel, gridBagConstraints);
 
@@ -308,7 +309,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(kLabel, gridBagConstraints);
 
@@ -319,7 +320,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(nTxtField, gridBagConstraints);
@@ -331,7 +332,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(mTxtField, gridBagConstraints);
@@ -343,7 +344,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(kTxtField, gridBagConstraints);
@@ -354,7 +355,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.gridwidth = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(nClusterTitle, gridBagConstraints);
 
@@ -363,7 +364,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 8;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(nClusterLabel, gridBagConstraints);
 
@@ -374,7 +375,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(nClusterTxtField, gridBagConstraints);
@@ -385,7 +386,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
-        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.gridwidth = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(mClusterTitle, gridBagConstraints);
 
@@ -394,7 +395,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 10;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(mClusterLabel, gridBagConstraints);
 
@@ -408,7 +409,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 10;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(mClusterTxtField, gridBagConstraints);
@@ -423,11 +424,10 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 12;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(createElectionBtn, gridBagConstraints);
 
         saveElectionBtn.setText("Save Election");
@@ -441,11 +441,10 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 12;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(saveElectionBtn, gridBagConstraints);
 
         loadElectionBtn.setText("Load Election");
@@ -458,12 +457,10 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 13;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(loadElectionBtn, gridBagConstraints);
 
         plotResultsBtn.setText("Plot Results");
@@ -477,12 +474,10 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 13;
         gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(plotResultsBtn, gridBagConstraints);
 
         xLimitLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
@@ -490,7 +485,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(xLimitLabel, gridBagConstraints);
 
@@ -501,7 +496,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(xLimitTxtField, gridBagConstraints);
@@ -511,7 +506,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridwidth = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(yLimitLabel, gridBagConstraints);
 
@@ -522,10 +517,26 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 5;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(yLimitTxtField, gridBagConstraints);
+
+        generalPreferencesCheckBox.setText("General Preferences");
+        generalPreferencesCheckBox.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        generalPreferencesCheckBox.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+        generalPreferencesCheckBox.setMaximumSize(new java.awt.Dimension(1203, 230));
+        generalPreferencesCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generalPreferencesCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 15;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        menuPanel.add(generalPreferencesCheckBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -954,6 +965,34 @@ public class ElectionGUI extends javax.swing.JFrame {
         mClusterTxtField.selectAll();
     }//GEN-LAST:event_mClusterTxtFieldFocusGained
 
+    private void generalPreferencesCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generalPreferencesCheckBoxActionPerformed
+        if(generalPreferencesCheckBox.isSelected()){
+            nTxtField.setEnabled(false);
+            mTxtField.setEnabled(false);
+            kTxtField.setEnabled(false);
+            xLimitTxtField.setEnabled(false);
+            yLimitTxtField.setEnabled(false);
+            nClusterTxtField.setEnabled(false);
+            mClusterTxtField.setEnabled(false);
+            createElectionBtn.setEnabled(false);
+            saveElectionBtn.setEnabled(false);
+            plotResultsBtn.setText("Calculate Results");
+        }
+        else {
+            
+            nTxtField.setEnabled(true);
+            mTxtField.setEnabled(true);
+            kTxtField.setEnabled(true);
+            xLimitTxtField.setEnabled(true);
+            yLimitTxtField.setEnabled(true);
+            nClusterTxtField.setEnabled(true);
+            mClusterTxtField.setEnabled(true);
+            createElectionBtn.setEnabled(true);
+            saveElectionBtn.setEnabled(true);
+            plotResultsBtn.setText("Plot Results");
+        }
+    }//GEN-LAST:event_generalPreferencesCheckBoxActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -992,6 +1031,7 @@ public class ElectionGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createElectionBtn;
+    private javax.swing.JCheckBox generalPreferencesCheckBox;
     private javax.swing.JLabel kLabel;
     private javax.swing.JTextField kTxtField;
     private javax.swing.JButton loadElectionBtn;
