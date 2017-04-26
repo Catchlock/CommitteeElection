@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
-import java.util.Vector;
 
 /*
  * The MIT License
@@ -743,56 +742,6 @@ public class Election {
         return committee;
     }
     
-    public ArrayList<Candidate> initializekMeansCommittee(){
-        ArrayList<Candidate> committee = new ArrayList(k);
-        ArrayList<Voter> voterCommittee = new ArrayList(k);
-        
-        ArrayList<Voter> kmVoters = new ArrayList(n);
-        for (Voter v: voters){
-            kmVoters.add(new Voter(v));
-        }
-        
-        Random r = new Random();
-        int firstMemberIndex = r.nextInt(n);
-        voterCommittee.add(kmVoters.get(firstMemberIndex));
-        kmVoters.remove(firstMemberIndex);
-        
-        while(voterCommittee.size() < k){
-            double total = 0;
-            for(Voter v1: kmVoters){
-                for(Voter v2: voterCommittee){
-                    v1.setKmDistance(v1.getKmDistance()+v1.distance(v2));
-                    total += v1.distance(v2);
-                }
-            }
-            
-            double bridge = 0;
-            for(Voter v: kmVoters){
-                double chance = v.getKmDistance()/total;
-                v.setKmMin(bridge);
-                v.setKmMax(bridge+chance);
-                bridge = v.getKmMax();
-            }
-            
-            double winner = r.nextDouble();
-            
-            ListIterator<Voter> it = kmVoters.listIterator();
-            while(it.hasNext()){
-                Voter v = it.next();
-                if(winner >= v.getKmMin() && winner < v.getKmMax()){
-                    voterCommittee.add(v);
-                    it.remove();
-                }
-            }
-        }
-        
-        for(Voter v: voterCommittee){
-            committee.add(v.getFirstPreference().getCandidate());
-        }
-        
-        return committee;
-    }
-    
     /*
     Μέθοδος που υλοποιεί τον αλγόριθμο ομαδοποίησης (clustering) ή k-means.
     Επιλέγονται τυχαία k υποψήφιοι, και ομαδοποιούνται οι ψηφοφόροι σε k
@@ -848,4 +797,56 @@ public class Election {
         }
         return committee;
     }
+    
+    //Αρχικοποίηση επιτροπής για τον αλγόριθμο k-means
+    public ArrayList<Candidate> initializekMeansCommittee(){
+        ArrayList<Candidate> committee = new ArrayList(k);
+        ArrayList<Voter> voterCommittee = new ArrayList(k);
+        
+        ArrayList<Voter> kmVoters = new ArrayList(n);
+        for (Voter v: voters){
+            kmVoters.add(new Voter(v));
+        }
+        
+        Random r = new Random();
+        int firstMemberIndex = r.nextInt(n);
+        voterCommittee.add(kmVoters.get(firstMemberIndex));
+        kmVoters.remove(firstMemberIndex);
+        
+        while(voterCommittee.size() < k){
+            double total = 0;
+            for(Voter v1: kmVoters){
+                for(Voter v2: voterCommittee){
+                    v1.setKmDistance(v1.getKmDistance()+v1.distance(v2));
+                    total += v1.distance(v2);
+                }
+            }
+            
+            double bridge = 0;
+            for(Voter v: kmVoters){
+                double chance = v.getKmDistance()/total;
+                v.setKmMin(bridge);
+                v.setKmMax(bridge+chance);
+                bridge = v.getKmMax();
+            }
+            
+            double winner = r.nextDouble();
+            
+            ListIterator<Voter> it = kmVoters.listIterator();
+            while(it.hasNext()){
+                Voter v = it.next();
+                if(winner >= v.getKmMin() && winner < v.getKmMax()){
+                    voterCommittee.add(v);
+                    it.remove();
+                }
+            }
+        }
+        
+        for(Voter v: voterCommittee){
+            committee.add(v.getFirstPreference().getCandidate());
+        }
+        
+        return committee;
+    }
+    
 }
