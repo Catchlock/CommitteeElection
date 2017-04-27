@@ -101,11 +101,10 @@ public class ParseGeneralElection {
                 for(int i = 0; i < times; i++){
                     Voter v = new Voter("v"+vIndex);
                     v.setProfileIndex(vIndex);
+                    v.setGeneralPrefIndices(new int[m]);
                     voters.add(v);
                     for(int j = 1; j < m+1; j++){
-                        int cIndex = Integer.parseInt(voterData[j]) - 1;
-                        Candidate c = candidates.get(cIndex);
-                        v.getGeneralPref().add(c);
+                        v.getGeneralPrefIndices()[j-1] = Integer.parseInt(voterData[j]);
                     }
                 }
                 

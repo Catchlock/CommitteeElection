@@ -37,6 +37,7 @@ import java.util.List;
 */
 public class PreferenceProfile {
     private PreferenceItem[][] profile;
+    private boolean election2D;
     
     //Constructor που αρικοποιεί τον πίνακα στις δοσμένες διαστάσεις
     public PreferenceProfile(int row, int col){
@@ -50,7 +51,8 @@ public class PreferenceProfile {
     public PreferenceProfile(ArrayList<Voter> voters,
             ArrayList<Candidate> candidates, boolean election2D){
         profile = new PreferenceItem[voters.size()][candidates.size()];
-        buildProfile(voters, candidates, election2D);
+        this.election2D = election2D;
+        buildProfile(voters, candidates);
     }
     
     //Getters & Setters
@@ -72,7 +74,8 @@ public class PreferenceProfile {
     
     //Μέθοδος που υλοποιεί την κατασκευή του προφίλ προτιμήσεων.
     public void buildProfile(ArrayList<Voter> voters,
-            ArrayList<Candidate> candidates, boolean election2D){
+            ArrayList<Candidate> candidates){
+        candidates.sort(Election.IndexComparator);
         int n = voters.size();
         int m = candidates.size();
         /*
@@ -89,8 +92,8 @@ public class PreferenceProfile {
         }
         
         profile = new PreferenceItem [n][m];
-//        List<Candidate> tempPreference = new ArrayList<>(candidates);
-//        Collections.shuffle(tempPreference);
+        List<Candidate> tempPreference = new ArrayList(m);
+        Collections.shuffle(tempPreference);
         
         /*
         Για κάθε ψηφοφόρο, ταξινομείται ο πίνακας των υποψήφιων βάσει των
@@ -104,15 +107,22 @@ public class PreferenceProfile {
         for (int row = 0; row < n; row++){
             Voter v = voters.get(row);
             if(election2D){
-                v.setGeneralPref(new ArrayList<>(candidates));
-                Collections.sort(v.getGeneralPref(), v);
+                tempPreference = new ArrayList<>(candidates);
+                Collections.sort(tempPreference, v);
+            }
+            else {
+                for(int i = 0; i < m; i++){
+                    int cIndex = v.getGeneralPrefIndices()[i] - 1;
+                    Candidate c = candidates.get(cIndex);
+                    tempPreference.add(c);
+                }
             }
 //            PreferenceItem next = null;
 //            PreferenceItem previous = null;
             PreferenceItem bridge = null;
             
             for(int i = 0; i < m; i++){
-                Candidate c = v.getGeneralPref().get(i);
+                Candidate c = tempPreference.get(i);
                 int col = c.getProfileIndex();
                 int position = i + 1;
                 profile[row][col] = new PreferenceItem(v,c,position);

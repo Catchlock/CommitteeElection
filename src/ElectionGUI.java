@@ -884,7 +884,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             committeeSNTV = election2D.singleNonTrasferableVote();
             committeeBorda = election2D.kBorda();
             committeeBloc = election2D.bloc();
-            committeeSTV = election2D.singleTransferableVote(true);
+            committeeSTV = election2D.singleTransferableVote();
             committeeGCC = election2D.greedyCC();
             committeeGM = election2D.greedyMonroe();
             committeeKM = election2D.kMeans();
@@ -968,7 +968,7 @@ public class ElectionGUI extends javax.swing.JFrame {
                 committeeSNTV = electionGP.singleNonTrasferableVote();
                 committeeBorda = electionGP.kBorda();
                 committeeBloc = electionGP.bloc();
-                committeeSTV = electionGP.singleTransferableVote(false);
+                committeeSTV = electionGP.singleTransferableVote();
                 committeeGCC = electionGP.greedyCC();
                 committeeGM = electionGP.greedyMonroe();
 

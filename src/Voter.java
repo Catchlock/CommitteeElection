@@ -45,24 +45,22 @@ public class Voter extends Person implements Comparator<Candidate>{
     private double kmDistance;
     private double kmMin;
     private double kmMax;
-    private ArrayList<Candidate> generalPref;
+    private int[] generalPrefIndices;
 
     //Μέθοδος κατασκευής ψηφοφόρου που ορίζει όνομα και συντεταγμένες
     public Voter(String name, double x, double y){
         super(name, x, y);
-        this.generalPref = new ArrayList();
     }
     
     //Μέθοδος κατασκευής ψηφοφόρου που ορίζει όνομα
     public Voter(String name){
         super(name);
-        this.generalPref = new ArrayList();
     }
     
     //Copy constructor
     public Voter(Voter v){
         super(v);
-        this.generalPref = v.getGeneralPref();
+        this.generalPrefIndices = v.getGeneralPrefIndices();
         firstPreference = v.getFirstPreference();
         kmDistance = v.getKmDistance();
         kmMin = v.getKmMin();
@@ -101,15 +99,15 @@ public class Voter extends Person implements Comparator<Candidate>{
     public void setKmMax(double kmMax) {
         this.kmMax = kmMax;
     }
+
+    public int[] getGeneralPrefIndices() {
+        return generalPrefIndices;
+    }
+
+    public void setGeneralPrefIndices(int[] generalPrefIndices) {
+        this.generalPrefIndices = generalPrefIndices;
+    }
     
-    public ArrayList<Candidate> getGeneralPref() {
-        return generalPref;
-    }
-
-    public void setGeneralPref(ArrayList<Candidate> generalPref) {
-        this.generalPref = generalPref;
-    }
-
     /*
     Υλοποίηση της abstract μεθόδου compare του interface Comparator,
     για τη σύγκριση δύο υποψήφιων. Φτιαγμένη έτσι ώστε να παράγεται το

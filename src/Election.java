@@ -46,6 +46,7 @@ public class Election {
     private int k;
     private int m;
     private int n;
+    private boolean election2D;
 
     /*
     Constructor της κλάσης, παίρνει ως ορίσματα τους πίνακες των ψηφοφόρων
@@ -58,6 +59,7 @@ public class Election {
             ArrayList<Candidate> candidates, boolean election2D){
         this.candidates = candidates;
         this.voters = voters;
+        this.election2D = election2D;
         m = candidates.size();
         n = voters.size();
         if(k < m){
@@ -102,6 +104,14 @@ public class Election {
         return voters;
     }
     
+    public boolean isElection2D() {
+        return election2D;
+    }
+
+    public void setElection2D(boolean election2D) {
+        this.election2D = election2D;
+    }
+
     /*
     Μέθοδος που υπολογίζει τη βαθμολογία σχετικής πλειοψηφίας ενός
     υποψήφιου
@@ -231,6 +241,17 @@ public class Election {
         }
         
     };
+    public static Comparator<Candidate> IndexComparator
+            = new Comparator<Candidate>(){
+
+        @Override
+        public int compare(Candidate c1, Candidate c2) {
+            int number1 = c1.getProfileIndex();
+            int number2 = c2.getProfileIndex();
+            return number1 - number2;
+        }
+        
+    };
 
     
     /*
@@ -247,6 +268,10 @@ public class Election {
        
         for (int i = 0; i < k; i++){
             committee.add(candidates.get(i));
+        }
+        
+        for(Candidate c: candidates){
+            c.setPluralityScore(0);
         }
         
         return committee;
@@ -270,6 +295,10 @@ public class Election {
             committee.add(candidates.get(i));
         }
         
+        for(Candidate c: candidates){
+            c.setBordaScore(0);
+        }
+        
         return committee;
     }
     
@@ -289,20 +318,17 @@ public class Election {
             committee.add(candidates.get(i));
         }
         
+        for(Candidate c: candidates){
+            c.setBlocScore(0);
+        }
+        
         return committee;
     }
     
     /*
     Μέθοδος που υλοποιεί τον κανόνα επιλογής επιτροπών STV.
     */
-    public ArrayList<Candidate> singleTransferableVote(boolean election2d){
-        ArrayList<Candidate> committee = new ArrayList(k);
-        calcPluralityAll();
-        int droopQuota = n /(k + 1) + 1;
-////        <Print_Test_Code>
-//        System.out.println("Droop Quota = " + droopQuota + "\n");
-////        </Print_Test_Code>
-        
+    public ArrayList<Candidate> singleTransferableVote(){
         /*
         Κρατάμε αντίγραφα των πινάκων των ψηφοφόρων και των υποψήφιων
         για να υπάρχει η δυνατότητα επαναφοράς τους στην αρχική κατάσταση
@@ -315,7 +341,14 @@ public class Election {
         for (Candidate c: candidates) {
             stvCandidates.add(new Candidate(c));
         }
-                   
+        
+        ArrayList<Candidate> committee = new ArrayList(k);
+        calcPluralityAll();
+        int droopQuota = n /(k + 1) + 1;
+////        <Print_Test_Code>
+//        System.out.println("Droop Quota = " + droopQuota + "\n");
+////        </Print_Test_Code>
+                
         Collections.shuffle(candidates);
         Collections.shuffle(voters);
         
@@ -447,7 +480,7 @@ public class Election {
         //Επαναφέρονται οι πίνακες στην αρχική τους κατάσταση
         voters = stvVoters;
         candidates = stvCandidates;
-        profile = new PreferenceProfile(voters, candidates, election2d);
+        profile = new PreferenceProfile(voters, candidates, election2D);
         return committee;
     }
     
@@ -746,6 +779,7 @@ public class Election {
         */
         voters = mVoters;
         candidates = mCandidates;
+        profile = new PreferenceProfile(voters, candidates, election2D);
         return committee;
     }
     
