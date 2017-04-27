@@ -36,7 +36,7 @@ import java.util.Scanner;
 public class ParseGeneralElection {
     private ArrayList<Voter> voters;
     private ArrayList<Candidate> candidates;
-    private PreferenceItem[][] profile;
+//    private PreferenceItem[][] profile;
     private String err;
     
     public ArrayList<Voter> getVoters() {
@@ -54,14 +54,14 @@ public class ParseGeneralElection {
     public void setCandidates(ArrayList<Candidate> candidates) {
         this.candidates = candidates;
     }
-    
-    public PreferenceItem[][] getProfile() {
-        return profile;
-    }
-
-    public void setProfile(PreferenceItem[][] profile) {
-        this.profile = profile;
-    }
+//    
+//    public PreferenceItem[][] getProfile() {
+//        return profile;
+//    }
+//
+//    public void setProfile(PreferenceItem[][] profile) {
+//        this.profile = profile;
+//    }
 
     public String getErr() {
         return err;
@@ -80,10 +80,8 @@ public class ParseGeneralElection {
             for (int i = 0; i < m; i++){
                 String candidateLine = fileScanner.nextLine();
                 String[] candidateData = candidateLine.split(",");
-                int index = Integer.parseInt(candidateData[0]);
                 String name = candidateData[1];
                 Candidate c = new Candidate(name);
-                c.setGeneralParserIndex(index);
                 c.setProfileIndex(i);
                 candidates.add(c);
             }
@@ -93,10 +91,9 @@ public class ParseGeneralElection {
             int n = Integer.parseInt(ballotInfo[0]);
             
             voters = new ArrayList(n);
-            profile = new PreferenceItem[n][m];
             int vIndex = 0;
             
-            while (voters.size() < n){
+            while(voters.size() < n){
                 String voterLine = fileScanner.nextLine();
                 String[] voterData = voterLine.split(",");
                 int times = Integer.parseInt(voterData[0]);
@@ -105,24 +102,46 @@ public class ParseGeneralElection {
                     Voter v = new Voter("v"+vIndex);
                     v.setProfileIndex(vIndex);
                     voters.add(v);
-                    PreferenceItem bridgePI = null;
-                    
                     for(int j = 1; j < m+1; j++){
                         int cIndex = Integer.parseInt(voterData[j]) - 1;
                         Candidate c = candidates.get(cIndex);
-                        profile[vIndex][cIndex] = new PreferenceItem(v,c,j);
-                        if(j == 1){
-                            v.setFirstPreference(profile[vIndex][cIndex]);
-                        }
-                        if(bridgePI != null){
-                            profile[vIndex][cIndex].setPrevious(bridgePI);
-                            bridgePI.setNext(profile[vIndex][cIndex]);
-                        }
-                        bridgePI = profile[vIndex][cIndex];
+                        v.getGeneralPref().add(c);
                     }
-                    vIndex++;
                 }
+                
             }
+//            
+//            profile = new PreferenceItem[n][m];
+//            vIndex = 0;
+//            
+//            while (voters.size() < n){
+//                String voterLine = fileScanner.nextLine();
+//                String[] voterData = voterLine.split(",");
+//                int times = Integer.parseInt(voterData[0]);
+//                
+//                for(int i = 0; i < times; i++){
+//                    Voter v = new Voter("v"+vIndex);
+//                    v.setProfileIndex(vIndex);
+//                    voters.add(v);
+//                    PreferenceItem bridgePI = null;
+//                    
+//                    for(int j = 1; j < m+1; j++){
+//                        int cIndex = Integer.parseInt(voterData[j]) - 1;
+//                        Candidate c = candidates.get(cIndex);
+//                        profile[vIndex][cIndex] = new PreferenceItem(v,c,j);
+//                        if(j == 1){
+//                            v.setFirstPreference(profile[vIndex][cIndex]);
+//                        }
+//                        if(bridgePI != null){
+//                            profile[vIndex][cIndex].setPrevious(bridgePI);
+//                            bridgePI.setNext(profile[vIndex][cIndex]);
+//                        }
+//                        bridgePI = profile[vIndex][cIndex];
+//                    }
+//                    vIndex++;
+//                }
+//            }
+
             fileScanner.close();
             
         } catch (FileNotFoundException ex) {

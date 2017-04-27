@@ -66,9 +66,7 @@ public class Election {
         else {
             this.k = m;
         }
-        if(election2D){
-            profile = new PreferenceProfile(voters, candidates);
-        }
+        profile = new PreferenceProfile(voters, candidates, election2D);
     }
     
     //Getters & Setters των διαφόρων πεδίων της κλάσης.
@@ -126,6 +124,9 @@ public class Election {
     πολυπλοκότητα m*n.
     */
     public void calcPluralityAll(){
+        for(Candidate c: candidates){
+            c.setPluralityScore(0);
+        }
         for (Voter v: voters) {
             v.getFirstPreference().getCandidate().increasePluralityByOne();
         }
@@ -190,15 +191,15 @@ public class Election {
     Μέθοδος που υπολογίζει τη συνολική βαθμολογία k-Approval ενός
     υποψήφιου.
     */
-    public void calcBlocScore(Candidate c){
-        int score = 0;
-        int col = c.getProfileIndex();
-        for(Voter v: voters){
-            int row = v.getProfileIndex();
-            score = score + profile.getItem(n,m).calcBloc(k);
-        }
-        c.setBlocScore(score);
-    }
+//    public void calcBlocScore(Candidate c){
+//        int score = 0;
+//        int col = c.getProfileIndex();
+//        for(Voter v: voters){
+//            int row = v.getProfileIndex();
+//            score = score + profile.getItem(n,m).calcBloc(k);
+//        }
+//        c.setBlocScore(score);
+//    }
     
     /*
     Μέθοδος που υπολογίζει τις βαθμολογίες k-Approval όλων των υποψήφιων.
@@ -294,7 +295,7 @@ public class Election {
     /*
     Μέθοδος που υλοποιεί τον κανόνα επιλογής επιτροπών STV.
     */
-    public ArrayList<Candidate> singleTransferableVote(){
+    public ArrayList<Candidate> singleTransferableVote(boolean election2d){
         ArrayList<Candidate> committee = new ArrayList(k);
         calcPluralityAll();
         int droopQuota = n /(k + 1) + 1;
@@ -446,7 +447,7 @@ public class Election {
         //Επαναφέρονται οι πίνακες στην αρχική τους κατάσταση
         voters = stvVoters;
         candidates = stvCandidates;
-        profile = new PreferenceProfile(voters, candidates);
+        profile = new PreferenceProfile(voters, candidates, election2d);
         return committee;
     }
     

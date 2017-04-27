@@ -41,7 +41,6 @@ public class Candidate extends Person {
     private int pluralityScore;
     private int bordaScore;
     private int blocScore;
-    private int generalParserIndex;
 
     /*
     Μέθοδος κατασκευής νέων υποψήφιων με συντεταγμένες στο επίπεδο.
@@ -117,14 +116,6 @@ public class Candidate extends Person {
     
     public void setBlocScore(int bs){
         blocScore = bs;
-    }
-    
-    public int getGeneralParserIndex() {
-        return generalParserIndex;
-    }
-
-    public void setGeneralParserIndex(int generalParserIndex) {
-        this.generalParserIndex = generalParserIndex;
     }
     
     /*

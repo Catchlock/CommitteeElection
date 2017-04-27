@@ -1,6 +1,7 @@
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
@@ -38,7 +39,8 @@ import org.jfree.chart.ChartPanel;
 public class ElectionGUI extends javax.swing.JFrame {
 
     private final String eol = System.getProperty("line.separator");
-    private Election election;
+    private Election election2D;
+    private Election electionGP;
     private int n = 300;
     private int m = 100;
     private int nClusters = 1;
@@ -61,70 +63,141 @@ public class ElectionGUI extends javax.swing.JFrame {
     public ElectionGUI() {
         initComponents();
     }
-    
-    public void setElection (Election election){
-        this.election = election;
+
+    public Election getElection2D() {
+        return election2D;
     }
-    
-    public Election getElection (){
-        return election;
+
+    public void setElection2D(Election election2D) {
+        this.election2D = election2D;
     }
-    
-    public void setN(int n){
-        this.n = n;
+
+    public Election getElectionGP() {
+        return electionGP;
     }
-    
-    public int getN(){
+
+    public void setElectionGP(Election electionGP) {
+        this.electionGP = electionGP;
+    }
+
+    public int getN() {
         return n;
     }
-    
-    public void setNClusters(int nClusters){
-        this.nClusters = nClusters;
+
+    public void setN(int n) {
+        this.n = n;
     }
-    
-    public int getNClusters(){
-        return nClusters;
-    }
-    
-    public void setM(int m){
-        this.m = m;
-    }
-    
-    public int getM(){
+
+    public int getM() {
         return m;
     }
-    
-    public void setMClusters(int mClusters){
-        this.mClusters = mClusters;
+
+    public void setM(int m) {
+        this.m = m;
     }
-    
-    public int getMClusters(){
+
+    public int getnClusters() {
+        return nClusters;
+    }
+
+    public void setnClusters(int nClusters) {
+        this.nClusters = nClusters;
+    }
+
+    public int getmClusters() {
         return mClusters;
     }
-    
-    public void setK(int k){
-        this.k = k;
+
+    public void setmClusters(int mClusters) {
+        this.mClusters = mClusters;
     }
-    
-    public int getK(){
+
+    public int getK() {
         return k;
     }
-    
-    public void setXRange(int xRange){
-        this.xLimit = xRange;
+
+    public void setK(int k) {
+        this.k = k;
     }
-    
-    public int getXRange(){
+
+    public int getxLimit() {
         return xLimit;
     }
-    
-    
-    public void setYRange(int yRange){
-        this.yLimit = yRange;
+
+    public void setxLimit(int xLimit) {
+        this.xLimit = xLimit;
     }
-    
-    public int getYRange(){
+
+    public int getyLimit() {
         return yLimit;
+    }
+
+    public void setyLimit(int yLimit) {
+        this.yLimit = yLimit;
+    }
+
+    public ArrayList<Candidate> getCommitteeSNTV() {
+        return committeeSNTV;
+    }
+
+    public void setCommitteeSNTV(ArrayList<Candidate> committeeSNTV) {
+        this.committeeSNTV = committeeSNTV;
+    }
+
+    public ArrayList<Candidate> getCommitteeBorda() {
+        return committeeBorda;
+    }
+
+    public void setCommitteeBorda(ArrayList<Candidate> committeeBorda) {
+        this.committeeBorda = committeeBorda;
+    }
+
+    public ArrayList<Candidate> getCommitteeBloc() {
+        return committeeBloc;
+    }
+
+    public void setCommitteeBloc(ArrayList<Candidate> committeeBloc) {
+        this.committeeBloc = committeeBloc;
+    }
+
+    public ArrayList<Candidate> getCommitteeSTV() {
+        return committeeSTV;
+    }
+
+    public void setCommitteeSTV(ArrayList<Candidate> committeeSTV) {
+        this.committeeSTV = committeeSTV;
+    }
+
+    public ArrayList<Candidate> getCommitteeGCC() {
+        return committeeGCC;
+    }
+
+    public void setCommitteeGCC(ArrayList<Candidate> committeeGCC) {
+        this.committeeGCC = committeeGCC;
+    }
+
+    public ArrayList<Candidate> getCommitteeGM() {
+        return committeeGM;
+    }
+
+    public void setCommitteeGM(ArrayList<Candidate> committeeGM) {
+        this.committeeGM = committeeGM;
+    }
+
+    public ArrayList<Candidate> getCommitteeKM() {
+        return committeeKM;
+    }
+
+    public void setCommitteeKM(ArrayList<Candidate> committeeKM) {
+        this.committeeKM = committeeKM;
+    }
+
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
     }
     
     /**
@@ -167,7 +240,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         plotAreaSNTV = new javax.swing.JPanel();
         plotAreaBorda = new javax.swing.JPanel();
         plotAreaBloc = new javax.swing.JPanel();
-        titlePanel = new javax.swing.JPanel();
+        systemPanel = new javax.swing.JPanel();
         systemPane = new javax.swing.JScrollPane();
         systemTxt = new javax.swing.JTextArea();
 
@@ -612,8 +685,8 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         getContentPane().add(plotAreaBloc, gridBagConstraints);
 
-        titlePanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        titlePanel.setLayout(new java.awt.BorderLayout());
+        systemPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        systemPanel.setLayout(new java.awt.BorderLayout());
 
         systemTxt.setEditable(false);
         systemTxt.setColumns(20);
@@ -621,22 +694,22 @@ public class ElectionGUI extends javax.swing.JFrame {
         systemTxt.setRows(5);
         systemPane.setViewportView(systemTxt);
 
-        titlePanel.add(systemPane, java.awt.BorderLayout.CENTER);
+        systemPanel.add(systemPane, java.awt.BorderLayout.CENTER);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        getContentPane().add(titlePanel, gridBagConstraints);
+        getContentPane().add(systemPanel, gridBagConstraints);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void createElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createElectionBtnActionPerformed
-        //Confirmation of discarding an election that is not saved
+        //Confirmation of discarding an election2D that is not saved
         boolean discard = true;
-        if(election != null && !saved){
+        if(election2D != null && !saved){
             int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to create a new election?"
                     + eol + "Press \"No\" to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.NO_OPTION) {
@@ -659,7 +732,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
             catch(Exception e){
                 nTxtField.setBackground(Color.cyan);
-                err = err + "Enter a valid voter population (max 1000)." + eol;
+                err = err + "-Error: Value " + nTxtField.getText() + " is not a valid voter population size. Enter a valid integer (max 1000)." + eol;
             }
             
             try{
@@ -671,7 +744,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
             catch(Exception e){
                 mTxtField.setBackground(Color.cyan);
-                err = err + "Enter a valid candidate population (max 1000)." + eol;
+                err = err + "-Error: Value " + mTxtField.getText() + " is not a valid candidate population size. Enter a valid integer (max 1000)." + eol;
             }
             
             try{
@@ -683,7 +756,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
             catch(Exception e){
                 kTxtField.setBackground(Color.cyan);
-                err = err + "Maximum committee size is the smallest number " + eol + "between 100 and the candidates population (" + m + ")" + eol;
+                err = err + "-Error: Value " + kTxtField.getText() + " is not a valid committee size. Maximum size is the minimum between 100 and the candidate population." + eol;
             }
             
             try{
@@ -695,7 +768,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
             catch(Exception e){
                 xLimitTxtField.setBackground(Color.cyan);
-                err = err + "Maximum x-Axis value goes up to 100." + eol;
+                err = err + "-Error: Maximum x-Axis value goes up to 100." + eol;
             }
             
             try{
@@ -707,7 +780,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
             catch(Exception e){
                 yLimitTxtField.setBackground(Color.cyan);
-                err = err + "Maximum y-Axis value goes up to 100." + eol;
+                err = err + "-Error: Maximum y-Axis value goes up to 100." + eol;
             }
             
             try{
@@ -719,7 +792,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
             catch(Exception e){
                 nClusterTxtField.setBackground(Color.cyan);
-                err = err + "Maximum number of voter clusters is 20." + eol;
+                err = err + "-Error: Maximum number of voter clusters is 20." + eol;
             }
             
             try{
@@ -731,11 +804,11 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
             catch(Exception e){
                 mClusterTxtField.setBackground(Color.cyan);
-                err = err + "Maximum number of candidate clusters is 20." + eol;
+                err = err + "-Error: Maximum number of candidate clusters is 20." + eol;
             }
             
             if (err != ""){
-                JOptionPane.showMessageDialog(this, err);
+                systemTxt.append(err);
             }
             else {
                 nTxtField.setBackground(Color.white);
@@ -794,7 +867,7 @@ public class ElectionGUI extends javax.swing.JFrame {
                 }
 
                 if (!cancelled){
-                    election = new Election(k, voters, candidates, true);
+                    election2D = new Election(k, voters, candidates, true);
                     plotResultsBtn.setEnabled(true);
                     saveElectionBtn.setEnabled(true);
                     systemTxt.append("-New election created." + eol);
@@ -807,121 +880,133 @@ public class ElectionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_createElectionBtnActionPerformed
 
     private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
-        
-
         if(!generalPreferencesCheckBox.isSelected()){
-            committeeSNTV = election.singleNonTrasferableVote();
-            committeeBorda = election.kBorda();
-            committeeBloc = election.bloc();
-            committeeSTV = election.singleTransferableVote();
-            committeeGCC = election.greedyCC();
-            committeeGM = election.greedyMonroe();
-            committeeKM = election.kMeans();
+            committeeSNTV = election2D.singleNonTrasferableVote();
+            committeeBorda = election2D.kBorda();
+            committeeBloc = election2D.bloc();
+            committeeSTV = election2D.singleTransferableVote(true);
+            committeeGCC = election2D.greedyCC();
+            committeeGM = election2D.greedyMonroe();
+            committeeKM = election2D.kMeans();
             
             systemTxt.append("-Generating results and graphing scatter plots." + eol);
-            ChartPanel chartSNTV = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeSNTV, "SNTV");
+            ChartPanel chartSNTV = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeSNTV, "SNTV");
             plotAreaSNTV.setLayout(new java.awt.BorderLayout());
             plotAreaSNTV.add(chartSNTV,BorderLayout.CENTER);
             plotAreaSNTV.validate();
 
-            ChartPanel chartBorda = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeBorda, "k-Borda");
+            ChartPanel chartBorda = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeBorda, "k-Borda");
             plotAreaBorda.setLayout(new java.awt.BorderLayout());
             plotAreaBorda.add(chartBorda,BorderLayout.CENTER);
             plotAreaBorda.validate();
 
-            ChartPanel chartBloc = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeBloc, "Bloc");
+            ChartPanel chartBloc = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeBloc, "Bloc");
             plotAreaBloc.setLayout(new java.awt.BorderLayout());
             plotAreaBloc.add(chartBloc,BorderLayout.CENTER);
             plotAreaBloc.validate();
 
-            ChartPanel chartSTV = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeSTV, "STV");
+            ChartPanel chartSTV = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeSTV, "STV");
             plotAreaSTV.setLayout(new java.awt.BorderLayout());
             plotAreaSTV.add(chartSTV,BorderLayout.CENTER);
             plotAreaSTV.validate();
 
-            ChartPanel chartGCC = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeGCC, "Greedy-CC");
+            ChartPanel chartGCC = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeGCC, "Greedy-CC");
             plotAreaGCC.setLayout(new java.awt.BorderLayout());
             plotAreaGCC.add(chartGCC,BorderLayout.CENTER);
             plotAreaGCC.validate();
 
-            ChartPanel chartGM = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeGM, "Greedy-Monroe");
+            ChartPanel chartGM = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeGM, "Greedy-Monroe");
             plotAreaGM.setLayout(new java.awt.BorderLayout());
             plotAreaGM.add(chartGM,BorderLayout.CENTER);
             plotAreaGM.validate();
 
-            ChartPanel chartKM = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeKM, "k-Means");
+            ChartPanel chartKM = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeKM, "k-Means");
             plotAreaKM.setLayout(new java.awt.BorderLayout());
             plotAreaKM.add(chartKM,BorderLayout.CENTER);
             plotAreaKM.validate();
 
             //ProportionalityTest, calculating norms
-            double[] vectorSNTV = election.getDistanceVector(committeeSNTV);
+            double[] vectorSNTV = election2D.getDistanceVector(committeeSNTV);
             systemTxt.append(NormCalculator.getNormText(vectorSNTV, "SNTV"));
 
-            double[] vectorBorda = election.getDistanceVector(committeeBorda);
+            double[] vectorBorda = election2D.getDistanceVector(committeeBorda);
             systemTxt.append(NormCalculator.getNormText(vectorBorda, "k-Borda"));
 
-            double[] vectorBloc = election.getDistanceVector(committeeBloc);
+            double[] vectorBloc = election2D.getDistanceVector(committeeBloc);
             systemTxt.append(NormCalculator.getNormText(vectorBloc, "Bloc"));
 
-            double[] vectorSTV = election.getDistanceVector(committeeSTV);
+            double[] vectorSTV = election2D.getDistanceVector(committeeSTV);
             systemTxt.append(NormCalculator.getNormText(vectorSTV, "STV"));
 
-            double[] vectorGCC = election.getDistanceVector(committeeGCC);
+            double[] vectorGCC = election2D.getDistanceVector(committeeGCC);
             systemTxt.append(NormCalculator.getNormText(vectorGCC, "Greedy-CC"));
 
-            double[] vectorGM = election.getDistanceVector(committeeGM);
+            double[] vectorGM = election2D.getDistanceVector(committeeGM);
             systemTxt.append(NormCalculator.getNormText(vectorGM, "Greedy-Monroe"));
 
-            double[] vectorKM = election.getDistanceVector(committeeKM);
+            double[] vectorKM = election2D.getDistanceVector(committeeKM);
             systemTxt.append(NormCalculator.getNormText(vectorKM, "k-Means") + eol);
         }
         else {
-            k = Integer.parseInt(kTxtField.getText());
-            m = election.getNumberOfCandidates();
-            if(k < m){
-                election.setCommitteeSize(k);
-            }
-            else {
-                kTxtField.setText(String.valueOf(m));
-                election.setCommitteeSize(m);
-            }
+            String err = "";
+            m = electionGP.getNumberOfCandidates();
             
-            committeeSNTV = election.singleNonTrasferableVote();
-            committeeBorda = election.kBorda();
-            committeeBloc = election.bloc();
-            committeeSTV = election.singleTransferableVote();
-            committeeGCC = election.greedyCC();
-            committeeGM = election.greedyMonroe();
-            
-            systemTxt.append(eol + "SNTV Winning Committee:" + eol);
-            for (Candidate c: committeeSNTV){
-                systemTxt.append("        " + c.getName() + eol);
+            try{
+                int x = Integer.parseInt(kTxtField.getText());
+                if (x < 1 || x > 100 || x > m){
+                    throw (new Exception());
+                }
+                k = x;
+                electionGP.setCommitteeSize(k);
+            }
+            catch(Exception e){
+                kTxtField.setBackground(Color.cyan);
+                err = "-Error: Value " + kTxtField.getText() + " is not a valid committee size. Maximum size is the minimum between 100 and the candidate population." + eol;
             }
             
-            systemTxt.append(eol + "k-Borda Winning Committee:" + eol);
-            for (Candidate c: committeeBorda){
-                systemTxt.append("        " + c.getName() + eol);
+            if(err == ""){
+                committeeSNTV = electionGP.singleNonTrasferableVote();
+                committeeBorda = electionGP.kBorda();
+                committeeBloc = electionGP.bloc();
+                committeeSTV = electionGP.singleTransferableVote(false);
+                committeeGCC = electionGP.greedyCC();
+                committeeGM = electionGP.greedyMonroe();
+
+                systemTxt.append(eol + "SNTV Winning Committee:" + eol);
+                for (Candidate c: committeeSNTV){
+                    systemTxt.append("        " + c.getName() + eol);
+                }
+
+                systemTxt.append(eol + "k-Borda Winning Committee:" + eol);
+                for (Candidate c: committeeBorda){
+                    systemTxt.append("        " + c.getName() + eol);
+                }
+
+                systemTxt.append(eol + "Bloc Winning Committee:" + eol);
+                for (Candidate c: committeeBloc){
+                    systemTxt.append("        " + c.getName() + eol);
+                }
+
+                systemTxt.append(eol + "STV Winning Committee:" + eol);
+                for (Candidate c: committeeSTV){
+                    systemTxt.append("        " + c.getName() + eol);
+                }
+
+                systemTxt.append(eol + "Greedy-CC Winning Committee:" + eol);
+                for (Candidate c: committeeGCC){
+                    systemTxt.append("        " + c.getName() + eol);
+                }
+
+                systemTxt.append(eol + "Greedy-Monroe Winning Committee:" + eol);
+                for (Candidate c: committeeGM){
+                    systemTxt.append("        " + c.getName() + eol);
+                }
+                
+                systemTxt.append(eol + "-----------------------------" + eol + eol);
             }
-            
-            systemTxt.append(eol + "Bloc Winning Committee:" + eol);
-            for (Candidate c: committeeBloc){
-                systemTxt.append("        " + c.getName() + eol);
-            }
-            
-            systemTxt.append(eol + "STV Winning Committee:" + eol);
-            for (Candidate c: committeeSTV){
-                systemTxt.append("        " + c.getName() + eol);
-            }
-            
-            systemTxt.append(eol + "Greedy-CC Winning Committee:" + eol);
-            for (Candidate c: committeeGCC){
-                systemTxt.append("        " + c.getName() + eol);
-            }
-            
-            systemTxt.append(eol + "Greedy-Monroe Winning Committee:" + eol);
-            for (Candidate c: committeeGM){
-                systemTxt.append("        " + c.getName() + eol);
+            else{
+                systemTxt.append(err);
+                systemTxt.append("-Calculating winning committees cancelled. Please choose a new committee size and try again.");
             }
         }
     }//GEN-LAST:event_plotResultsBtnActionPerformed
@@ -934,7 +1019,7 @@ public class ElectionGUI extends javax.swing.JFrame {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            Store2dElection store = new Store2dElection(election, selectedFile, xLimit, yLimit, nClusters, mClusters);
+            Store2dElection store = new Store2dElection(election2D, selectedFile, xLimit, yLimit, nClusters, mClusters);
             store.writeToFile();
             systemTxt.append("-Election saved successfully." + eol);
             saved = true;
@@ -945,9 +1030,9 @@ public class ElectionGUI extends javax.swing.JFrame {
 
     private void loadElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadElectionBtnActionPerformed
         if(!generalPreferencesCheckBox.isSelected()){
-            //Confirmation of discarding an election that is not saved
+            //Confirmation of discarding an election2D that is not saved
             boolean discard = true;
-            if(election != null && !saved){
+            if(election2D != null && !saved){
                 int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to load an election?"
                         + eol + "Press \"No\" to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.NO_OPTION) {
@@ -965,10 +1050,10 @@ public class ElectionGUI extends javax.swing.JFrame {
                     Parse2dElection parser = new Parse2dElection();
                     parser.parseFromFile(selectedFile);
                     if(parser.getErr() == null){
-                        election = parser.getElection();
-                        nTxtField.setText(String.valueOf(election.getNumberOfVoters()));
-                        mTxtField.setText(String.valueOf(election.getNumberOfCandidates()));
-                        kTxtField.setText(String.valueOf(election.getCommitteeSize()));
+                        election2D = parser.getElection();
+                        nTxtField.setText(String.valueOf(election2D.getNumberOfVoters()));
+                        mTxtField.setText(String.valueOf(election2D.getNumberOfCandidates()));
+                        kTxtField.setText(String.valueOf(election2D.getCommitteeSize()));
                         xLimit = parser.getxLimit();
                         xLimitTxtField.setText(String.valueOf(xLimit));
                         yLimit = parser.getyLimit();
@@ -990,42 +1075,43 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         }
         else {
-            //Confirmation of discarding an election that is not saved
-            boolean discard = true;
-            if(election != null && !saved){
-                int response = JOptionPane.showConfirmDialog(null, "Current election is not saved, are you sure you want to load an election?"
-                        + eol + "Press \"No\" to save current election in a file.", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                if (response == JOptionPane.NO_OPTION) {
-                    discard = false;
-                }
-            }
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            int result = fileChooser.showOpenDialog(this);
 
-            if (discard){
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-                int result = fileChooser.showOpenDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                ParseGeneralElection parser = new ParseGeneralElection();
+                parser.parseFromFile(selectedFile);
 
-                if (result == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = fileChooser.getSelectedFile();
-                    ParseGeneralElection parser = new ParseGeneralElection();
-                    parser.parseFromFile(selectedFile);
+                if(parser.getErr() == null){
+                    ArrayList<Voter> voters = parser.getVoters();
+                    ArrayList<Candidate> candidates = parser.getCandidates();
+                    n = voters.size();
+                    m = candidates.size();
+                    try{
+                        int x = Integer.parseInt(kTxtField.getText());
+                        if (x < 1 || x > 100 || x > m){
+                            throw (new Exception());
+                        }
+                        k = x;
+                    }
+                    catch(Exception e){
+                        kTxtField.setBackground(Color.cyan);
+                        kTxtField.setText("1");
+                        k = 1;
+                        systemTxt.append("-Committee size was invalid. It has been set equal to 1." + eol);
+                    }
                     
-                    if(parser.getErr() == null){
-                        ArrayList<Voter> voters = parser.getVoters();
-                        ArrayList<Candidate> candidates = parser.getCandidates();
-                        PreferenceProfile profile = new PreferenceProfile(voters.size(), candidates.size());
-                        profile.setProfile(parser.getProfile());
-                        k = Integer.parseInt(kTxtField.getText());
-                        election = new Election(k,voters,candidates,false);
-                        election.setProfile(profile);
-                        plotResultsBtn.setEnabled(true);
-                    }
-                    else {
-                        systemTxt.append(parser.getErr() + eol);
-                    }
-                } else if (result == JFileChooser.CANCEL_OPTION){
-                    systemTxt.append("-Loading cancelled." + eol);
+                    electionGP = new Election(k,voters,candidates,false);
+                    plotResultsBtn.setEnabled(true);
+                    systemTxt.append("-Election " + selectedFile.getName() + " has been loaded successfully." + eol);
                 }
+                else {
+                    systemTxt.append(parser.getErr() + eol);
+                }
+            } else if (result == JFileChooser.CANCEL_OPTION){
+                systemTxt.append("-Loading cancelled." + eol);
             }
         }
     }//GEN-LAST:event_loadElectionBtnActionPerformed
@@ -1069,9 +1155,34 @@ public class ElectionGUI extends javax.swing.JFrame {
             createElectionBtn.setEnabled(false);
             saveElectionBtn.setEnabled(false);
             plotResultsBtn.setText("Calculate Results");
+            
+            GridBagConstraints gbc = new java.awt.GridBagConstraints();
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            gbc.gridwidth = 3;
+            gbc.gridheight = 2;
+            gbc.fill = java.awt.GridBagConstraints.BOTH;
+            getContentPane().add(systemPanel, gbc);
+            
+            gbc = new java.awt.GridBagConstraints();
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            gbc.fill = java.awt.GridBagConstraints.BOTH;
+            getContentPane().add(plotAreaSNTV, gbc);
+            
+            gbc = new java.awt.GridBagConstraints();
+            gbc.gridx = 2;
+            gbc.gridy = 1;
+            gbc.fill = java.awt.GridBagConstraints.BOTH;
+            getContentPane().add(plotAreaBorda, gbc);
+            
+            gbc = new java.awt.GridBagConstraints();
+            gbc.gridx = 3;
+            gbc.gridy = 1;
+            gbc.fill = java.awt.GridBagConstraints.BOTH;
+            getContentPane().add(plotAreaBloc, gbc);
         }
         else {
-            
             nTxtField.setEnabled(true);
             mTxtField.setEnabled(true);
             xLimitTxtField.setEnabled(true);
@@ -1081,6 +1192,14 @@ public class ElectionGUI extends javax.swing.JFrame {
             createElectionBtn.setEnabled(true);
             saveElectionBtn.setEnabled(true);
             plotResultsBtn.setText("Plot Results");
+            
+            GridBagConstraints gbc = new java.awt.GridBagConstraints();
+            gbc.gridx = 1;
+            gbc.gridy = 2;
+            gbc.gridwidth = 3;
+            gbc.gridheight = 1;
+            gbc.fill = java.awt.GridBagConstraints.BOTH;
+            getContentPane().add(systemPanel, gbc);
         }
     }//GEN-LAST:event_generalPreferencesCheckBoxActionPerformed
 
@@ -1148,8 +1267,8 @@ public class ElectionGUI extends javax.swing.JFrame {
     private javax.swing.JButton plotResultsBtn;
     private javax.swing.JButton saveElectionBtn;
     private javax.swing.JScrollPane systemPane;
+    private javax.swing.JPanel systemPanel;
     private javax.swing.JTextArea systemTxt;
-    private javax.swing.JPanel titlePanel;
     private javax.swing.JLabel xLimitLabel;
     private javax.swing.JTextField xLimitTxtField;
     private javax.swing.JLabel yLimitLabel;

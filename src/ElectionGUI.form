@@ -2404,7 +2404,7 @@
         </DimensionLayout>
       </Layout>
     </Container>
-    <Container class="javax.swing.JPanel" name="titlePanel">
+    <Container class="javax.swing.JPanel" name="systemPanel">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
@@ -3142,11 +3142,11 @@
         <CodeMethod name="add" class="java.awt.Container" parameterTypes="java.awt.Component, java.lang.Object"/>
       </StatementProvider>
       <Parameters>
-        <CodeExpression id="180_titlePanel">
-          <CodeVariable name="titlePanel" type="8194" declaredType="javax.swing.JPanel"/>
+        <CodeExpression id="180_systemPanel">
+          <CodeVariable name="systemPanel" type="8194" declaredType="javax.swing.JPanel"/>
           <ExpressionOrigin>
             <ExpressionProvider type="ComponentRef">
-              <ComponentRef name="titlePanel"/>
+              <ComponentRef name="systemPanel"/>
             </ExpressionProvider>
           </ExpressionOrigin>
         </CodeExpression>
