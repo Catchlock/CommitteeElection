@@ -172,6 +172,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         systemTxt = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Committee Elections v0.9");
         setMinimumSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
@@ -806,17 +807,18 @@ public class ElectionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_createElectionBtnActionPerformed
 
     private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
+        committeeSNTV = election.singleNonTrasferableVote();
+        committeeBorda = election.kBorda();
+        committeeBloc = election.bloc();
+        committeeSTV = election.singleTransferableVote();
+        committeeGCC = election.greedyCC();
+        committeeGM = election.greedyMonroe();
+
         if(!generalPreferencesCheckBox.isSelected()){
-            systemTxt.append("-Generating results and graphing scatter plots." + eol);
-
-            committeeSNTV = election.singleNonTrasferableVote();
-            committeeBorda = election.kBorda();
-            committeeBloc = election.bloc();
-            committeeSTV = election.singleTransferableVote();
-            committeeGCC = election.greedyCC();
-            committeeGM = election.greedyMonroe();
+            
             committeeKM = election.kMeans();
-
+            
+            systemTxt.append("-Generating results and graphing scatter plots." + eol);
             ChartPanel chartSNTV = ChartPanelMaker.createChart(election.getVoters(), election.getCandidates(), committeeSNTV, "SNTV");
             plotAreaSNTV.setLayout(new java.awt.BorderLayout());
             plotAreaSNTV.add(chartSNTV,BorderLayout.CENTER);
@@ -875,7 +877,35 @@ public class ElectionGUI extends javax.swing.JFrame {
             systemTxt.append(NormCalculator.getNormText(vectorKM, "k-Means") + eol);
         }
         else {
-            //calculate general preferences winning committees
+            systemTxt.append(eol + "SNTV Winning Committee:" + eol);
+            for (Candidate c: committeeSNTV){
+                systemTxt.append("        " + c.getName() + eol);
+            }
+            
+            systemTxt.append(eol + "k-Borda Winning Committee:" + eol);
+            for (Candidate c: committeeBorda){
+                systemTxt.append("        " + c.getName() + eol);
+            }
+            
+            systemTxt.append(eol + "Bloc Winning Committee:" + eol);
+            for (Candidate c: committeeBloc){
+                systemTxt.append("        " + c.getName() + eol);
+            }
+            
+            systemTxt.append(eol + "STV Winning Committee:" + eol);
+            for (Candidate c: committeeSTV){
+                systemTxt.append("        " + c.getName() + eol);
+            }
+            
+            systemTxt.append(eol + "Greedy-CC Winning Committee:" + eol);
+            for (Candidate c: committeeGCC){
+                systemTxt.append("        " + c.getName() + eol);
+            }
+            
+            systemTxt.append(eol + "Greedy-Monroe Winning Committee:" + eol);
+            for (Candidate c: committeeGM){
+                systemTxt.append("        " + c.getName() + eol);
+            }
         }
     }//GEN-LAST:event_plotResultsBtnActionPerformed
 
@@ -967,6 +997,7 @@ public class ElectionGUI extends javax.swing.JFrame {
                         ArrayList<Voter> voters = parser.getVoters();
                         ArrayList<Candidate> candidates = parser.getCandidates();
                         PreferenceProfile profile = new PreferenceProfile(voters.size(), candidates.size());
+                        profile.setProfile(parser.getProfile());
                         k = Integer.parseInt(kTxtField.getText());
                         election = new Election(k,voters,candidates,false);
                         election.setProfile(profile);
