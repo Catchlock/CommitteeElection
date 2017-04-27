@@ -807,15 +807,15 @@ public class ElectionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_createElectionBtnActionPerformed
 
     private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
-        committeeSNTV = election.singleNonTrasferableVote();
-        committeeBorda = election.kBorda();
-        committeeBloc = election.bloc();
-        committeeSTV = election.singleTransferableVote();
-        committeeGCC = election.greedyCC();
-        committeeGM = election.greedyMonroe();
+        
 
         if(!generalPreferencesCheckBox.isSelected()){
-            
+            committeeSNTV = election.singleNonTrasferableVote();
+            committeeBorda = election.kBorda();
+            committeeBloc = election.bloc();
+            committeeSTV = election.singleTransferableVote();
+            committeeGCC = election.greedyCC();
+            committeeGM = election.greedyMonroe();
             committeeKM = election.kMeans();
             
             systemTxt.append("-Generating results and graphing scatter plots." + eol);
@@ -877,6 +877,23 @@ public class ElectionGUI extends javax.swing.JFrame {
             systemTxt.append(NormCalculator.getNormText(vectorKM, "k-Means") + eol);
         }
         else {
+            k = Integer.parseInt(kTxtField.getText());
+            m = election.getNumberOfCandidates();
+            if(k < m){
+                election.setCommitteeSize(k);
+            }
+            else {
+                kTxtField.setText(String.valueOf(m));
+                election.setCommitteeSize(m);
+            }
+            
+            committeeSNTV = election.singleNonTrasferableVote();
+            committeeBorda = election.kBorda();
+            committeeBloc = election.bloc();
+            committeeSTV = election.singleTransferableVote();
+            committeeGCC = election.greedyCC();
+            committeeGM = election.greedyMonroe();
+            
             systemTxt.append(eol + "SNTV Winning Committee:" + eol);
             for (Candidate c: committeeSNTV){
                 systemTxt.append("        " + c.getName() + eol);
