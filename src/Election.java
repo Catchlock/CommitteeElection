@@ -504,16 +504,6 @@ public class Election {
         return preferredCandidate;
     }
     
-    public double[] getDistanceVector(ArrayList<Candidate> committee){
-        double[] distanceVector = new double[n];
-        for(int i = 0; i < n; i++){
-            Candidate c = findPreferredCandidate(voters.get(i),committee);
-            distanceVector[i] = voters.get(i).distance(c);
-        }
-        
-        return distanceVector;
-    }
-    
     /*
     Μέθοδος που υπολογίζει τη συνολική ικανοποίηση ενός συνόλου ψηφοφόρων
     για μία επιτροπή. ΥΚάθε ψηφοφόρος αντλεί ικανοποίηση μόνο από τον
@@ -533,6 +523,15 @@ public class Election {
         return satScore;
     }
     
+    public double[] getDistanceVector(ArrayList<Candidate> committee){
+        double[] distanceVector = new double[n];
+        for(int i = 0; i < n; i++){
+            Candidate c = findPreferredCandidate(voters.get(i),committee);
+            distanceVector[i] = voters.get(i).distance(c);
+        }
+        
+        return distanceVector;
+    }
     
     /*
     Μέθοδος που υλοποιεί τον άπληστο προσεγγιστικό αλγόριθμο του κανόνα
