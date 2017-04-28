@@ -200,6 +200,37 @@ public class ElectionGUI extends javax.swing.JFrame {
         this.saved = saved;
     }
     
+    public void clearGraphPanels(){
+        plotAreaSNTV.removeAll();
+        plotAreaSNTV.revalidate();
+        plotAreaSNTV.repaint();
+        
+        plotAreaBorda.removeAll();
+        plotAreaBorda.revalidate();
+        plotAreaBorda.repaint();
+        
+        plotAreaBloc.removeAll();
+        plotAreaBloc.revalidate();
+        plotAreaBloc.repaint();
+        
+        plotAreaSTV.removeAll();
+        plotAreaSTV.revalidate();
+        plotAreaSTV.repaint();
+        
+        plotAreaGCC.removeAll();
+        plotAreaGCC.revalidate();
+        plotAreaGCC.repaint();
+        
+        plotAreaGM.removeAll();
+        plotAreaGM.revalidate();
+        plotAreaGM.repaint();
+        
+        plotAreaKM.removeAll();
+        plotAreaKM.revalidate();
+        plotAreaKM.repaint();
+        
+    }
+    
     /**
      * This method is called from within the constructor to initialize the
      * form. WARNING: Do NOT modify this code. The content of this method is
@@ -881,45 +912,46 @@ public class ElectionGUI extends javax.swing.JFrame {
 
     private void plotResultsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_plotResultsBtnActionPerformed
         if(!generalPreferencesCheckBox.isSelected()){
-            committeeSNTV = election2D.singleNonTrasferableVote();
-            committeeBorda = election2D.kBorda();
-            committeeBloc = election2D.bloc();
-            committeeSTV = election2D.singleTransferableVote();
-            committeeGCC = election2D.greedyCC();
-            committeeGM = election2D.greedyMonroe();
-            committeeKM = election2D.kMeans();
-            
+            clearGraphPanels();
             systemTxt.append("-Generating results and graphing scatter plots." + eol);
+            
+            committeeSNTV = election2D.singleNonTrasferableVote();
             ChartPanel chartSNTV = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeSNTV, "SNTV");
             plotAreaSNTV.setLayout(new java.awt.BorderLayout());
             plotAreaSNTV.add(chartSNTV,BorderLayout.CENTER);
             plotAreaSNTV.validate();
 
+            committeeBorda = election2D.kBorda();
             ChartPanel chartBorda = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeBorda, "k-Borda");
             plotAreaBorda.setLayout(new java.awt.BorderLayout());
             plotAreaBorda.add(chartBorda,BorderLayout.CENTER);
             plotAreaBorda.validate();
 
+            committeeBloc = election2D.bloc();
             ChartPanel chartBloc = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeBloc, "Bloc");
             plotAreaBloc.setLayout(new java.awt.BorderLayout());
             plotAreaBloc.add(chartBloc,BorderLayout.CENTER);
             plotAreaBloc.validate();
 
+            committeeSTV = election2D.singleTransferableVote();
             ChartPanel chartSTV = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeSTV, "STV");
             plotAreaSTV.setLayout(new java.awt.BorderLayout());
             plotAreaSTV.add(chartSTV,BorderLayout.CENTER);
             plotAreaSTV.validate();
 
+            committeeGCC = election2D.greedyCC();
             ChartPanel chartGCC = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeGCC, "Greedy-CC");
             plotAreaGCC.setLayout(new java.awt.BorderLayout());
             plotAreaGCC.add(chartGCC,BorderLayout.CENTER);
             plotAreaGCC.validate();
-
+            
+            committeeGM = election2D.greedyMonroe();
             ChartPanel chartGM = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeGM, "Greedy-Monroe");
             plotAreaGM.setLayout(new java.awt.BorderLayout());
             plotAreaGM.add(chartGM,BorderLayout.CENTER);
             plotAreaGM.validate();
 
+            committeeKM = election2D.kMeans();
             ChartPanel chartKM = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeKM, "k-Means");
             plotAreaKM.setLayout(new java.awt.BorderLayout());
             plotAreaKM.add(chartKM,BorderLayout.CENTER);
@@ -948,6 +980,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             systemTxt.append(NormCalculator.getNormText(vectorKM, "k-Means") + eol);
         }
         else {
+            clearGraphPanels();
             String err = "";
             m = electionGP.getNumberOfCandidates();
             
@@ -1166,19 +1199,19 @@ public class ElectionGUI extends javax.swing.JFrame {
             
             gbc = new java.awt.GridBagConstraints();
             gbc.gridx = 1;
-            gbc.gridy = 1;
+            gbc.gridy = 0;
             gbc.fill = java.awt.GridBagConstraints.BOTH;
             getContentPane().add(plotAreaSNTV, gbc);
             
             gbc = new java.awt.GridBagConstraints();
             gbc.gridx = 2;
-            gbc.gridy = 1;
+            gbc.gridy = 0;
             gbc.fill = java.awt.GridBagConstraints.BOTH;
             getContentPane().add(plotAreaBorda, gbc);
             
             gbc = new java.awt.GridBagConstraints();
             gbc.gridx = 3;
-            gbc.gridy = 1;
+            gbc.gridy = 0;
             gbc.fill = java.awt.GridBagConstraints.BOTH;
             getContentPane().add(plotAreaBloc, gbc);
         }
@@ -1200,6 +1233,24 @@ public class ElectionGUI extends javax.swing.JFrame {
             gbc.gridheight = 1;
             gbc.fill = java.awt.GridBagConstraints.BOTH;
             getContentPane().add(systemPanel, gbc);
+            
+            gbc = new java.awt.GridBagConstraints();
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            gbc.fill = java.awt.GridBagConstraints.BOTH;
+            getContentPane().add(plotAreaSNTV, gbc);
+            
+            gbc = new java.awt.GridBagConstraints();
+            gbc.gridx = 2;
+            gbc.gridy = 1;
+            gbc.fill = java.awt.GridBagConstraints.BOTH;
+            getContentPane().add(plotAreaBorda, gbc);
+            
+            gbc = new java.awt.GridBagConstraints();
+            gbc.gridx = 3;
+            gbc.gridy = 1;
+            gbc.fill = java.awt.GridBagConstraints.BOTH;
+            getContentPane().add(plotAreaBloc, gbc);
         }
     }//GEN-LAST:event_generalPreferencesCheckBoxActionPerformed
 

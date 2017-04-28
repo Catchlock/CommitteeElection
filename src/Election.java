@@ -811,7 +811,7 @@ public class Election {
             committee.get(i).setkMeansIndex(i);
         }
         
-        while(iterations < 100){
+        while(iterations < 50){
             boolean end = true;
             iterations++;
             
@@ -828,6 +828,7 @@ public class Election {
             for(Candidate c: candidates){
                 c.setSelected(false);
             }
+            Collections.shuffle(candidates);
             
             for (int i = 0; i < k; i++){
                 int bestScore = -1;
