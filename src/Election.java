@@ -811,7 +811,8 @@ public class Election {
             committee.get(i).setkMeansIndex(i);
         }
         
-        while(iterations < 50){
+        while(iterations < 100){
+            boolean end = true;
             iterations++;
             
             for (int i = 0; i < k; i++){
@@ -839,9 +840,15 @@ public class Election {
                         bestScore = c.getBordaScore();
                     }
                 }
-                representative.setkMeansIndex(i);
-                representative.setSelected(true);
-                committee.set(i, representative);
+                if (!representative.equals(committee.get(i))){
+                    end = false;
+                    representative.setkMeansIndex(i);
+                    representative.setSelected(true);
+                    committee.set(i, representative);
+                }
+            }
+            if(end){
+                break;
             }
         }
         return committee;
@@ -864,6 +871,9 @@ public class Election {
         
         while(voterCommittee.size() < k){
             double total = 0;
+            for(Voter v: kmVoters){
+                v.setKmDistance(0);
+            }
             for(Voter v1: kmVoters){
                 for(Voter v2: voterCommittee){
                     v1.setKmDistance(v1.getKmDistance()+v1.distance(v2));
@@ -871,20 +881,20 @@ public class Election {
                 }
             }
             
-            double bridge = 0;
+            double bridgeValue = 0;
             for(Voter v: kmVoters){
                 double chance = v.getKmDistance()/total;
-                v.setKmMin(bridge);
-                v.setKmMax(bridge+chance);
-                bridge = v.getKmMax();
+                v.setKmMin(bridgeValue);
+                v.setKmMax(bridgeValue + chance);
+                bridgeValue = v.getKmMax();
             }
             
-            double winner = r.nextDouble();
+            double winValue = r.nextDouble();
             
             ListIterator<Voter> it = kmVoters.listIterator();
             while(it.hasNext()){
                 Voter v = it.next();
-                if(winner >= v.getKmMin() && winner < v.getKmMax()){
+                if(winValue >= v.getKmMin() && winValue < v.getKmMax()){
                     voterCommittee.add(v);
                     it.remove();
                 }
