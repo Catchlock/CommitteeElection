@@ -1,6 +1,7 @@
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -242,6 +243,7 @@ public class DistributionDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setAlwaysOnTop(true);
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/plot.png")));
         setLocation(new java.awt.Point(360, 20));
         setMaximumSize(new java.awt.Dimension(380, 700));
         setMinimumSize(new java.awt.Dimension(380, 700));

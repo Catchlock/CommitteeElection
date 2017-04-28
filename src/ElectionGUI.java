@@ -2,6 +2,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
+import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JFileChooser;
@@ -277,6 +278,7 @@ public class ElectionGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Committee Elections v0.9");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("images/elections.png")));
         setMinimumSize(new java.awt.Dimension(1280, 720));
         setResizable(false);
         java.awt.GridBagLayout layout = new java.awt.GridBagLayout();
