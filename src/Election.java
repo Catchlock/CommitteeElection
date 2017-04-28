@@ -253,6 +253,17 @@ public class Election {
         
     };
 
+    public void clearCandidates(){
+        for(Candidate c: candidates){
+            c.clear();
+        }
+    }
+    
+    public void clearVoters(){
+        for(Voter v: voters){
+            v.clear();
+        }
+    }
     
     /*
     Μέθοδος επιλογής μίας k-μελούς επιτροπής με βάση τον κανόνα SNTV.

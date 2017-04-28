@@ -133,4 +133,11 @@ public class Candidate extends Person {
     public void increaseBlocByOne(){
         blocScore++;
     }
+    
+    public void clear(){
+        selected = false;
+        pluralityScore = 0;
+        bordaScore = 0;
+        blocScore = 0;
+    }
 }

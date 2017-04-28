@@ -60,7 +60,7 @@ public class Voter extends Person implements Comparator<Candidate>{
     //Copy constructor
     public Voter(Voter v){
         super(v);
-        this.generalPrefIndices = v.getGeneralPrefIndices();
+        generalPrefIndices = v.getGeneralPrefIndices();
         firstPreference = v.getFirstPreference();
         kmDistance = v.getKmDistance();
         kmMin = v.getKmMin();
@@ -106,6 +106,12 @@ public class Voter extends Person implements Comparator<Candidate>{
 
     public void setGeneralPrefIndices(int[] generalPrefIndices) {
         this.generalPrefIndices = generalPrefIndices;
+    }
+    
+    public void clear(){
+        kmDistance = 0;
+        kmMin = 0;
+        kmMax = 0;
     }
     
     /*
