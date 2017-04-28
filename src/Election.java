@@ -769,8 +769,17 @@ public class Election {
             for (Voter v : voterSubset){
                 voters.remove(v);
             }
-            committee.add(nextMember);
-            candidates.remove(nextMember);
+            if(nextMember != null){
+                committee.add(nextMember);
+                candidates.remove(nextMember);
+            }
+            else{
+                int remaining = k - committee.size();
+                Collections.shuffle(candidates);
+                for(int i = 0; i < remaining; i++){
+                    committee.add(candidates.get(i));
+                }
+            }
         }
         
         /*
