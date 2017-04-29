@@ -982,6 +982,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             systemTxt.append(NormCalculator.getNormText(vectorKM, "k-Means") + eol);
         }
         else {
+            kTxtField.setBackground(Color.white);
             clearGraphPanels();
             String err = "";
             m = electionGP.getNumberOfCandidates();
