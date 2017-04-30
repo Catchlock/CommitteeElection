@@ -271,7 +271,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         yLimitLabel = new javax.swing.JLabel();
         yLimitTxtField = new javax.swing.JTextField();
         generalPreferencesCheckBox = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
+        consistencyBtn = new javax.swing.JButton();
         plotAreaSNTV = new javax.swing.JPanel();
         plotAreaBorda = new javax.swing.JPanel();
         plotAreaBloc = new javax.swing.JPanel();
@@ -648,10 +648,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(generalPreferencesCheckBox, gridBagConstraints);
 
-        jButton1.setText("Consistency Check");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        consistencyBtn.setText("Consistency Check");
+        consistencyBtn.setEnabled(false);
+        consistencyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                consistencyBtnActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -659,7 +660,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         gridBagConstraints.gridy = 15;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        menuPanel.add(jButton1, gridBagConstraints);
+        menuPanel.add(consistencyBtn, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -917,8 +918,10 @@ public class ElectionGUI extends javax.swing.JFrame {
 
                 if (!cancelled){
                     election2D = new Election(k, voters, candidates, true);
+                    clearGraphPanels();
                     plotResultsBtn.setEnabled(true);
                     saveElectionBtn.setEnabled(true);
+                    consistencyBtn.setEnabled(false);
                     systemTxt.append("-New election created." + eol);
                     saved = false;
                 } else {
@@ -940,6 +943,8 @@ public class ElectionGUI extends javax.swing.JFrame {
             committeeGCC = election2D.greedyCC();
             committeeGM = election2D.greedyMonroe();
             committeeKM = election2D.kMeans();
+            
+            consistencyBtn.setEnabled(true);
             
             ChartPanel chartSNTV = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeSNTV, "SNTV");
             plotAreaSNTV.setLayout(new java.awt.BorderLayout());
@@ -1026,6 +1031,8 @@ public class ElectionGUI extends javax.swing.JFrame {
                 committeeSTV = electionGP.singleTransferableVote();
                 committeeGCC = electionGP.greedyCC();
                 committeeGM = electionGP.greedyMonroe();
+                
+                consistencyBtn.setEnabled(true);
 
                 systemTxt.append(eol + "SNTV Winning Committee:" + eol);
                 for (Candidate c: committeeSNTV){
@@ -1121,6 +1128,7 @@ public class ElectionGUI extends javax.swing.JFrame {
                         systemTxt.append("-Election loaded." + eol);
                         plotResultsBtn.setEnabled(true);
                         saveElectionBtn.setEnabled(true);
+                        consistencyBtn.setEnabled(false);
                         saved = true;
                     } else {
                         systemTxt.append(parser.getErr() + eol);
@@ -1161,6 +1169,7 @@ public class ElectionGUI extends javax.swing.JFrame {
                     
                     electionGP = new Election(k,voters,candidates,false);
                     plotResultsBtn.setEnabled(true);
+                    consistencyBtn.setEnabled(false);
                     systemTxt.append("-Election " + selectedFile.getName() + " has been loaded successfully." + eol);
                 }
                 else {
@@ -1277,7 +1286,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_generalPreferencesCheckBoxActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void consistencyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consistencyBtnActionPerformed
         Election election = null;
         Election doubleElection = null;
         boolean is2D = false;
@@ -1442,7 +1451,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         }
         
         systemTxt.append("----------------------------------" + eol);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_consistencyBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1481,9 +1490,9 @@ public class ElectionGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton consistencyBtn;
     private javax.swing.JButton createElectionBtn;
     private javax.swing.JCheckBox generalPreferencesCheckBox;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel kLabel;
     private javax.swing.JTextField kTxtField;
     private javax.swing.JButton loadElectionBtn;
