@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Toolkit;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.jfree.chart.ChartPanel;
@@ -269,6 +271,7 @@ public class ElectionGUI extends javax.swing.JFrame {
         yLimitLabel = new javax.swing.JLabel();
         yLimitTxtField = new javax.swing.JTextField();
         generalPreferencesCheckBox = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
         plotAreaSNTV = new javax.swing.JPanel();
         plotAreaBorda = new javax.swing.JPanel();
         plotAreaBloc = new javax.swing.JPanel();
@@ -639,11 +642,24 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 15;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         menuPanel.add(generalPreferencesCheckBox, gridBagConstraints);
+
+        jButton1.setText("Consistency Check");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 15;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        menuPanel.add(jButton1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -917,43 +933,44 @@ public class ElectionGUI extends javax.swing.JFrame {
             clearGraphPanels();
             systemTxt.append("-Generating results and graphing scatter plots." + eol);
             
-            committeeSNTV = election2D.singleNonTrasferableVote();
+            committeeSNTV = election2D.singleNonTransferableVote();
+            committeeBorda = election2D.kBorda();
+            committeeBloc = election2D.bloc();
+            committeeSTV = election2D.singleTransferableVote();
+            committeeGCC = election2D.greedyCC();
+            committeeGM = election2D.greedyMonroe();
+            committeeKM = election2D.kMeans();
+            
             ChartPanel chartSNTV = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeSNTV, "SNTV");
             plotAreaSNTV.setLayout(new java.awt.BorderLayout());
             plotAreaSNTV.add(chartSNTV,BorderLayout.CENTER);
             plotAreaSNTV.validate();
 
-            committeeBorda = election2D.kBorda();
             ChartPanel chartBorda = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeBorda, "k-Borda");
             plotAreaBorda.setLayout(new java.awt.BorderLayout());
             plotAreaBorda.add(chartBorda,BorderLayout.CENTER);
             plotAreaBorda.validate();
 
-            committeeBloc = election2D.bloc();
             ChartPanel chartBloc = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeBloc, "Bloc");
             plotAreaBloc.setLayout(new java.awt.BorderLayout());
             plotAreaBloc.add(chartBloc,BorderLayout.CENTER);
             plotAreaBloc.validate();
 
-            committeeSTV = election2D.singleTransferableVote();
             ChartPanel chartSTV = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeSTV, "STV");
             plotAreaSTV.setLayout(new java.awt.BorderLayout());
             plotAreaSTV.add(chartSTV,BorderLayout.CENTER);
             plotAreaSTV.validate();
 
-            committeeGCC = election2D.greedyCC();
             ChartPanel chartGCC = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeGCC, "Greedy-CC");
             plotAreaGCC.setLayout(new java.awt.BorderLayout());
             plotAreaGCC.add(chartGCC,BorderLayout.CENTER);
             plotAreaGCC.validate();
             
-            committeeGM = election2D.greedyMonroe();
             ChartPanel chartGM = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeGM, "Greedy-Monroe");
             plotAreaGM.setLayout(new java.awt.BorderLayout());
             plotAreaGM.add(chartGM,BorderLayout.CENTER);
             plotAreaGM.validate();
 
-            committeeKM = election2D.kMeans();
             ChartPanel chartKM = ChartPanelMaker.createChart(election2D.getVoters(), election2D.getCandidates(), committeeKM, "k-Means");
             plotAreaKM.setLayout(new java.awt.BorderLayout());
             plotAreaKM.add(chartKM,BorderLayout.CENTER);
@@ -980,6 +997,8 @@ public class ElectionGUI extends javax.swing.JFrame {
 
             double[] vectorKM = election2D.getDistanceVector(committeeKM);
             systemTxt.append(NormCalculator.getNormText(vectorKM, "k-Means") + eol);
+            
+            systemTxt.append("----------------------------------" + eol);
         }
         else {
             kTxtField.setBackground(Color.white);
@@ -1001,7 +1020,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             }
             
             if(err == ""){
-                committeeSNTV = electionGP.singleNonTrasferableVote();
+                committeeSNTV = electionGP.singleNonTransferableVote();
                 committeeBorda = electionGP.kBorda();
                 committeeBloc = electionGP.bloc();
                 committeeSTV = electionGP.singleTransferableVote();
@@ -1055,7 +1074,7 @@ public class ElectionGUI extends javax.swing.JFrame {
 
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            Store2dElection store = new Store2dElection(election2D, selectedFile, xLimit, yLimit, nClusters, mClusters);
+            Store2dElection store = new Store2dElection(this, selectedFile);
             store.writeToFile();
             systemTxt.append("-Election saved successfully." + eol);
             saved = true;
@@ -1101,6 +1120,7 @@ public class ElectionGUI extends javax.swing.JFrame {
 
                         systemTxt.append("-Election loaded." + eol);
                         plotResultsBtn.setEnabled(true);
+                        saveElectionBtn.setEnabled(true);
                         saved = true;
                     } else {
                         systemTxt.append(parser.getErr() + eol);
@@ -1257,6 +1277,173 @@ public class ElectionGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_generalPreferencesCheckBoxActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Election election = null;
+        Election doubleElection = null;
+        boolean is2D = false;
+        ArrayList<Voter> doubleVoters = new ArrayList(2*n);
+        ArrayList<Candidate> candidatesCopy = new ArrayList(m);
+        
+        if(!generalPreferencesCheckBox.isSelected()){
+            election = election2D;
+            is2D = true;
+        }
+        else {
+            election = electionGP;
+        }
+        
+        ArrayList<Voter> voters = election.getVoters();
+
+        for(Voter v: voters){
+            doubleVoters.add(new Voter(v));
+            doubleVoters.add(new Voter(v));
+        }
+
+        for(Candidate c: election.getCandidates()){
+            candidatesCopy.add(new Candidate(c));
+        }
+
+        doubleElection = new Election(k, doubleVoters, candidatesCopy, is2D);
+        
+        ArrayList<Candidate> committeeSNTV2 = doubleElection.singleNonTransferableVote();
+        int possibleTie = n;
+        boolean consistent = true;
+        
+        for(Candidate c: committeeSNTV2){
+            if(c.getPluralityScore() < possibleTie){
+                possibleTie = c.getPluralityScore();
+            }
+        }
+        
+        for(Candidate c: committeeSNTV2){
+            if(!c.isContainedIn(committeeSNTV) && (c.getPluralityScore() > possibleTie)){
+                consistent = false;
+                systemTxt.append("-Single Non Transferable Vote is INconsistent." + eol);
+                break;
+            }
+        }
+        
+        if(consistent){
+            systemTxt.append("-Single Non Transferable Vote is consistent in this example." + eol);
+        }
+        
+        
+        ArrayList<Candidate> committeeBorda2 = doubleElection.kBorda();
+        possibleTie = m*n;
+        consistent = true;
+        
+        for(Candidate c: committeeBorda2){
+            if(c.getBordaScore() < possibleTie){
+                possibleTie = c.getBordaScore();
+            }
+        }
+        
+        for(Candidate c: committeeBorda2){
+            if(!c.isContainedIn(committeeBorda) && (c.getBordaScore() > possibleTie)){
+                consistent = false;
+                systemTxt.append("-k-Borda rule is INconsistent." + eol);
+                break;
+            }
+        }
+        
+        if(consistent){
+            systemTxt.append("-k-Borda rule is consistent in this example." + eol);
+        }
+        
+        
+        ArrayList<Candidate> committeeBloc2 = doubleElection.bloc();
+        possibleTie = n;
+        consistent = true;
+        
+        for(Candidate c: committeeBloc2){
+            if(c.getBlocScore() < possibleTie){
+                possibleTie = c.getBlocScore();
+            }
+        }
+        
+        for(Candidate c: committeeBloc2){
+            if(!c.isContainedIn(committeeBloc) && (c.getBlocScore() > possibleTie)){
+                consistent = false;
+                systemTxt.append("-Bloc rule is INconsistent." + eol);
+                break;
+            }
+        }
+        
+        if(consistent){
+            systemTxt.append("-Bloc rule is consistent in this example." + eol);
+        }
+        
+        
+        ArrayList<Candidate> committeeSTV2 = doubleElection.singleTransferableVote();
+        consistent = true;
+       
+        for(Candidate c: committeeSTV2){
+            if(!c.isContainedIn(committeeSTV)){
+                consistent = false;
+                systemTxt.append("-Single Transferable Vote is INconsistent." + eol);
+                break;
+            }
+        }
+        
+        if(consistent){
+            systemTxt.append("-Single Transferable Vote is consistent in this example." + eol);
+        }
+        
+        
+        ArrayList<Candidate> committeeGCC2 = doubleElection.greedyCC();
+        consistent = true;
+       
+        for(Candidate c: committeeGCC2){
+            if(!c.isContainedIn(committeeGCC)){
+                if(!(2*election.bordaSatisfaction(committeeGCC) == doubleElection.bordaSatisfaction(committeeGCC2))){
+                    consistent = false;
+                    systemTxt.append("-Greedy Chamberlin-Courant rule is INconsistent." + eol);
+                    break;
+                }
+            }
+        }
+        
+        if(consistent){
+            systemTxt.append("-Greedy Chamberlin-Courant rule is consistent in this example." + eol);
+        }
+        
+        
+        ArrayList<Candidate> committeeGM2 = doubleElection.greedyMonroe();
+        consistent = true;
+       
+        for(Candidate c: committeeGM2){
+            if(!c.isContainedIn(committeeGM)){
+                consistent = false;
+                systemTxt.append("-Greedy Monroe rule is INconsistent." + eol);
+                break;
+            }
+        }
+        
+        if(consistent){
+            systemTxt.append("-Greedy Monroe rule is consistent in this example." + eol);
+        }
+        
+        
+        if(!generalPreferencesCheckBox.isSelected()){
+            ArrayList<Candidate> committeeKM2 = doubleElection.kMeans();
+            consistent = true;
+
+            for(Candidate c: committeeKM2){
+                if(!c.isContainedIn(committeeKM)){
+                    consistent = false;
+                    systemTxt.append("-k-Means algorithm is INconsistent." + eol);
+                    break;
+                }
+            }
+
+            if(consistent){
+                systemTxt.append("-k-Means algorithm is consistent in this example." + eol);
+            }
+        }
+        
+        systemTxt.append("----------------------------------" + eol);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1296,6 +1483,7 @@ public class ElectionGUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton createElectionBtn;
     private javax.swing.JCheckBox generalPreferencesCheckBox;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel kLabel;
     private javax.swing.JTextField kTxtField;
     private javax.swing.JButton loadElectionBtn;

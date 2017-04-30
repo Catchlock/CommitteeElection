@@ -111,6 +111,7 @@ public class PreferenceProfile {
                 Collections.sort(tempPreference, v);
             }
             else {
+                tempPreference = new ArrayList<>();
                 for(int i = 0; i < m; i++){
                     int cIndex = v.getGeneralPrefIndices()[i] - 1;
                     Candidate c = candidates.get(cIndex);

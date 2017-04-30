@@ -1,4 +1,7 @@
 
+import java.util.ArrayList;
+
+
 /*
  * The MIT License
  *
@@ -139,5 +142,21 @@ public class Candidate extends Person {
         pluralityScore = 0;
         bordaScore = 0;
         blocScore = 0;
+    }
+    
+    public boolean isEqualTo(Candidate c){
+        if(name.equals(c.getName())){
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean isContainedIn(ArrayList<Candidate> candidates){
+        for(Candidate c: candidates){
+            if(c.isEqualTo(this)){
+                return true;
+            }
+        }
+        return false;
     }
 }

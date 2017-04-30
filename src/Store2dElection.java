@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -36,38 +37,87 @@ import java.util.logging.Logger;
  * @author Nikolas Laskaris
  */
 public class Store2dElection {
-    private Election election;
     private File file;
+    private Election election;
     private int xLimit;
     private int yLimit;
     private int nClusters;
     private int mClusters;
+    private ArrayList<ArrayList<Candidate>> committees;
     
-    public Store2dElection (Election election, File file, int xLimit, int yLimit, int nClusters, int mClusters){
-        this.election = election;
+    public Store2dElection (ElectionGUI eGUI, File file){
         this.file = file;
-        this.xLimit = xLimit;
-        this.yLimit = yLimit;
-        this.nClusters = nClusters;
-        this.mClusters = mClusters;
+        election = eGUI.getElection2D();
+        xLimit = eGUI.getxLimit();
+        yLimit = eGUI.getyLimit();
+        nClusters = eGUI.getnClusters();
+        mClusters = eGUI.getmClusters();
+        committees = new ArrayList();
+        committees.add(eGUI.getCommitteeSNTV());
+        committees.add(eGUI.getCommitteeBorda());
+        committees.add(eGUI.getCommitteeBloc());
+        committees.add(eGUI.getCommitteeSTV());
+        committees.add(eGUI.getCommitteeGCC());
+        committees.add(eGUI.getCommitteeGM());
+        committees.add(eGUI.getCommitteeKM());
     }
-    
-    public void setElection(Election election){
-        this.election = election;
-    }
-    
-    public Election getElection(){
-        return election;
-    }
-    
-    public void setFile(File file){
-        this.file = file;
-    }
-    
-    public File getFile(){
+
+    public File getFile() {
         return file;
     }
-    
+
+    public void setFile(File file) {
+        this.file = file;
+    }
+
+    public Election getElection() {
+        return election;
+    }
+
+    public void setElection(Election election) {
+        this.election = election;
+    }
+
+    public int getxLimit() {
+        return xLimit;
+    }
+
+    public void setxLimit(int xLimit) {
+        this.xLimit = xLimit;
+    }
+
+    public int getyLimit() {
+        return yLimit;
+    }
+
+    public void setyLimit(int yLimit) {
+        this.yLimit = yLimit;
+    }
+
+    public int getnClusters() {
+        return nClusters;
+    }
+
+    public void setnClusters(int nClusters) {
+        this.nClusters = nClusters;
+    }
+
+    public int getmClusters() {
+        return mClusters;
+    }
+
+    public void setmClusters(int mClusters) {
+        this.mClusters = mClusters;
+    }
+
+    public ArrayList<ArrayList<Candidate>> getCommittees() {
+        return committees;
+    }
+
+    public void setCommittees(ArrayList<ArrayList<Candidate>> committees) {
+        this.committees = committees;
+    }
+
     public void writeToFile(){
         try {
             FileWriter write = new FileWriter(file);
@@ -88,6 +138,17 @@ public class Store2dElection {
             for(Candidate c: election.getCandidates()){
                 String candidateData = c.getName() + "," + c.getX() + "," + c.getY();
                 print_line.println(candidateData);
+            }
+            
+            if(committees.get(0) != null){
+                for(ArrayList<Candidate> committee: committees){
+                    String winners = "";
+                    for(Candidate c: committee){
+                        winners += c.getName() + ",";
+                    }
+                    winners = winners.substring(0, (winners.length()-1));
+                    print_line.println(winners);
+                }
             }
 
             print_line.close();

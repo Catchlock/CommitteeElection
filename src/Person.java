@@ -39,10 +39,10 @@ import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 υποψήφιων.
 */
 public abstract class Person {
-    private String name;
-    private double x;
-    private double y;
-    private int profileIndex;
+    String name;
+    double x;
+    double y;
+    int profileIndex;
     
     //Μέθοδος κατασκευής που καθορίζει το όνομα και τις συντεταγμένες
     public Person(String name, double x, double y){

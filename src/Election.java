@@ -271,7 +271,8 @@ public class Election {
     βαθμολογίες σχετικής πλειοψηφίας. Ταξινομείται ο πίνακας βάσει των
     βαθμολογιών αυτών, κι επιλέγονται οι k πρώτοι. (Κανόνας Best-k)
     */
-    public ArrayList<Candidate> singleNonTrasferableVote (){
+    public ArrayList<Candidate> singleNonTransferableVote (){
+        clearCandidates();
         ArrayList<Candidate> committee = new ArrayList<Candidate>(k);
         Collections.shuffle(candidates);
         calcPluralityAll();
@@ -279,10 +280,6 @@ public class Election {
        
         for (int i = 0; i < k; i++){
             committee.add(candidates.get(i));
-        }
-        
-        for(Candidate c: candidates){
-            c.setPluralityScore(0);
         }
         
         return committee;
@@ -295,6 +292,7 @@ public class Election {
     βαθμολογιών αυτών, κι επιλέγονται οι k πρώτοι. (Κανόνας Best-k)
     */
     public ArrayList<Candidate> kBorda (){
+        clearCandidates();
         ArrayList<Candidate> committee = new ArrayList<Candidate>(k);
         Collections.shuffle(candidates);
         for (Candidate c: candidates){
@@ -304,10 +302,6 @@ public class Election {
        
         for (int i = 0; i < k; i++){
             committee.add(candidates.get(i));
-        }
-        
-        for(Candidate c: candidates){
-            c.setBordaScore(0);
         }
         
         return committee;
@@ -320,6 +314,7 @@ public class Election {
     των βαθμολογιών αυτών, κι επιλέγονται οι k πρώτοι. (Κανόνας Best-k)
     */
     public ArrayList<Candidate> bloc (){
+        clearCandidates();
         ArrayList<Candidate> committee = new ArrayList<Candidate>(k);
         Collections.shuffle(candidates);
         calcBlocAll();
@@ -329,10 +324,6 @@ public class Election {
             committee.add(candidates.get(i));
         }
         
-        for(Candidate c: candidates){
-            c.setBlocScore(0);
-        }
-        
         return committee;
     }
     
@@ -340,6 +331,7 @@ public class Election {
     Μέθοδος που υλοποιεί τον κανόνα επιλογής επιτροπών STV.
     */
     public ArrayList<Candidate> singleTransferableVote(){
+        clearCandidates();
         /*
         Κρατάμε αντίγραφα των πινάκων των ψηφοφόρων και των υποψήφιων
         για να υπάρχει η δυνατότητα επαναφοράς τους στην αρχική κατάσταση
@@ -353,6 +345,10 @@ public class Election {
             stvCandidates.add(new Candidate(c));
         }
         
+        PreferenceProfile backupProfile = profile;
+        profile = new PreferenceProfile(stvVoters, stvCandidates, election2D);
+        
+        
         ArrayList<Candidate> committee = new ArrayList(k);
         calcPluralityAll();
         int droopQuota = n /(k + 1) + 1;
@@ -360,8 +356,8 @@ public class Election {
 //        System.out.println("Droop Quota = " + droopQuota + "\n");
 ////        </Print_Test_Code>
                 
-        Collections.shuffle(candidates);
-        Collections.shuffle(voters);
+        Collections.shuffle(stvCandidates);
+        Collections.shuffle(stvVoters);
         
         while (committee.size() < k){
 
@@ -369,8 +365,8 @@ public class Election {
             Αν οι υποψήφιοι που απομένουν είναι όσοι λείπουν από την
             επιτροπή, τότε προστίθενται όλοι σε αυτήν.
             */
-            if (candidates.size() == (k - committee.size())){
-                committee.addAll(candidates);
+            if (stvCandidates.size() == (k - committee.size())){
+                committee.addAll(stvCandidates);
 ////                <Print_Test_Code>
 //                System.out.println("Number of candidates left is equal"
 //                        + " to number of committee members missing. "
@@ -401,7 +397,7 @@ public class Election {
                 //Βρίσκεται ο υποψήφιος με τη μέγιστη βαθμολογία
                 int maxScore = 0;
                 Candidate chosenCandidate = null;
-                for (Candidate c: candidates) {
+                for (Candidate c: stvCandidates) {
                     if (c.getPluralityScore() > maxScore){
                         maxScore = c.getPluralityScore();
                         chosenCandidate = c;
@@ -423,7 +419,7 @@ public class Election {
                     υποψήφιο.
                     */
                     int counter = 0;
-                    ListIterator<Voter> it = voters.listIterator();
+                    ListIterator<Voter> it = stvVoters.listIterator();
                     while (it.hasNext()){
                         Voter v = it.next();
                         if (v.getFirstPreference().getCandidate().
@@ -447,7 +443,7 @@ public class Election {
                 */
                 else{
                     int minScore = n;
-                    for (Candidate c: candidates) {
+                    for (Candidate c: stvCandidates) {
                         if (c.getPluralityScore() < minScore){
                             minScore = c.getPluralityScore();
                             chosenCandidate = c;
@@ -459,7 +455,7 @@ public class Election {
 ////                    </Print_Test_Code>
                 }
                 
-                candidates.remove(chosenCandidate);
+                stvCandidates.remove(chosenCandidate);
 
                 /*
                 Χρησιμοποιώντας τη διπλά συνδεδεμένη λίστα της προτίμησης
@@ -467,7 +463,7 @@ public class Election {
                 υποψήφιος. Παράλληλα προσαρμόζεται κι η βαθμολογία, όπου
                 χρειάζεται.
                 */
-                for (Voter v: voters) {
+                for (Voter v: stvVoters) {
                     int row = v.getProfileIndex();
                     int col = chosenCandidate.getProfileIndex();
                     PreferenceItem current = profile.getItem(row, col);
@@ -488,10 +484,8 @@ public class Election {
                 }
             }
         }
-        //Επαναφέρονται οι πίνακες στην αρχική τους κατάσταση
-        voters = stvVoters;
-        candidates = stvCandidates;
-        profile = new PreferenceProfile(voters, candidates, election2D);
+        
+        profile = backupProfile;
         return committee;
     }
     
@@ -521,8 +515,7 @@ public class Election {
     υποψήφιο της επιτροπής που βρίσκεται πιο ψηλά στην προτίμησή του, και
     είναι ίση με τη βαθμολογία Borda.
     */
-    public int bordaSatisfaction(ArrayList<Candidate> committee,
-            ArrayList<Voter> voters){
+    public int bordaSatisfaction(ArrayList<Candidate> committee){
         int satScore = 0;
         for (Voter v: voters){
             Candidate preferredCandidate
@@ -549,6 +542,7 @@ public class Election {
     Chamberlin-Courant. Τρέχει σε χρόνο της τάξης m*n*k^2.
     */
     public ArrayList<Candidate> greedyCC(){
+        clearCandidates();
         //Αντιγράφεται η λίστα των υποψήφιων για να μην αλλοιωθεί η αρχική
         ArrayList<Candidate> ccCandidates = new ArrayList(m);
         for (Candidate c: candidates){
@@ -587,7 +581,7 @@ public class Election {
             //Επιλέγεται ο υποψήφιος που μεγιστοποιεί την ικανοποίηση
             for (int i=0; i<ccCandidates.size(); i++){
                 committee.add(ccCandidates.get(i));
-                int s = bordaSatisfaction(committee, voters);
+                int s = bordaSatisfaction(committee);
                 
 ////                <Print_Test_Code>
 //                System.out.println("Με την προσθήκη του υποψήφιου "
@@ -642,6 +636,7 @@ public class Election {
     Monroe.
     */
     public ArrayList<Candidate> greedyMonroe(){
+        clearCandidates();
         /*
         Κρατούνται αντίγραφα των πινάκων των ψηφοφόρων και των υποψήφιων,
         επειδή θα γίνουν διαγραφές κατά την εκτέλεση της μεθόδου.
@@ -654,6 +649,10 @@ public class Election {
         for (Candidate c: candidates){
             mCandidates.add(new Candidate(c));
         }
+        
+        
+        PreferenceProfile backupProfile = profile;
+        profile = new PreferenceProfile(mVoters, mCandidates, election2D);
         
         /*
         Aρχικοποιούνται η ζητούμενη επιτροπή, ο πίνακας που διατηρεί τα
@@ -677,8 +676,8 @@ public class Election {
 ////        </Print_Test_Code>        
         
         //"Τυχαιοποιούνται" οι πίνακες των υποψήφιων και των ψηφοφόρων.
-        Collections.shuffle(candidates);
-        Collections.shuffle(voters);
+        Collections.shuffle(mCandidates);
+        Collections.shuffle(mVoters);
 
         /*
         Βασικός βρόχος κατασκευής της επιτροπής. Σε κάθε επανάληψη
@@ -711,16 +710,16 @@ public class Election {
           
             int maxSatisfaction = 0;
             Candidate nextMember = null;
-            for (int i=0; i < candidates.size(); i++){
-                Candidate c = candidates.get(i);
+            for (int i=0; i < mCandidates.size(); i++){
+                Candidate c = mCandidates.get(i);
                 /*
                 Για κάθε υποψήφιο, ταξινομείται η στήλη του πίνακα
                 προτίμησης που αντιστοιχεί σε αυτόν με βάση τη θέση του
                 (σε φθίνουσα σειρά).
                 */
-                List<PreferenceItem> piList = new ArrayList(voters.size());
-                for (int j = 0; j < voters.size(); j++){
-                    Voter v = voters.get(j);
+                List<PreferenceItem> piList = new ArrayList(mVoters.size());
+                for (int j = 0; j < mVoters.size(); j++){
+                    Voter v = mVoters.get(j);
                     piList.add(profile.getItem(v.getProfileIndex(),
                             c.getProfileIndex()));
                 }
@@ -777,17 +776,17 @@ public class Election {
             */
             voterSubsets.add(voterSubset);
             for (Voter v : voterSubset){
-                voters.remove(v);
+                mVoters.remove(v);
             }
             if(nextMember != null){
                 committee.add(nextMember);
-                candidates.remove(nextMember);
+                mCandidates.remove(nextMember);
             }
             else{
                 int remaining = k - committee.size();
-                Collections.shuffle(candidates);
+                Collections.shuffle(mCandidates);
                 for(int i = 0; i < remaining; i++){
-                    committee.add(candidates.get(i));
+                    committee.add(mCandidates.get(i));
                 }
             }
         }
@@ -796,9 +795,7 @@ public class Election {
         Επαναφέρονται οι πίνακες των ψηφοφόρων και των υποψήφιων στην
         αρχική τους κατάσταση κι επιστρέφεται η νικήτρια επιτροπή.
         */
-        voters = mVoters;
-        candidates = mCandidates;
-        profile = new PreferenceProfile(voters, candidates, election2D);
+        profile = backupProfile;
         return committee;
     }
     
@@ -812,6 +809,7 @@ public class Election {
     προκύπτει επαναυπολογίζονται οι συστάδες κ.ο.κ
     */
     public ArrayList<Candidate> kMeans(){
+        clearCandidates();
         int iterations = 0;
         ArrayList<Candidate> committee = new ArrayList(k);
         ArrayList<ArrayList<Voter>> voterClusters = new ArrayList(k);
