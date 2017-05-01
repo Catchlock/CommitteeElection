@@ -46,7 +46,7 @@ public class Election {
     private int k;
     private int m;
     private int n;
-    private boolean election2D;
+    private boolean is2D;
 
     /*
     Constructor της κλάσης, παίρνει ως ορίσματα τους πίνακες των ψηφοφόρων
@@ -59,7 +59,7 @@ public class Election {
             ArrayList<Candidate> candidates, boolean election2D){
         this.candidates = candidates;
         this.voters = voters;
-        this.election2D = election2D;
+        this.is2D = election2D;
         m = candidates.size();
         n = voters.size();
         if(k < m){
@@ -104,12 +104,12 @@ public class Election {
         return voters;
     }
     
-    public boolean isElection2D() {
-        return election2D;
+    public boolean isIs2D() {
+        return is2D;
     }
 
-    public void setElection2D(boolean election2D) {
-        this.election2D = election2D;
+    public void setIs2D(boolean is2D) {
+        this.is2D = is2D;
     }
 
     /*
@@ -346,7 +346,7 @@ public class Election {
         }
         
         PreferenceProfile backupProfile = profile;
-        profile = new PreferenceProfile(stvVoters, stvCandidates, election2D);
+        profile = new PreferenceProfile(stvVoters, stvCandidates, is2D);
         
         
         ArrayList<Candidate> committee = new ArrayList(k);
@@ -652,7 +652,7 @@ public class Election {
         
         
         PreferenceProfile backupProfile = profile;
-        profile = new PreferenceProfile(mVoters, mCandidates, election2D);
+        profile = new PreferenceProfile(mVoters, mCandidates, is2D);
         
         /*
         Aρχικοποιούνται η ζητούμενη επιτροπή, ο πίνακας που διατηρεί τα
@@ -815,7 +815,7 @@ public class Election {
         ArrayList<ArrayList<Voter>> voterClusters = new ArrayList(k);
         
         committee = initializekMeansCommittee();
-        
+       
         for(int i = 0; i < k; i++){
             committee.get(i).setkMeansIndex(i);
         }
