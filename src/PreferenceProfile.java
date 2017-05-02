@@ -93,7 +93,6 @@ public class PreferenceProfile {
         
         profile = new PreferenceItem [n][m];
         List<Candidate> tempPreference = new ArrayList(m);
-        Collections.shuffle(tempPreference);
         
         /*
         Για κάθε ψηφοφόρο, ταξινομείται ο πίνακας των υποψήφιων βάσει των

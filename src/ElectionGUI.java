@@ -1287,18 +1287,15 @@ public class ElectionGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_generalPreferencesCheckBoxActionPerformed
 
     private void consistencyBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_consistencyBtnActionPerformed
-        Election election = null;
         Election doubleElection = null;
-        boolean is2D = false;
+        Election election = election2D;
+        boolean is2D = true;
         ArrayList<Voter> doubleVoters = new ArrayList(2*n);
         ArrayList<Candidate> candidatesCopy = new ArrayList(m);
         
-        if(!generalPreferencesCheckBox.isSelected()){
-            election = election2D;
-            is2D = true;
-        }
-        else {
+        if(generalPreferencesCheckBox.isSelected()){
             election = electionGP;
+            is2D = false;
         }
         
         ArrayList<Voter> voters = election.getVoters();
@@ -1312,7 +1309,7 @@ public class ElectionGUI extends javax.swing.JFrame {
             candidatesCopy.add(new Candidate(c));
         }
 
-        doubleElection = new Election(k, doubleVoters, candidatesCopy, is2D);
+        doubleElection = new Election(election.getCommitteeSize(), doubleVoters, candidatesCopy, is2D);
         
         ArrayList<Candidate> committeeSNTV2 = doubleElection.singleNonTransferableVote();
         int possibleTie = n;
@@ -1327,13 +1324,13 @@ public class ElectionGUI extends javax.swing.JFrame {
         for(Candidate c: committeeSNTV2){
             if(!c.isContainedIn(committeeSNTV) && (c.getPluralityScore() > possibleTie)){
                 consistent = false;
-                systemTxt.append("-Single Non Transferable Vote is INconsistent." + eol);
+                systemTxt.append("-Single Non Transferable Vote is NOT homogeneous." + eol);
                 break;
             }
         }
         
         if(consistent){
-            systemTxt.append("-Single Non Transferable Vote is consistent in this example." + eol);
+            systemTxt.append("-Single Non Transferable Vote is homogeneous in this example." + eol);
         }
         
         
@@ -1350,13 +1347,13 @@ public class ElectionGUI extends javax.swing.JFrame {
         for(Candidate c: committeeBorda2){
             if(!c.isContainedIn(committeeBorda) && (c.getBordaScore() > possibleTie)){
                 consistent = false;
-                systemTxt.append("-k-Borda rule is INconsistent." + eol);
+                systemTxt.append("-k-Borda rule is NOT homogeneous." + eol);
                 break;
             }
         }
         
         if(consistent){
-            systemTxt.append("-k-Borda rule is consistent in this example." + eol);
+            systemTxt.append("-k-Borda rule is homogeneous in this example." + eol);
         }
         
         
@@ -1373,13 +1370,13 @@ public class ElectionGUI extends javax.swing.JFrame {
         for(Candidate c: committeeBloc2){
             if(!c.isContainedIn(committeeBloc) && (c.getBlocScore() > possibleTie)){
                 consistent = false;
-                systemTxt.append("-Bloc rule is INconsistent." + eol);
+                systemTxt.append("-Bloc rule is NOT homogeneous." + eol);
                 break;
             }
         }
         
         if(consistent){
-            systemTxt.append("-Bloc rule is consistent in this example." + eol);
+            systemTxt.append("-Bloc rule is homogeneous in this example." + eol);
         }
         
         
@@ -1389,13 +1386,13 @@ public class ElectionGUI extends javax.swing.JFrame {
         for(Candidate c: committeeSTV2){
             if(!c.isContainedIn(committeeSTV)){
                 consistent = false;
-                systemTxt.append("-Single Transferable Vote is INconsistent." + eol);
+                systemTxt.append("-Single Transferable Vote is NOT homogeneous." + eol);
                 break;
             }
         }
         
         if(consistent){
-            systemTxt.append("-Single Transferable Vote is consistent in this example." + eol);
+            systemTxt.append("-Single Transferable Vote is homogeneous in this example." + eol);
         }
         
         
@@ -1406,14 +1403,14 @@ public class ElectionGUI extends javax.swing.JFrame {
             if(!c.isContainedIn(committeeGCC)){
                 if(!(2*election.bordaSatisfaction(committeeGCC) == doubleElection.bordaSatisfaction(committeeGCC2))){
                     consistent = false;
-                    systemTxt.append("-Greedy Chamberlin-Courant rule is INconsistent." + eol);
+                    systemTxt.append("-Greedy Chamberlin-Courant rule is NOT homogeneous." + eol);
                     break;
                 }
             }
         }
         
         if(consistent){
-            systemTxt.append("-Greedy Chamberlin-Courant rule is consistent in this example." + eol);
+            systemTxt.append("-Greedy Chamberlin-Courant rule is homogeneous in this example." + eol);
         }
         
         
@@ -1423,13 +1420,13 @@ public class ElectionGUI extends javax.swing.JFrame {
         for(Candidate c: committeeGM2){
             if(!c.isContainedIn(committeeGM)){
                 consistent = false;
-                systemTxt.append("-Greedy Monroe rule is INconsistent." + eol);
+                systemTxt.append("-Greedy Monroe rule is NOT homogeneous." + eol);
                 break;
             }
         }
         
         if(consistent){
-            systemTxt.append("-Greedy Monroe rule is consistent in this example." + eol);
+            systemTxt.append("-Greedy Monroe rule is homogeneous in this example." + eol);
         }
         
         
@@ -1440,13 +1437,13 @@ public class ElectionGUI extends javax.swing.JFrame {
             for(Candidate c: committeeKM2){
                 if(!c.isContainedIn(committeeKM)){
                     consistent = false;
-                    systemTxt.append("-k-Means algorithm is INconsistent." + eol);
+                    systemTxt.append("-k-Means algorithm is NOT homogeneous." + eol);
                     break;
                 }
             }
 
             if(consistent){
-                systemTxt.append("-k-Means algorithm is consistent in this example." + eol);
+                systemTxt.append("-k-Means algorithm is homogeneous in this example." + eol);
             }
         }
         
