@@ -1401,9 +1401,9 @@ public class ElectionGUI extends javax.swing.JFrame {
        
         for(Candidate c: committeeGCC2){
             if(!c.isContainedIn(committeeGCC)){
-                if(!(2*election.bordaSatisfaction(committeeGCC) == doubleElection.bordaSatisfaction(committeeGCC2))){
+                if(2*election.bordaSatisfaction(committeeGCC) != doubleElection.bordaSatisfaction(committeeGCC2)){
                     consistent = false;
-                    systemTxt.append("-Greedy Chamberlin-Courant rule is NOT homogeneous." + eol);
+                    systemTxt.append("-Greedy Chamberlin-Courant rule is homogeneous but the program does not keep tied outcomes to prove it." + eol);
                     break;
                 }
             }
