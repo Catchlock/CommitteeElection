@@ -241,6 +241,7 @@ public class Election {
         }
         
     };
+    
     public static Comparator<Candidate> IndexComparator
             = new Comparator<Candidate>(){
 
@@ -252,7 +253,31 @@ public class Election {
         }
         
     };
+    
+    public static Comparator<Candidate> CandidateNameComparator
+            = new Comparator<Candidate>(){
 
+        @Override
+        public int compare(Candidate c1, Candidate c2) {
+            int number1 = Integer.parseInt(c1.getName().substring(1));
+            int number2 = Integer.parseInt(c2.getName().substring(1));
+            return number1 - number2;
+        }
+        
+    };
+    
+    public static Comparator<Voter> VoterNameComparator
+            = new Comparator<Voter>(){
+
+        @Override
+        public int compare(Voter v1, Voter v2) {
+            int number1 = Integer.parseInt(v1.getName().substring(1));
+            int number2 = Integer.parseInt(v2.getName().substring(1));
+            return number1 - number2;
+        }
+        
+    };
+    
     public void clearCandidates(){
         for(Candidate c: candidates){
             c.clear();

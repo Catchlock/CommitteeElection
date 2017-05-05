@@ -2,6 +2,7 @@
 import java.awt.Color;
 import java.awt.Shape;
 import java.util.ArrayList;
+import java.util.Collections;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -53,15 +54,18 @@ public abstract class ChartPanelMaker {
         int n = voters.size();
         int m = candidates.size();
         
-        int skipN = n/120;
+        int skipN = n/150;
         if(skipN < 1){
             skipN = 1;
         }
         
-        int skipM = m/120;
+        int skipM = m/150;
         if(skipM < 1){
             skipM = 1;
         }
+        
+        Collections.sort(voters, Election.VoterNameComparator);
+        Collections.sort(candidates, Election.CandidateNameComparator);
         
         XYSeries voterDataset = new XYSeries("Voters");
         for (int i = 0; i < n; i++) {
