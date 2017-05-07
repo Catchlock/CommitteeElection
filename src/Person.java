@@ -126,7 +126,7 @@ public abstract class Person {
         ArrayList<Person> people =  new ArrayList(n);
         Random rand = new Random();
         
-        for (int i = 0; i < n; i++){
+        while (people.size() < n){
             double x = rand.nextDouble()*width + xCenter - width/2;
             double z = rand.nextDouble();
             double y = z*height + yCenter - height/2;
@@ -154,7 +154,7 @@ public abstract class Person {
         ArrayList<Person> people =  new ArrayList(n);
         Random rand = new Random();
         
-        for (int i = 0; i < n; i++){
+        while (people.size() < n){
             double angle = rand.nextDouble()*2*Math.PI;
             double r = rand.nextDouble()*radius;
             double x = xCenter + r*Math.cos(angle);
@@ -184,7 +184,7 @@ public abstract class Person {
         ArrayList<Person> people =  new ArrayList(n);
         Random rand = new Random();
         
-        for (int i = 0; i < n; i++){
+        while (people.size() < n){
             double angle = rand.nextDouble()*2*Math.PI;
             double r = rand.nextDouble()*(maxRadius - minRadius) + minRadius;
             double x = xCenter + r*Math.cos(angle);

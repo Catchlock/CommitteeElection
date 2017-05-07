@@ -917,6 +917,14 @@ public class ElectionGUI extends javax.swing.JFrame {
                 }
 
                 if (!cancelled){
+                    for(int i = 0; i < voters.size(); i++){
+                        voters.get(i).setName("v" + i);
+                    }
+                    
+                    for(int i = 0; i < candidates.size(); i++){
+                        candidates.get(i).setName("c" + i);
+                    }
+                    
                     election2D = new Election(k, voters, candidates, true);
                     clearGraphPanels();
                     plotResultsBtn.setEnabled(true);
