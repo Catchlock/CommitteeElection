@@ -103,12 +103,30 @@ public class ParseGeneralElection {
                     v.setProfileIndex(vIndex);
                     vIndex++;
                     v.setGeneralPrefIndices(new int[m]);
-                    voters.add(v);
                     for(int j = 1; j < m+1; j++){
-                        v.getGeneralPrefIndices()[j-1] = Integer.parseInt(voterData[j]);
+                        if("{".equals(voterData[j].substring(0, 1))){
+                            int j2 = j;
+                            ArrayList<Integer> ties = new ArrayList();
+                            ties.add(Integer.parseInt(voterData[j2].substring(1)));
+                            j2++;
+                            while(!"}".equals(voterData[j2].substring(voterData[j2].length() - 1))){
+                                ties.add(Integer.parseInt(voterData[j2]));
+                                j2++;
+                            }
+                            ties.add(Integer.parseInt(voterData[j2].substring(0, voterData[j2].length() - 1)));
+                            Collections.shuffle(ties);
+                            for(Integer a: ties){
+                                v.getGeneralPrefIndices()[j-1] = a;
+                                j++;
+                            }
+                            j--;
+                        }
+                        else{
+                            v.getGeneralPrefIndices()[j-1] = Integer.parseInt(voterData[j]);
+                        }
                     }
+                    voters.add(v);
                 }
-                
             }
 //            
 //            profile = new PreferenceItem[n][m];
