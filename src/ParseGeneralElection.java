@@ -103,6 +103,7 @@ public class ParseGeneralElection {
                     v.setProfileIndex(vIndex);
                     vIndex++;
                     v.setGeneralPrefIndices(new int[m]);
+                    
                     for(int j = 1; j < m+1; j++){
                         if("{".equals(voterData[j].substring(0, 1))){
                             int j2 = j;
