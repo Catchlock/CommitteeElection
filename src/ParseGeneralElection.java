@@ -101,6 +101,7 @@ public class ParseGeneralElection {
                 for(int i = 0; i < times; i++){
                     Voter v = new Voter("v"+vIndex);
                     v.setProfileIndex(vIndex);
+                    vIndex++;
                     v.setGeneralPrefIndices(new int[m]);
                     voters.add(v);
                     for(int j = 1; j < m+1; j++){
