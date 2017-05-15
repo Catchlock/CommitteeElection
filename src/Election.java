@@ -556,7 +556,12 @@ public class Election {
         double[] distanceVector = new double[n];
         for(int i = 0; i < n; i++){
             Candidate c = findPreferredCandidate(voters.get(i),committee);
-            distanceVector[i] = voters.get(i).distance(c);
+            if(is2D){
+                distanceVector[i] = voters.get(i).distance(c);
+            }
+            else{
+                
+            }
         }
         
         return distanceVector;
