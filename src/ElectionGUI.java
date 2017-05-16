@@ -59,12 +59,14 @@ public class ElectionGUI extends javax.swing.JFrame {
     private ArrayList<Candidate> committeeGM;
     private ArrayList<Candidate> committeeKM;
     private boolean saved = false;
+    private File folder;
     
     /**
      * Creates new form ElectionGUI2
      */
     public ElectionGUI() {
         initComponents();
+        folder = new File(System.getProperty("user.home"));
     }
 
     public Election getElection2D() {
@@ -1106,10 +1108,11 @@ public class ElectionGUI extends javax.swing.JFrame {
     private void saveElectionBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveElectionBtnActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setApproveButtonText("Save");
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        fileChooser.setCurrentDirectory(folder);
         int result = fileChooser.showOpenDialog(this);
 
         if (result == JFileChooser.APPROVE_OPTION) {
+            folder = fileChooser.getCurrentDirectory();
             File selectedFile = fileChooser.getSelectedFile();
             Store2dElection store = new Store2dElection(this, selectedFile);
             store.writeToFile();
@@ -1134,10 +1137,11 @@ public class ElectionGUI extends javax.swing.JFrame {
 
             if (discard){
                 JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+                fileChooser.setCurrentDirectory(folder);
                 int result = fileChooser.showOpenDialog(this);
 
                 if (result == JFileChooser.APPROVE_OPTION) {
+                    folder = fileChooser.getCurrentDirectory();
                     File selectedFile = fileChooser.getSelectedFile();
                     Parse2dElection parser = new Parse2dElection();
                     parser.parseFromFile(selectedFile);
@@ -1170,10 +1174,11 @@ public class ElectionGUI extends javax.swing.JFrame {
         }
         else {
             JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+            fileChooser.setCurrentDirectory(folder);
             int result = fileChooser.showOpenDialog(this);
 
             if (result == JFileChooser.APPROVE_OPTION) {
+                folder = fileChooser.getCurrentDirectory();
                 File selectedFile = fileChooser.getSelectedFile();
                 ParseGeneralElection parser = new ParseGeneralElection();
                 parser.parseFromFile(selectedFile);

@@ -95,6 +95,7 @@ public class ParseGeneralElection {
             
             while(voters.size() < n){
                 String voterLine = fileScanner.nextLine();
+                voterLine = voterLine.replaceAll("\\s", "");
                 String[] voterData = voterLine.split(",");
                 int times = Integer.parseInt(voterData[0]);
                 
