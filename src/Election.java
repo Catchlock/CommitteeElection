@@ -691,7 +691,6 @@ public class Election {
             mCandidates.add(new Candidate(c));
         }
         
-        
         PreferenceProfile backupProfile = profile;
         profile = new PreferenceProfile(mVoters, mCandidates, is2D);
         
