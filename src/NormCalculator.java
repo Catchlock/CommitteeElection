@@ -52,9 +52,9 @@ public class NormCalculator {
     public static double calcNormInf(double[] distanceVector){
         double magnitude = 0;
         for(double d: distanceVector){
-            magnitude += Math.pow(d, 10);
+            magnitude += Math.pow(d, 20);
         }
-        magnitude = Math.pow(magnitude, 0.1);
+        magnitude = Math.pow(magnitude, 0.05);
         return magnitude;
     }
     

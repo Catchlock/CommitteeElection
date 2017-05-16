@@ -1078,6 +1078,28 @@ public class ElectionGUI extends javax.swing.JFrame {
                 systemTxt.append(err);
                 systemTxt.append("-Calculating winning committees cancelled. Please choose a new committee size and try again.");
             }
+            
+            //ProportionalityTest, calculating norms
+            double[] vectorSNTV = electionGP.getDistanceVector(committeeSNTV);
+            systemTxt.append(NormCalculator.getNormText(vectorSNTV, "SNTV"));
+
+            double[] vectorBorda = electionGP.getDistanceVector(committeeBorda);
+            systemTxt.append(NormCalculator.getNormText(vectorBorda, "k-Borda"));
+
+            double[] vectorBloc = electionGP.getDistanceVector(committeeBloc);
+            systemTxt.append(NormCalculator.getNormText(vectorBloc, "Bloc"));
+
+            double[] vectorSTV = electionGP.getDistanceVector(committeeSTV);
+            systemTxt.append(NormCalculator.getNormText(vectorSTV, "STV"));
+
+            double[] vectorGCC = electionGP.getDistanceVector(committeeGCC);
+            systemTxt.append(NormCalculator.getNormText(vectorGCC, "Greedy-CC"));
+
+            double[] vectorGM = electionGP.getDistanceVector(committeeGM);
+            systemTxt.append(NormCalculator.getNormText(vectorGM, "Greedy-Monroe"));
+
+            
+            systemTxt.append("----------------------------------" + eol);
         }
     }//GEN-LAST:event_plotResultsBtnActionPerformed
 

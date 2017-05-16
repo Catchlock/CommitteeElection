@@ -370,6 +370,11 @@ public class Election {
             stvCandidates.add(new Candidate(c));
         }
         
+        ArrayList<Voter> backupVoters = voters;
+        ArrayList<Candidate> backupCandidates = candidates;
+        voters = stvVoters;
+        candidates = stvCandidates;
+        
         PreferenceProfile backupProfile = profile;
         profile = new PreferenceProfile(stvVoters, stvCandidates, is2D);
         
@@ -510,6 +515,8 @@ public class Election {
             }
         }
         
+        voters = backupVoters;
+        candidates = backupCandidates;
         profile = backupProfile;
         return committee;
     }
@@ -560,7 +567,7 @@ public class Election {
                 distanceVector[i] = voters.get(i).distance(c);
             }
             else{
-                
+                distanceVector[i] = profile.getItem(voters.get(i).getProfileIndex(), c.getProfileIndex()).getPosition() - 1;
             }
         }
         
