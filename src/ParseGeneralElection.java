@@ -96,6 +96,7 @@ public class ParseGeneralElection {
             while(voters.size() < n){
                 String voterLine = fileScanner.nextLine();
                 voterLine = voterLine.replaceAll("\\s", "");
+                voterLine = voterLine.replace(",{}", "");
                 String[] voterData = voterLine.split(",");
                 int times = Integer.parseInt(voterData[0]);
                 
@@ -106,6 +107,9 @@ public class ParseGeneralElection {
                     v.setGeneralPrefIndices(new int[m]);
                     
                     for(int j = 1; j < m+1; j++){
+                        if("{".equals(voterData[j].substring(0, 1)) && "}".equals(voterData[j].substring(voterData[j].length()-1))){
+                            voterData[j] = voterData[j].substring(1, voterData[j].length()-1);
+                        }
                         if("{".equals(voterData[j].substring(0, 1))){
                             int j2 = j;
                             ArrayList<Integer> ties = new ArrayList();
