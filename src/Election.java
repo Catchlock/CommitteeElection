@@ -562,12 +562,16 @@ public class Election {
     public double[] getDistanceVector(ArrayList<Candidate> committee){
         double[] distanceVector = new double[n];
         for(int i = 0; i < n; i++){
-            Candidate c = findPreferredCandidate(voters.get(i),committee);
+            Voter v = voters.get(i);
+            Candidate c = findPreferredCandidate(v,committee);
             if(is2D){
-                distanceVector[i] = voters.get(i).distance(c);
+                distanceVector[i] = v.distance(c);
             }
             else{
-                distanceVector[i] = profile.getItem(voters.get(i).getProfileIndex(), c.getProfileIndex()).getPosition() - 1;
+                int row = v.getProfileIndex();
+                int col = c.getProfileIndex();
+                PreferenceItem pi = profile.getItem(row, col);
+                distanceVector[i] = pi.getPosition() - 1;
             }
         }
         
