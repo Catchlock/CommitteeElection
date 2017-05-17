@@ -53,7 +53,7 @@ public class Election {
     και των υποψήφιων και το μέγεθος της επιτροπής k. Θέτει αυτόματα τις
     σταθερές m και n, ελέγχει αν οι υποψήφιοι είναι αρκετοί για να
     στελεχώσουν την επιτροπή, και δημιουργεί το προφίλ προτιμήσεων των
-    ψηφοφόρων.
+    ψηφοφόρων ανάλογα με το είδος της ψηφοφορίας.
     */
     public Election(int k, ArrayList<Voter> voters,
             ArrayList<Candidate> candidates, boolean election2D){
@@ -201,15 +201,15 @@ public class Election {
     Μέθοδος που υπολογίζει τη συνολική βαθμολογία k-Approval ενός
     υποψήφιου.
     */
-//    public void calcBlocScore(Candidate c){
-//        int score = 0;
-//        int col = c.getProfileIndex();
-//        for(Voter v: voters){
-//            int row = v.getProfileIndex();
-//            score = score + profile.getItem(n,m).calcBloc(k);
-//        }
-//        c.setBlocScore(score);
-//    }
+    public void calcBlocScore(Candidate c){
+        int score = 0;
+        int col = c.getProfileIndex();
+        for(Voter v: voters){
+            int row = v.getProfileIndex();
+            score = score + profile.getItem(row,col).calcBloc(k);
+        }
+        c.setBlocScore(score);
+    }
     
     /*
     Μέθοδος που υπολογίζει τις βαθμολογίες k-Approval όλων των υποψήφιων.
@@ -278,6 +278,7 @@ public class Election {
         
     };
     
+    //Μέθοδοι επαναφοράς των πεδίων των υποψήφιων και των ψηφοφόρων
     public void clearCandidates(){
         for(Candidate c: candidates){
             c.clear();
@@ -358,8 +359,9 @@ public class Election {
     public ArrayList<Candidate> singleTransferableVote(){
         clearCandidates();
         /*
-        Κρατάμε αντίγραφα των πινάκων των ψηφοφόρων και των υποψήφιων
-        για να υπάρχει η δυνατότητα επαναφοράς τους στην αρχική κατάσταση
+        Κρατάμε αντίγραφα των πινάκων των ψηφοφόρων και των υποψήφιων, καθώς
+        και του πίνακα που περιέχει το προφίλ προτιμήσεων για να υπάρχει η
+        δυνατότητα επαναφοράς τους στην αρχική κατάσταση
         */
         ArrayList<Voter> stvVoters = new ArrayList(n);
         for (Voter v: voters) {
@@ -382,9 +384,6 @@ public class Election {
         ArrayList<Candidate> committee = new ArrayList(k);
         calcPluralityAll();
         int droopQuota = n /(k + 1) + 1;
-////        <Print_Test_Code>
-//        System.out.println("Droop Quota = " + droopQuota + "\n");
-////        </Print_Test_Code>
                 
         Collections.shuffle(stvCandidates);
         Collections.shuffle(stvVoters);
@@ -397,33 +396,8 @@ public class Election {
             */
             if (stvCandidates.size() == (k - committee.size())){
                 committee.addAll(stvCandidates);
-////                <Print_Test_Code>
-//                System.out.println("Number of candidates left is equal"
-//                        + " to number of committee members missing. "
-//                        + "Winning committee includes all of them.");
-////                </Print_Test_Code>
             }
             else{
-////                <Print_Test_Code>
-//                for(Voter v : voters){
-//                    int i = v.getProfileIndex();
-//                    System.out.print(v.getName() + "'s Preference: ");
-//                    for(Candidate c: candidates){
-//                        int j = c.getProfileIndex();
-//                        System.out.print(c.getName() + "("
-//                                + profile.getItem(i, j).getPosition() + ") ");
-//                    }
-//                    System.out.println();
-//                }
-//                System.out.println();
-//                for (Candidate candidate: candidates){
-//                    System.out.println(candidate.getName()
-//                            + "'s Plurality Score is: "
-//                            + candidate.getPluralityScore());
-//                }   
-//                System.out.println();
-////                </Print_Test_Code>
-
                 //Βρίσκεται ο υποψήφιος με τη μέγιστη βαθμολογία
                 int maxScore = 0;
                 Candidate chosenCandidate = null;
@@ -434,14 +408,12 @@ public class Election {
                     }
                 }
 
-                //Αν είναι μεγαλύτερη του ορίου Droop, προστίθεται στην
-                //επιτροπή
+                /*
+                Αν είναι μεγαλύτερη του ορίου Droop, προστίθεται στην
+                επιτροπή
+                */
                 if(maxScore >= droopQuota){
                     committee.add(chosenCandidate);
-////                    <Print_Test_Code>
-//                    System.out.println("Candidate "
-//                            + chosenCandidate.getName() + " added\n");
-////                    </Print_Test_Code>
 
                     /*
                     Loop αφαίρεσης ψηφοφόρων ίσων σε πλήθος με το όριο
@@ -455,9 +427,6 @@ public class Election {
                         if (v.getFirstPreference().getCandidate().
                                 equals(chosenCandidate)){
                             it.remove();
-////                            <Print_Test_Code>
-//                            System.out.println(v.getName() + " removed");
-////                            </Print_Test_Code>
                             counter++;
                             if (counter == droopQuota){
                                 break;
@@ -479,10 +448,6 @@ public class Election {
                             chosenCandidate = c;
                         }
                     }
-////                    <Print_Test_Code>
-//                    System.out.println("Candidate "
-//                            + chosenCandidate.getName() + " deleted\n");
-////                    </Print_Test_Code>
                 }
                 
                 stvCandidates.remove(chosenCandidate);
@@ -559,6 +524,12 @@ public class Election {
         return satScore;
     }
     
+    /*
+    Μέθοδος που κατασκευάζει το διάνυσμα που περιέχει την απόσταση κάθε
+    ψηφοφόρου από τον αντιπρόσωπό του στην επιτροπή. Η απόσταση υπολογίζεται
+    ως Ευκλείδεια για τις δισδιάστατες ψηφοφορίες κι ως απόσταση σε θέσεις
+    προτίμησης για τις ψηφοφορίες γενικών προτιμήσεων.
+    */
     public double[] getDistanceVector(ArrayList<Candidate> committee){
         double[] distanceVector = new double[n];
         for(int i = 0; i < n; i++){
@@ -594,43 +565,16 @@ public class Election {
         int maxSatisfaction = 0;
         Collections.shuffle(ccCandidates);
 
-////        <Print_Test_Code>
-//        for(Voter v: voters){
-//            System.out.print(v.getName() + "'s Preference: ");
-//            PreferenceItem pi = v.getFirstPreference();
-//            while (pi.getNext() != null) {
-//                System.out.print(pi.getCandidate().getName() + " ");
-//                pi = pi.getNext();
-//            }
-//            System.out.println();
-//        }
-//        System.out.println();
-//        int iteration = 1;
-////        </Print_Test_Code>
-        
         //Βρόχος κατασκευής της επιτροπής - k επαναλήψεις max
         while (committee.size() < k){
-            
-////            <Print_Test_Code>
-//            System.out.println("-------------\nΕπανάληψη #"
-//                    + iteration + "\n");
-//            iteration++;
-////            </Print_Test_Code>
-            
+
             Candidate nextMember = null;
             
             //Επιλέγεται ο υποψήφιος που μεγιστοποιεί την ικανοποίηση
             for (int i=0; i<ccCandidates.size(); i++){
                 committee.add(ccCandidates.get(i));
                 int s = bordaSatisfaction(committee);
-                
-////                <Print_Test_Code>
-//                System.out.println("Με την προσθήκη του υποψήφιου "
-//                        + ccCandidates.get(i).getName()
-//                        + " , η συνολική ικανοποίηση γίνεται ίση με: "
-//                        + s);
-////                </Print_Test_Code>
-                
+
                 if (s > maxSatisfaction){
                     maxSatisfaction = s;
                     nextMember = ccCandidates.get(i);
@@ -641,11 +585,6 @@ public class Election {
             if (nextMember != null){
                 committee.add(nextMember);
                 ccCandidates.remove(nextMember);
-                
-////                <Print_Test_Code>
-//                System.out.println("\nΕπιλέγεται ο υποψήφιος "
-//                        + nextMember.getName() + "\n\n");
-////                </Print_Test_Code>
             }
             
             /*
@@ -653,17 +592,9 @@ public class Election {
             έχει συμπληρωθεί ακόμα, συμπληρώνεται με τυχαίο τρόπο.
             */
             else {
-////                </Print_Test_Code>
-//                System.out.print("\nΗ ικανοποίηση δεν βελτιώνεται άλλο, "
-//                        + "επιλέγονται τυχαία οι υποψήφιοι: ");
-////                </Print_Test_Code>
-
                 int missing = k - committee.size();
                 for (int j = 0; j < missing; j++){
                     committee.add(ccCandidates.get(j));
-////                    <Print_Test_Code>
-//                    System.out.print(ccCandidates.get(j).getName() + " ");
-////                    </Print_Test_Code>
                 }
             }
         }
@@ -706,14 +637,7 @@ public class Election {
         ArrayList<Voter> voterSubset = new ArrayList();
         ArrayList<Voter> tempVoterSubset = new ArrayList();
         int y = n%k;
-        int subsetSize = n/k;
-////        <Print_Test_Code>
-//        System.out.println("Κάθε μέλος της επιτροπής(k=" + k + ") θα "
-//                + "αντιπροσωπεύει " + subsetSize + " ψηφοφόρους, εκτός "
-//                + "από τα πρώτα " + y + " μέλη που αντιπροσωπεύουν "
-//                + (subsetSize+1));
-//        int iteration = 1;
-////        </Print_Test_Code>        
+        int subsetSize = n/k;   
         
         //"Τυχαιοποιούνται" οι πίνακες των υποψήφιων και των ψηφοφόρων.
         Collections.shuffle(mCandidates);
@@ -726,28 +650,6 @@ public class Election {
         στην επιτροπή.
         */
         while (committee.size() < k){
-////        <Print_Test_Code>
-//            System.out.println("-------------\nΕπανάληψη #"
-//                    + iteration + "\n");
-//            System.out.print("Η επιτροπή έχει διαμορφωθεί ως εξής: ");
-//            for (Candidate c : committee){
-//                System.out.print(c.getName() + " ");
-//            }
-//            System.out.println("\n");
-//            for(Voter v : voters){
-//                int i = v.getRowIndex();
-//                System.out.print(v.getName() + "'s Preference: ");
-//                for(Candidate c: candidates){
-//                    int j = c.getColIndex();
-//                    System.out.print(c.getName() + "("
-//                            + profile[i][j].getPosition() + ") ");
-//                }
-//                System.out.println();
-//            }
-//            System.out.println();
-//            iteration++;
-////            </Print_Test_Code>
-          
             int maxSatisfaction = 0;
             Candidate nextMember = null;
             for (int i=0; i < mCandidates.size(); i++){
@@ -782,11 +684,6 @@ public class Election {
                     tempVoterSubset.add(piList.get(j).getVoter());
                 }
                 piList.clear();
-////                <Print_Test_Code>
-//                System.out.println("Αν στην επιτροπή προστεθεί ο "
-//                        + "υποψήφιος " + c.getName() 
-//                        + " η ικανοποίηση θα αυξηθεί κατά " + s);
-////                </Print_Test_Code>
                 
                 /*
                 Κάθε φορά που αυξάνει η ικανοποίηση, αποθηκεύεται η νέα
@@ -801,10 +698,6 @@ public class Election {
                 }
                 tempVoterSubset.clear();
             }
-////            <Print_Test_Code>
-//            System.out.println("\nΠροστίθεται στην επιτροπή ο υποψήφιος "
-//                    + nextMember.getName() + "\n");
-////            </Print_Test_Code>
             
             /*
             Βγαίνοντας από τον εσωτερικό βρόχο, έχει γίνει η τελική επιλογή

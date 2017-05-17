@@ -137,6 +137,7 @@ public class Candidate extends Person {
         blocScore++;
     }
     
+    //Μέθοδος που επαναφέρει τα πεδία του αντικειμένου στην αρχική κατάσταση
     public void clear(){
         selected = false;
         pluralityScore = 0;
@@ -144,6 +145,7 @@ public class Candidate extends Person {
         blocScore = 0;
     }
     
+    //Έλεγχος για το αν ταυτίζονται δύο υποψήφιοι, βάσει ονόματος
     public boolean isEqualTo(Candidate c){
         if(name.equals(c.getName())){
             return true;
@@ -151,6 +153,7 @@ public class Candidate extends Person {
         return false;
     }
     
+    //Έλεγχος για το αν περιέχεται ένας υποψήφιος μέσα σε ένα πίνακα
     public boolean isContainedIn(ArrayList<Candidate> candidates){
         for(Candidate c: candidates){
             if(c.isEqualTo(this)){

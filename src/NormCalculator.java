@@ -66,10 +66,14 @@ public class NormCalculator {
         double norm2 = NormCalculator.calcNormTwo(distanceVector);
         double norm10 = NormCalculator.calcNormInf(distanceVector);
         
-        String normText = String.format("%48.48s", ruleTxt + " minimum distances vector:  ") 
-                + "1-norm: " + String.format("%-12.12s", formatter.format(norm1)) 
-                + "2-norm: " + String.format("%-12.12s", formatter.format(norm2)) 
-                + "Infinity-norm: " + String.format("%-12.12s", formatter.format(norm10)) + eol;
+        String normText = String.format("%48.48s", ruleTxt + " minimum "
+                + "distances vector:  ") 
+                + "1-norm: " 
+                + String.format("%-12.12s", formatter.format(norm1)) 
+                + "2-norm: " 
+                + String.format("%-12.12s", formatter.format(norm2)) 
+                + "Infinity-norm: " 
+                + String.format("%-12.12s", formatter.format(norm10)) + eol;
         
         return normText;
     }

@@ -53,7 +53,9 @@ public class DistributionDialog extends javax.swing.JDialog {
         initComponents();
     }
     
-    public DistributionDialog(java.awt.Frame parent, boolean modal, int total, int xLimit, int yLimit, Person.personType pt, String title, String footnote, boolean finalCluster, String card) {
+    public DistributionDialog(java.awt.Frame parent, boolean modal, int total, 
+            int xLimit, int yLimit, Person.personType pt, String title, 
+            String footnote, boolean finalCluster, String card) {
         super(parent, modal);
         this.title = title;
         this.footnote = footnote;
@@ -83,25 +85,32 @@ public class DistributionDialog extends javax.swing.JDialog {
         
         if (card == "square"){
             uniformRadioBtn.setSelected(true);
-            ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "uniformCard");
+            ((CardLayout)bodyClusterPanel.getLayout())
+                    .show(bodyClusterPanel, "uniformCard");
             squareRadioBtn.setSelected(true);
-            ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "squareCard");
+            ((CardLayout)bodyUniformPanel.getLayout())
+                    .show(bodyUniformPanel, "squareCard");
         }
         else if (card == "disc"){
             uniformRadioBtn.setSelected(true);
-            ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "uniformCard");
+            ((CardLayout)bodyClusterPanel.getLayout())
+                    .show(bodyClusterPanel, "uniformCard");
             discRadioBtn.setSelected(true);
-            ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "discCard");
+            ((CardLayout)bodyUniformPanel.getLayout())
+                    .show(bodyUniformPanel, "discCard");
         }
         else if (card == "ring"){
             uniformRadioBtn.setSelected(true);
-            ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "uniformCard");
+            ((CardLayout)bodyClusterPanel.getLayout())
+                    .show(bodyClusterPanel, "uniformCard");
             ringRadioBtn.setSelected(true);
-            ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "ringCard");
+            ((CardLayout)bodyUniformPanel.getLayout())
+                    .show(bodyUniformPanel, "ringCard");
         }
         else if (card == "gaussian"){
             gaussianRadioBtn.setSelected(true);
-            ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "gaussianCard");
+            ((CardLayout)bodyClusterPanel.getLayout())
+                    .show(bodyClusterPanel, "gaussianCard");
         }
         
         this.getRootPane().setDefaultButton(submitBtn);
@@ -980,23 +989,28 @@ public class DistributionDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void uniformRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uniformRadioBtnActionPerformed
-        ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "uniformCard");
+        ((CardLayout)bodyClusterPanel.getLayout())
+                .show(bodyClusterPanel, "uniformCard");
     }//GEN-LAST:event_uniformRadioBtnActionPerformed
 
     private void gaussianRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gaussianRadioBtnActionPerformed
-        ((CardLayout)bodyClusterPanel.getLayout()).show(bodyClusterPanel, "gaussianCard");
+        ((CardLayout)bodyClusterPanel.getLayout())
+                .show(bodyClusterPanel, "gaussianCard");
     }//GEN-LAST:event_gaussianRadioBtnActionPerformed
 
     private void squareRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_squareRadioBtnActionPerformed
-        ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "squareCard");
+        ((CardLayout)bodyUniformPanel.getLayout())
+                .show(bodyUniformPanel, "squareCard");
     }//GEN-LAST:event_squareRadioBtnActionPerformed
 
     private void discRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discRadioBtnActionPerformed
-        ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "discCard");
+        ((CardLayout)bodyUniformPanel.getLayout())
+                .show(bodyUniformPanel, "discCard");
     }//GEN-LAST:event_discRadioBtnActionPerformed
 
     private void ringRadioBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ringRadioBtnActionPerformed
-        ((CardLayout)bodyUniformPanel.getLayout()).show(bodyUniformPanel, "ringCard");
+        ((CardLayout)bodyUniformPanel.getLayout())
+                .show(bodyUniformPanel, "ringCard");
     }//GEN-LAST:event_ringRadioBtnActionPerformed
 
     private void submitBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_submitBtnActionPerformed
@@ -1022,11 +1036,13 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     squareClusterSizeTxt.setBackground(Color.cyan);
-                    err = err + "Enter a valid cluster population (max " + total + ")." + eol;
+                    err = err + "Enter a valid cluster population (max " 
+                            + total + ")." + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(squareClusterCenterXTxt.getText());
+                    double x = Double
+                            .parseDouble(squareClusterCenterXTxt.getText());
                     if (x < -xLimit || x > xLimit){
                         throw (new Exception());
                     }
@@ -1034,11 +1050,13 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     squareClusterCenterXTxt.setBackground(Color.cyan);
-                    err = err + "The center must be within x-Axis bounds (-" + xLimit + ", +" + xLimit + ")" + eol;
+                    err = err + "The center must be within x-Axis bounds (-" 
+                            + xLimit + ", +" + xLimit + ")" + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(squareClusterCenterYTxt.getText());
+                    double x = Double
+                            .parseDouble(squareClusterCenterYTxt.getText());
                     if (x < -yLimit || x > yLimit){
                         throw (new Exception());
                     }
@@ -1046,11 +1064,13 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     squareClusterCenterYTxt.setBackground(Color.cyan);
-                    err = err + "The center must be within y-Axis bounds (-" + yLimit + ", +" + yLimit + ")" + eol;
+                    err = err + "The center must be within y-Axis bounds (-" 
+                            + yLimit + ", +" + yLimit + ")" + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(squareClusterWidthTxt.getText());
+                    double x = Double
+                            .parseDouble(squareClusterWidthTxt.getText());
                     if (x <= 0 || x > 2*xLimit){
                         throw (new Exception());
                     }
@@ -1058,11 +1078,13 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     squareClusterWidthTxt.setBackground(Color.cyan);
-                    err = err + "Rectangle cluster width cannot be greater than x-Axis range (" + 2*xLimit + ")" + eol;
+                    err = err + "Rectangle cluster width cannot be greater "
+                            + "than x-Axis range (" + 2*xLimit + ")" + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(squareClusterHeightTxt.getText());
+                    double x = Double
+                            .parseDouble(squareClusterHeightTxt.getText());
                     if (x <= 0 || x > 2*yLimit){
                         throw (new Exception());
                     }
@@ -1070,14 +1092,17 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     squareClusterHeightTxt.setBackground(Color.cyan);
-                    err = err + "Rectangle cluster height cannot be greater than y-Axis range (" + 2*xLimit + ")" + eol;
+                    err = err + "Rectangle cluster height cannot be greater "
+                            + "than y-Axis range (" + 2*xLimit + ")" + eol;
                 }
                 
                 if(err != ""){
                     JOptionPane.showMessageDialog(this, err);
                 }
                 else {
-                    individuals = Person.squareUniformDistribution(pt, clusterSize, xCenter, yCenter, width, height, xLimit, yLimit);
+                    individuals = Person.squareUniformDistribution(pt, 
+                            clusterSize, xCenter, yCenter, width, height, 
+                            xLimit, yLimit);
                     this.setVisible(false);
                 }
             }
@@ -1100,11 +1125,13 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     discClusterSizeTxt.setBackground(Color.cyan);
-                    err = err + "Enter a valid cluster population (max " + total + ")." + eol;
+                    err = err + "Enter a valid cluster population (max " 
+                            + total + ")." + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(discClusterCenterXTxt.getText());
+                    double x = Double
+                            .parseDouble(discClusterCenterXTxt.getText());
                     if (x < -xLimit || x > xLimit){
                         throw (new Exception());
                     }
@@ -1112,11 +1139,13 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     discClusterCenterXTxt.setBackground(Color.cyan);
-                    err = err + "The center must be within x-Axis bounds (-" + xLimit + ", +" + xLimit + ")" + eol;
+                    err = err + "The center must be within x-Axis bounds (-" 
+                            + xLimit + ", +" + xLimit + ")" + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(discClusterCenterYTxt.getText());
+                    double x = Double
+                            .parseDouble(discClusterCenterYTxt.getText());
                     if (x < -yLimit || x > yLimit){
                         throw (new Exception());
                     }
@@ -1124,26 +1153,33 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     discClusterCenterYTxt.setBackground(Color.cyan);
-                    err = err + "The center must be within y-Axis bounds (-" + yLimit + ", +" + yLimit + ")" + eol;
+                    err = err + "The center must be within y-Axis bounds (-" 
+                            + yLimit + ", +" + yLimit + ")" + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(discClusterRadiusTxt.getText());
-                    if (x <= 0 || x > Math.sqrt(Math.pow(xLimit, 2) + Math.pow(yLimit, 2))){
+                    double x = Double
+                            .parseDouble(discClusterRadiusTxt.getText());
+                    if (x <= 0 || x > Math.sqrt(Math.pow(xLimit, 2) 
+                            + Math.pow(yLimit, 2))){
                         throw (new Exception());
                     }
                     radius = x;
                 }
                 catch(Exception e){
                     discClusterRadiusTxt.setBackground(Color.cyan);
-                    err = err + "Disc radius cannot be greater than half the diagonal (" + Math.sqrt(Math.pow(xLimit, 2) + Math.pow(yLimit, 2)) + ")" + eol;
+                    err = err + "Disc radius cannot be greater than half the "
+                            + "diagonal (" + Math.sqrt(Math.pow(xLimit, 2) 
+                                    + Math.pow(yLimit, 2)) + ")" + eol;
                 }
                 
                 if(err != ""){
                     JOptionPane.showMessageDialog(this, err);
                 }
                 else {
-                    individuals = Person.discUniformDistribution(pt, clusterSize, xCenter, yCenter, radius, xLimit, yLimit);
+                    individuals = Person.discUniformDistribution(pt, 
+                            clusterSize, xCenter, yCenter, radius, 
+                            xLimit, yLimit);
                     this.setVisible(false);
                 }
             }
@@ -1167,11 +1203,13 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     ringClusterSizeTxt.setBackground(Color.cyan);
-                    err = err + "Enter a valid cluster population (max " + total + ")." + eol;
+                    err = err + "Enter a valid cluster population (max " 
+                            + total + ")." + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(ringClusterCenterXTxt.getText());
+                    double x = Double
+                            .parseDouble(ringClusterCenterXTxt.getText());
                     if (x < -xLimit || x > xLimit){
                         throw (new Exception());
                     }
@@ -1179,11 +1217,13 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     ringClusterCenterXTxt.setBackground(Color.cyan);
-                    err = err + "The center must be within x-Axis bounds (-" + xLimit + ", +" + xLimit + ")" + eol;
+                    err = err + "The center must be within x-Axis bounds (-" 
+                            + xLimit + ", +" + xLimit + ")" + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(ringClusterCenterYTxt.getText());
+                    double x = Double
+                            .parseDouble(ringClusterCenterYTxt.getText());
                     if (x < -yLimit || x > yLimit){
                         throw (new Exception());
                     }
@@ -1191,11 +1231,13 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     ringClusterCenterYTxt.setBackground(Color.cyan);
-                    err = err + "The center must be within y-Axis bounds (-" + yLimit + ", +" + yLimit + ")" + eol;
+                    err = err + "The center must be within y-Axis bounds (-" 
+                            + yLimit + ", +" + yLimit + ")" + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(ringClusterMinRadiusTxt.getText());
+                    double x = Double
+                            .parseDouble(ringClusterMinRadiusTxt.getText());
                     if (x < 0 || x > xLimit || x > yLimit){
                         throw (new Exception());
                     }
@@ -1203,26 +1245,34 @@ public class DistributionDialog extends javax.swing.JDialog {
                 }
                 catch(Exception e){
                     ringClusterMinRadiusTxt.setBackground(Color.cyan);
-                    err = err + "Ring's minimum radius cannot be greater than the smaller of the two axis' bounds (min{" + xLimit + "," + yLimit + "})" + eol;
+                    err = err + "Ring's minimum radius cannot be greater than "
+                            + "the smaller of the two axis' bounds (min{" 
+                            + xLimit + "," + yLimit + "})" + eol;
                 }
                 
                 try{
-                    double x = Double.parseDouble(ringClusterMaxRadiusTxt.getText());
-                    if (x <= 0 || x > Math.sqrt(Math.pow(xLimit, 2) + Math.pow(yLimit, 2))){
+                    double x = Double
+                            .parseDouble(ringClusterMaxRadiusTxt.getText());
+                    if (x <= 0 || x > Math.sqrt(Math.pow(xLimit, 2) 
+                            + Math.pow(yLimit, 2))){
                         throw (new Exception());
                     }
                     maxRadius = x;
                 }
                 catch(Exception e){
                     ringClusterMaxRadiusTxt.setBackground(Color.cyan);
-                    err = err + "Ring's max radius cannot be greater than half the diagonal (" + Math.sqrt(Math.pow(xLimit, 2) + Math.pow(yLimit, 2)) + ")" + eol;
+                    err = err + "Ring's max radius cannot be greater than half "
+                            + "the diagonal (" + Math.sqrt(Math.pow(xLimit, 2) 
+                                    + Math.pow(yLimit, 2)) + ")" + eol;
                 }
                 
                 if(err != ""){
                     JOptionPane.showMessageDialog(this, err);
                 }
                 else {
-                    individuals = Person.ringUniformDistribution(pt, clusterSize, xCenter, yCenter, minRadius, maxRadius, xLimit, yLimit);
+                    individuals = Person.ringUniformDistribution(pt, 
+                            clusterSize, xCenter, yCenter, 
+                            minRadius, maxRadius, xLimit, yLimit);
                     this.setVisible(false);
                 }
             }
@@ -1246,7 +1296,8 @@ public class DistributionDialog extends javax.swing.JDialog {
             }
             catch(Exception e){
                 gaussClusterSizeTxt.setBackground(Color.cyan);
-                err = err + "Enter a valid cluster population (max " + total + ")." + eol;
+                err = err + "Enter a valid cluster population (max " + total 
+                        + ")." + eol;
             }
 
             try{
@@ -1258,7 +1309,8 @@ public class DistributionDialog extends javax.swing.JDialog {
             }
             catch(Exception e){
                 gaussClusterMeanXTxt.setBackground(Color.cyan);
-                err = err + "The mean x-value must be within x-Axis bounds (-" + xLimit + ", +" + xLimit + ")" + eol;
+                err = err + "The mean x-value must be within x-Axis bounds (-" 
+                        + xLimit + ", +" + xLimit + ")" + eol;
             }
 
             try{
@@ -1270,7 +1322,8 @@ public class DistributionDialog extends javax.swing.JDialog {
             }
             catch(Exception e){
                 gaussClusterMeanYTxt.setBackground(Color.cyan);
-                err = err + "The mean y-value must be within y-Axis bounds (-" + yLimit + ", +" + yLimit + ")" + eol;
+                err = err + "The mean y-value must be within y-Axis bounds (-" 
+                        + yLimit + ", +" + yLimit + ")" + eol;
             }
 
             try{
@@ -1282,7 +1335,8 @@ public class DistributionDialog extends javax.swing.JDialog {
             }
             catch(Exception e){
                 gaussClusterStdDevXTxt.setBackground(Color.cyan);
-                err = err + "X-Axis standard deviation must be less than the x-boundary value. (" + xLimit + ")" + eol;
+                err = err + "X-Axis standard deviation must be less than the "
+                        + "x-boundary value. (" + xLimit + ")" + eol;
             }
 
             try{
@@ -1294,21 +1348,27 @@ public class DistributionDialog extends javax.swing.JDialog {
             }
             catch(Exception e){
                 gaussClusterStdDevYTxt.setBackground(Color.cyan);
-                err = err + "Y-Axis standard deviation must be less than the y-boundary value. (" + yLimit + ")" + eol;
+                err = err + "Y-Axis standard deviation must be less than the "
+                        + "y-boundary value. (" + yLimit + ")" + eol;
             }
 
             if(err != ""){
                 JOptionPane.showMessageDialog(this, err);
             }
             else {
-                individuals = Person.gaussianDistribution(pt, clusterSize, xMean, yMean, xLimit, yLimit, stdDevX, stdDevY);
+                individuals = Person.gaussianDistribution(pt, clusterSize, 
+                        xMean, yMean, xLimit, yLimit, stdDevX, stdDevY);
                 this.setVisible(false);
             }
         }
     }//GEN-LAST:event_submitBtnActionPerformed
 
     private void cancelBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelBtnActionPerformed
-        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?\nAll progress towards creating this election will be lost!", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you "
+                + "want to exit?\nAll progress towards creating this election "
+                + "will be lost!", "Confirm", JOptionPane.YES_NO_OPTION, 
+                JOptionPane.QUESTION_MESSAGE);
+        
         if (response == JOptionPane.YES_OPTION) {
             cancelled = true;
             this.setVisible(false);
@@ -1316,7 +1376,11 @@ public class DistributionDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_cancelBtnActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?\nAll progress towards creating this election will be lost!", "Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        int response = JOptionPane.showConfirmDialog(null, "Are you sure you "
+                + "want to exit?\nAll progress towards creating this election "
+                + "will be lost!", "Confirm", JOptionPane.YES_NO_OPTION, 
+                JOptionPane.QUESTION_MESSAGE);
+        
         if (response == JOptionPane.YES_OPTION) {
             cancelled = true;
             this.setVisible(false);

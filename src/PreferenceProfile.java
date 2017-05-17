@@ -117,8 +117,6 @@ public class PreferenceProfile {
                     tempPreference.add(c);
                 }
             }
-//            PreferenceItem next = null;
-//            PreferenceItem previous = null;
             PreferenceItem bridge = null;
             
             for(int i = 0; i < m; i++){
@@ -135,24 +133,6 @@ public class PreferenceProfile {
                 }
                 bridge = profile[row][col];
             }
-//            
-//            for (int j = 0 ; j < m; j++){
-//                Candidate c = tempPreference.get(j);
-//                int col = c.getProfileIndex();
-//                int position = j + 1;
-//                profile[row][col] = new PreferenceItem(v, c, position);
-//                if (position == 1){
-//                    v.setFirstPreference(profile[row][col]);
-//                }
-//                profile[row][col].setPrevious(previous);
-//                previous = profile[row][col];
-//            }
-//            for (int j = m - 1; j >= 0; j--){
-//                Candidate c = tempPreference.get(j);
-//                int col = c.getProfileIndex();
-//                profile[row][col].setNext(next);
-//                next = profile[row][col];
-//            }
         } 
     }
 }

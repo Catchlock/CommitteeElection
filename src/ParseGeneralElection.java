@@ -36,7 +36,6 @@ import java.util.Scanner;
 public class ParseGeneralElection {
     private ArrayList<Voter> voters;
     private ArrayList<Candidate> candidates;
-//    private PreferenceItem[][] profile;
     private String err;
     
     public ArrayList<Voter> getVoters() {
@@ -54,14 +53,6 @@ public class ParseGeneralElection {
     public void setCandidates(ArrayList<Candidate> candidates) {
         this.candidates = candidates;
     }
-//    
-//    public PreferenceItem[][] getProfile() {
-//        return profile;
-//    }
-//
-//    public void setProfile(PreferenceItem[][] profile) {
-//        this.profile = profile;
-//    }
 
     public String getErr() {
         return err;
@@ -107,19 +98,25 @@ public class ParseGeneralElection {
                     v.setGeneralPrefIndices(new int[m]);
                     
                     for(int j = 1; j < m+1; j++){
-                        if("{".equals(voterData[j].substring(0, 1)) && "}".equals(voterData[j].substring(voterData[j].length()-1))){
-                            voterData[j] = voterData[j].substring(1, voterData[j].length()-1);
+                        if("{".equals(voterData[j].substring(0, 1)) 
+                                && "}".equals(voterData[j]
+                                        .substring(voterData[j].length()-1))){
+                            voterData[j] = voterData[j]
+                                    .substring(1, voterData[j].length()-1);
                         }
                         if("{".equals(voterData[j].substring(0, 1))){
                             int j2 = j;
                             ArrayList<Integer> ties = new ArrayList();
-                            ties.add(Integer.parseInt(voterData[j2].substring(1)));
+                            ties.add(Integer.parseInt(voterData[j2]
+                                    .substring(1)));
                             j2++;
-                            while(!"}".equals(voterData[j2].substring(voterData[j2].length() - 1))){
+                            while(!"}".equals(voterData[j2]
+                                    .substring(voterData[j2].length() - 1))){
                                 ties.add(Integer.parseInt(voterData[j2]));
                                 j2++;
                             }
-                            ties.add(Integer.parseInt(voterData[j2].substring(0, voterData[j2].length() - 1)));
+                            ties.add(Integer.parseInt(voterData[j2]
+                                    .substring(0, voterData[j2].length() - 1)));
                             Collections.shuffle(ties);
                             for(Integer a: ties){
                                 v.getGeneralPrefIndices()[j-1] = a;
@@ -128,44 +125,13 @@ public class ParseGeneralElection {
                             j--;
                         }
                         else{
-                            v.getGeneralPrefIndices()[j-1] = Integer.parseInt(voterData[j]);
+                            v.getGeneralPrefIndices()[j-1] = 
+                                    Integer.parseInt(voterData[j]);
                         }
                     }
                     voters.add(v);
                 }
             }
-//            
-//            profile = new PreferenceItem[n][m];
-//            vIndex = 0;
-//            
-//            while (voters.size() < n){
-//                String voterLine = fileScanner.nextLine();
-//                String[] voterData = voterLine.split(",");
-//                int times = Integer.parseInt(voterData[0]);
-//                
-//                for(int i = 0; i < times; i++){
-//                    Voter v = new Voter("v"+vIndex);
-//                    v.setProfileIndex(vIndex);
-//                    voters.add(v);
-//                    PreferenceItem bridgePI = null;
-//                    
-//                    for(int j = 1; j < m+1; j++){
-//                        int cIndex = Integer.parseInt(voterData[j]) - 1;
-//                        Candidate c = candidates.get(cIndex);
-//                        profile[vIndex][cIndex] = new PreferenceItem(v,c,j);
-//                        if(j == 1){
-//                            v.setFirstPreference(profile[vIndex][cIndex]);
-//                        }
-//                        if(bridgePI != null){
-//                            profile[vIndex][cIndex].setPrevious(bridgePI);
-//                            bridgePI.setNext(profile[vIndex][cIndex]);
-//                        }
-//                        bridgePI = profile[vIndex][cIndex];
-//                    }
-//                    vIndex++;
-//                }
-//            }
-
             fileScanner.close();
             
         } catch (FileNotFoundException ex) {

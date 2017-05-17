@@ -35,8 +35,7 @@ import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
  */
 
 /*
-Αφηρημένη υπερκλάση που συναθροίζει τα κοινά στοιχεία ψηφοφόρων και
-υποψήφιων.
+Αφηρημένη υπερκλάση που συναθροίζει τα κοινά στοιχεία ψηφοφόρων και υποψήφιων.
 */
 public abstract class Person {
     String name;
@@ -106,7 +105,7 @@ public abstract class Person {
         this.profileIndex = preferenceIndex;
     }
     
-    //Μέθοδος που υπολογίζει την ευκλείδια απόσταση δύο ατόμων
+    //Μέθοδος που υπολογίζει την Ευκλείδεια απόσταση δύο ατόμων
     public double distance(Person p){
         double d = sqrt(Math.pow((x - p.getX()),2)+
                 Math.pow((y - p.getY()),2));
@@ -149,7 +148,8 @@ public abstract class Person {
     και οριακές συντεταγμένες xLimit και yLimit.
     */
     public static ArrayList<Person> discUniformDistribution(personType pt,
-            int n, double xCenter, double yCenter, double radius, int xLimit, int yLimit){
+            int n, double xCenter, double yCenter, double radius, 
+            int xLimit, int yLimit){
         
         ArrayList<Person> people =  new ArrayList(n);
         Random rand = new Random();
